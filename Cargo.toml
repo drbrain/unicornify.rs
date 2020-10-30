@@ -1,0 +1,13 @@
+[package]
+name = "unicornify"
+version = "0.1.0"
+authors = ["Eric Hodel <drbrain@segment7.net>"]
+edition = "2018"
+
+[[bin]]
+name = "unicornify"
+path = "src/bin/unicornify.rs"
+
+[dependencies]
+anyhow = "^1.0"
+num-bigint = "^0.3"
