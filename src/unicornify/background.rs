@@ -2,19 +2,19 @@ use crate::Point;
 use crate::Random;
 
 pub struct Background {
-    sky_hue: i32,
-    sky_sat: i32,
-    land_hue: i32,
-    land_sat: i32,
-    horizon: f64,
-    rainbow_foot: f64,
-    rainbow_dir: f64, // +1 or -1
-    rainbow_height: f64,
-    rainbow_band_width: f64,
-    cloud_positions: Vec<Point>,
-    cloud_sizes: Vec<Point>, // not actually any kind of point
-    cloud_lightnesses: Vec<i32>,
-    land_light: i32,
+    pub sky_hue: i32,
+    pub sky_sat: i32,
+    pub land_hue: i32,
+    pub land_sat: i32,
+    pub horizon: f64,
+    pub rainbow_foot: f64,
+    pub rainbow_dir: f64, // +1 or -1
+    pub rainbow_height: f64,
+    pub rainbow_band_width: f64,
+    pub cloud_positions: Vec<Point>,
+    pub cloud_sizes: Vec<Point>, // not actually any kind of point
+    pub cloud_lightnesses: Vec<i32>,
+    pub land_light: i32,
 }
 
 impl Background {

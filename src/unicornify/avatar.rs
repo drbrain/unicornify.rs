@@ -1,6 +1,7 @@
 use anyhow::Context;
 use anyhow::Result;
 
+use crate::Color;
 use crate::Random;
 
 use crate::unicornify::Background;
@@ -62,6 +63,18 @@ impl Avatar {
         let light_direction = Vector::new(light_direction.z, light_direction.y, -light_direction.x);
 
         // end randomization
+
+        grass.horizon = background.horizon;
+        grass.color1 = Color::hsl(
+            background.land_hue,
+            background.land_sat,
+            background.land_light,
+        );
+        grass.color2 = Color::hsl(
+            background.land_hue,
+            background.land_sat,
+            background.land_light / 2,
+        );
 
         Ok(Avatar { rand, unicorn })
     }
