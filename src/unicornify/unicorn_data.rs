@@ -3,7 +3,7 @@ use crate::Random;
 use crate::unicornify::Pose;
 use crate::unicornify::DEGREE;
 
-pub struct Unicorn {
+pub struct UnicornData {
     pub head_size: f64,
     pub snout_size: f64,
     pub shoulder_size: f64,
@@ -46,9 +46,9 @@ pub struct Unicorn {
     pub face_tilt: f64,
 }
 
-impl Unicorn {
+impl UnicornData {
     pub fn new() -> Self {
-        Unicorn {
+        UnicornData {
             head_size: 0.0,
             snout_size: 0.0,
             shoulder_size: 0.0,

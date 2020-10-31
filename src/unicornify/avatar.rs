@@ -6,13 +6,13 @@ use crate::Random;
 
 use crate::unicornify::Background;
 use crate::unicornify::Grass;
-use crate::unicornify::Unicorn;
+use crate::unicornify::UnicornData;
 use crate::unicornify::Vector;
 use crate::unicornify::DEGREE;
 
 pub struct Avatar {
     rand: Random,
-    unicorn: Unicorn,
+    unicorn_data: UnicornData,
 }
 
 impl Avatar {
@@ -29,11 +29,11 @@ impl Avatar {
         rand.seed_hex_string(hash)
             .with_context(|| format!("Unable to use avatar hash"))?;
 
-        let mut unicorn = Unicorn::new();
+        let mut unicorn_data = UnicornData::new();
         let mut background = Background::new();
         let mut grass = Grass::new();
 
-        unicorn.rand1(&mut rand);
+        unicorn_data.rand1(&mut rand);
         background.rand1(&mut rand);
 
         let scale_factor = 0.5 + rand.rand().powi(2) * 2.5;
@@ -45,9 +45,9 @@ impl Avatar {
         let y_angle = 90.0 + sign as f64 * abs as f64 * DEGREE;
         let x_angle = rand.rand_i32(-20, 20) as f64 * DEGREE;
 
-        unicorn.rand2(&mut rand);
+        unicorn_data.rand2(&mut rand);
         background.rand2(&mut rand);
-        unicorn.rand3(&mut rand);
+        unicorn_data.rand3(&mut rand);
         grass.rand(&mut rand);
 
         let grass_slope = 2.0 + 4.0 * (20.0 - x_angle / DEGREE) / 40.0;
@@ -57,7 +57,7 @@ impl Avatar {
 
         let focal_length = 250.0 + rand.rand() * 250.0;
 
-        unicorn.rand4(&mut rand);
+        unicorn_data.rand4(&mut rand);
 
         let light_direction = Vector::new(rand.rand() * 16.0 - 8.0, 10.0, rand.rand() * 3.0);
         let light_direction = Vector::new(light_direction.z, light_direction.y, -light_direction.x);
@@ -76,11 +76,11 @@ impl Avatar {
             background.land_light / 2,
         );
 
-        if (y_angle - 90.0 * DEGREE) * unicorn.neck_tilt > 0.0 {
-            unicorn.neck_tilt = -unicorn.neck_tilt;
-            unicorn.face_tilt = -unicorn.face_tilt;
+        if (y_angle - 90.0 * DEGREE) * unicorn_data.neck_tilt > 0.0 {
+            unicorn_data.neck_tilt = -unicorn_data.neck_tilt;
+            unicorn_data.face_tilt = -unicorn_data.face_tilt;
         }
 
-        Ok(Avatar { rand, unicorn })
+        Ok(Avatar { rand, unicorn_data })
     }
 }
