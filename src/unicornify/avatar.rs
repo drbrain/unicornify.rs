@@ -76,6 +76,11 @@ impl Avatar {
             background.land_light / 2,
         );
 
+        if (y_angle - 90.0 * DEGREE) * unicorn.neck_tilt > 0.0 {
+            unicorn.neck_tilt = -unicorn.neck_tilt;
+            unicorn.face_tilt = -unicorn.face_tilt;
+        }
+
         Ok(Avatar { rand, unicorn })
     }
 }

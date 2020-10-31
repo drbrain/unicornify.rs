@@ -4,46 +4,46 @@ use crate::unicornify::Pose;
 use crate::unicornify::DEGREE;
 
 pub struct Unicorn {
-    head_size: f64,
-    snout_size: f64,
-    shoulder_size: f64,
-    snout_length: f64,
-    butt_size: f64,
-    body_hue: i32,
-    body_sat: i32,
-    horn_hue: i32,
-    horn_sat: i32,
-    horn_onset_size: f64,
-    horn_tip_size: f64,
-    horn_length: f64,
-    horn_angle: f64, // 0 means straight in x-direction, >0 means upwards
-    eye_size: f64,
-    iris_size: f64, // no longer used
-    iris_hue: i32,  // no longer used
-    iris_sat: i32,  // no longer used
-    pupil_size: f64,
-    hair_hue: i32,
-    hair_sat: i32,
-    hair_count: usize,
-    hair_starts: Vec<f64>,
-    hair_gammas: Vec<f64>,
-    hair_lengths: Vec<f64>,
-    hair_angles: Vec<f64>,
-    hair_straightnesses: Vec<f64>, // for lack of a better word -- this is just the z offsets of the tip
-    hair_tip_lightnesses: Vec<i32>,
-    tail_start_size: f64,
-    tail_end_size: f64,
-    tail_length: f64,
-    tail_angle: f64,
-    tail_gamma: f64,
-    brow_size: f64,
-    brow_length: f64,
-    brow_mood: f64, // from -1 (angry) to 1 (astonished)
+    pub head_size: f64,
+    pub snout_size: f64,
+    pub shoulder_size: f64,
+    pub snout_length: f64,
+    pub butt_size: f64,
+    pub body_hue: i32,
+    pub body_sat: i32,
+    pub horn_hue: i32,
+    pub horn_sat: i32,
+    pub horn_onset_size: f64,
+    pub horn_tip_size: f64,
+    pub horn_length: f64,
+    pub horn_angle: f64, // 0 means straight in x-direction, >0 means upwards
+    pub eye_size: f64,
+    pub iris_size: f64, // no longer used
+    pub iris_hue: i32,  // no longer used
+    pub iris_sat: i32,  // no longer used
+    pub pupil_size: f64,
+    pub hair_hue: i32,
+    pub hair_sat: i32,
+    pub hair_count: usize,
+    pub hair_starts: Vec<f64>,
+    pub hair_gammas: Vec<f64>,
+    pub hair_lengths: Vec<f64>,
+    pub hair_angles: Vec<f64>,
+    pub hair_straightnesses: Vec<f64>, // for lack of a better word -- this is just the z offsets of the tip
+    pub hair_tip_lightnesses: Vec<i32>,
+    pub tail_start_size: f64,
+    pub tail_end_size: f64,
+    pub tail_length: f64,
+    pub tail_angle: f64,
+    pub tail_gamma: f64,
+    pub brow_size: f64,
+    pub brow_length: f64,
+    pub brow_mood: f64, // from -1 (angry) to 1 (astonished)
 
-    pose: Pose,
+    pub pose: Pose,
 
-    neck_tilt: f64,
-    face_tilt: f64,
+    pub neck_tilt: f64,
+    pub face_tilt: f64,
 }
 
 impl Unicorn {
