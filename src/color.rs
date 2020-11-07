@@ -1,3 +1,4 @@
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct Color {
     pub r: u8,
     pub g: u8,
@@ -41,6 +42,10 @@ impl Color {
 
     pub fn black() -> Self {
         Color::new(0, 0, 0)
+    }
+
+    pub fn white() -> Self {
+        Color::new(255, 255, 255)
     }
 }
 

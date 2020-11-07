@@ -44,6 +44,9 @@ pub struct UnicornData {
 
     pub neck_tilt: f64,
     pub face_tilt: f64,
+
+    pub x_angle: f64,
+    pub y_angle: f64,
 }
 
 impl UnicornData {
@@ -89,6 +92,9 @@ impl UnicornData {
 
             neck_tilt: 0.0,
             face_tilt: 0.0,
+            
+            x_angle: 0.0,
+            y_angle: 0.0,
         }
     }
 

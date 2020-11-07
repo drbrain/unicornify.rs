@@ -3,11 +3,12 @@ use anyhow::Result;
 
 use crate::Color;
 use crate::Random;
+use crate::Vector;
 
 use crate::unicornify::Background;
 use crate::unicornify::Grass;
+use crate::unicornify::Unicorn;
 use crate::unicornify::UnicornData;
-use crate::unicornify::Vector;
 use crate::unicornify::DEGREE;
 
 pub struct Avatar {
@@ -42,15 +43,15 @@ impl Avatar {
 
         let sign = rand.choice(2) * 2 - 1;
         let abs = rand.rand_i32(10, 75);
-        let y_angle = 90.0 + sign as f64 * abs as f64 * DEGREE;
-        let x_angle = rand.rand_i32(-20, 20) as f64 * DEGREE;
+        unicorn_data.y_angle = 90.0 + sign as f64 * abs as f64 * DEGREE;
+        unicorn_data.x_angle = rand.rand_i32(-20, 20) as f64 * DEGREE;
 
         unicorn_data.rand2(&mut rand);
         background.rand2(&mut rand);
         unicorn_data.rand3(&mut rand);
         grass.rand(&mut rand);
 
-        let grass_slope = 2.0 + 4.0 * (20.0 - x_angle / DEGREE) / 40.0;
+        let grass_slope = 2.0 + 4.0 * (20.0 - unicorn_data.x_angle / DEGREE) / 40.0;
         let grass_scale = 1.0 + (scale_factor - 0.5) / 2.5;
         grass.blade_height_near = (0.02 + 0.02 * rand.rand()) * grass_scale;
         grass.blade_height_far = grass.blade_height_near / grass_slope;
@@ -76,7 +77,7 @@ impl Avatar {
             background.land_light / 2,
         );
 
-        if (y_angle - 90.0 * DEGREE) * unicorn_data.neck_tilt > 0.0 {
+        if (unicorn_data.y_angle - 90.0 * DEGREE) * unicorn_data.neck_tilt > 0.0 {
             unicorn_data.neck_tilt = -unicorn_data.neck_tilt;
             unicorn_data.face_tilt = -unicorn_data.face_tilt;
         }
