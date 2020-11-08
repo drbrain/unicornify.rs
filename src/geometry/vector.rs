@@ -17,6 +17,42 @@ impl Vector {
         Vector { x, y, z }
     }
 
+    pub fn cross_axes(&self) -> (Vector, Vector) {
+        let x = self.x;
+        let y = self.y;
+        let z = self.z;
+
+        // default is both x and z == 0 -- looking down
+        let mut x1: f64 = 1.0;
+        let mut x3: f64 = 0.0;
+
+        if x != 0.0 {
+            x3 = (1.0 / (z * z / (x * x) + 1.0)).sqrt();
+            if x > 0.0 {
+                x3 = -x3;
+            }
+            x1 = -x3 * z / x;
+        } else if z != 0.0 {
+            x1 = (1.0 / (x * x / (z * z) + 1.0)).sqrt();
+            if z < 0.0 {
+                x1 = -x1;
+            }
+            x3 = -x1 * x / z;
+        }
+
+        let ux = Vector::new(x1, 0.0, x3);
+
+        // cross product of ux and normal (=uz) gives the y axis but in the wrong direction
+        // (because x-z-y is not a right-hand rule system)
+        let y1: f64 = -(-x3 * y);
+        let y2: f64 = -(x3 * x - x1 * z);
+        let y3: f64 = -(x1 * y);
+
+        let uy = Vector::new(y1, y2, y3);
+
+        (ux, uy)
+    }
+
     pub fn length(&self) -> f64 {
         (self.x * self.x + self.y * self.y + self.z * self.z).sqrt()
     }
@@ -44,6 +80,16 @@ impl Vector {
             Axis::X => Vector::new(self.y, self.z, self.x),
             Axis::Y => Vector::new(self.x, self.z, self.y),
             Axis::Z => self.clone(),
+        }
+    }
+
+    pub fn unit(&self) -> Vector {
+        let l = 1.0 / self.length();
+
+        Vector {
+            x: self.x * l,
+            y: self.y * l,
+            z: self.z * l,
         }
     }
 }

@@ -4,6 +4,7 @@ use anyhow::Result;
 use crate::geometry::Axis;
 use crate::geometry::Vector;
 use crate::geometry::DEGREE;
+use crate::render::WorldView;
 use crate::scene::Background;
 use crate::scene::Grass;
 use crate::unicorn::Unicorn;
@@ -94,6 +95,8 @@ impl Avatar {
         let camera_position = look_at_point + Vector::new(0.0, 0.0, -3.0 * focal_length);
         camera_position.rotate_around(*head.center.borrow(), -data.x_angle, Axis::X);
         camera_position.rotate_around(*head.center.borrow(), -data.y_angle, Axis::Y);
+
+        let world_view = WorldView::new(camera_position, look_at_point, focal_length);
 
         Ok(Avatar { rand, data, size })
     }

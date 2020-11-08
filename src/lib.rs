@@ -3,6 +3,7 @@ mod color;
 mod data;
 pub mod geometry;
 mod pyrand;
+pub mod render;
 pub mod scene;
 mod sorter;
 mod tv;
