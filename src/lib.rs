@@ -1,13 +1,15 @@
 mod color;
+mod data;
 pub mod geometry;
 mod pyrand;
+pub mod scene;
 mod sorter;
 mod tv;
 pub mod unicorn;
-pub mod scene;
 pub mod unicornify;
 
 pub use color::Color;
+pub use data::Data;
 pub use pyrand::Random;
 pub use sorter::Sorter;
 pub use tv::TV;

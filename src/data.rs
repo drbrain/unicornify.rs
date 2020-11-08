@@ -4,7 +4,7 @@ use crate::geometry::DEGREE;
 use crate::unicorn::Pose;
 
 #[derive(Clone, Debug)]
-pub struct UnicornData {
+pub struct Data {
     pub head_size: f64,
     pub snout_size: f64,
     pub shoulder_size: f64,
@@ -50,9 +50,9 @@ pub struct UnicornData {
     pub y_angle: f64,
 }
 
-impl UnicornData {
+impl Data {
     pub fn new() -> Self {
-        UnicornData {
+        Data {
             head_size: 0.0,
             snout_size: 0.0,
             shoulder_size: 0.0,

@@ -6,13 +6,13 @@ use crate::geometry::DEGREE;
 use crate::scene::Background;
 use crate::scene::Grass;
 use crate::unicornify::Unicorn;
-use crate::unicornify::UnicornData;
 use crate::Color;
+use crate::Data;
 use crate::Random;
 
 pub struct Avatar {
     rand: Random,
-    unicorn_data: UnicornData,
+    data: Data,
     size: usize,
 }
 
@@ -30,11 +30,11 @@ impl Avatar {
         rand.seed_hex_string(hash)
             .with_context(|| format!("Unable to use avatar hash"))?;
 
-        let mut unicorn_data = UnicornData::new();
+        let mut data = Data::new();
         let mut background = Background::new();
         let mut grass = Grass::new();
 
-        unicorn_data.rand1(&mut rand);
+        data.rand1(&mut rand);
         background.rand1(&mut rand);
 
         let scale_factor = 0.5 + rand.rand().powi(2) * 2.5;
@@ -43,22 +43,22 @@ impl Avatar {
 
         let sign = rand.choice(2) * 2 - 1;
         let abs = rand.rand_i32(10, 75);
-        unicorn_data.y_angle = 90.0 + sign as f64 * abs as f64 * DEGREE;
-        unicorn_data.x_angle = rand.rand_i32(-20, 20) as f64 * DEGREE;
+        data.y_angle = 90.0 + sign as f64 * abs as f64 * DEGREE;
+        data.x_angle = rand.rand_i32(-20, 20) as f64 * DEGREE;
 
-        unicorn_data.rand2(&mut rand);
+        data.rand2(&mut rand);
         background.rand2(&mut rand);
-        unicorn_data.rand3(&mut rand);
+        data.rand3(&mut rand);
         grass.rand(&mut rand);
 
-        let grass_slope = 2.0 + 4.0 * (20.0 - unicorn_data.x_angle / DEGREE) / 40.0;
+        let grass_slope = 2.0 + 4.0 * (20.0 - data.x_angle / DEGREE) / 40.0;
         let grass_scale = 1.0 + (scale_factor - 0.5) / 2.5;
         grass.blade_height_near = (0.02 + 0.02 * rand.rand()) * grass_scale;
         grass.blade_height_far = grass.blade_height_near / grass_slope;
 
         let focal_length = 250.0 + rand.rand() * 250.0;
 
-        unicorn_data.rand4(&mut rand);
+        data.rand4(&mut rand);
 
         let light_direction = Vector::new(rand.rand() * 16.0 - 8.0, 10.0, rand.rand() * 3.0);
         let light_direction = Vector::new(light_direction.z, light_direction.y, -light_direction.x);
@@ -77,15 +77,11 @@ impl Avatar {
             background.land_light / 2,
         );
 
-        if (unicorn_data.y_angle - 90.0 * DEGREE) * unicorn_data.neck_tilt > 0.0 {
-            unicorn_data.neck_tilt = -unicorn_data.neck_tilt;
-            unicorn_data.face_tilt = -unicorn_data.face_tilt;
+        if (data.y_angle - 90.0 * DEGREE) * data.neck_tilt > 0.0 {
+            data.neck_tilt = -data.neck_tilt;
+            data.face_tilt = -data.face_tilt;
         }
 
-        Ok(Avatar {
-            rand,
-            unicorn_data,
-            size,
-        })
+        Ok(Avatar { rand, data, size })
     }
 }

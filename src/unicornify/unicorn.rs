@@ -10,8 +10,8 @@ use crate::unicorn::Mane;
 use crate::unicorn::Neck;
 use crate::unicorn::Pose;
 use crate::unicorn::Torso;
-use crate::unicornify::UnicornData;
 use crate::Color;
+use crate::Data;
 
 #[derive(Debug)]
 pub struct Unicorn {
@@ -19,7 +19,7 @@ pub struct Unicorn {
 }
 
 impl Unicorn {
-    pub fn new(data: UnicornData) -> Self {
+    pub fn new(data: Data) -> Self {
         let head_color = Color::hsl(data.body_hue, data.body_sat, 60);
         let head = Ball::new(0.0, 0.0, 0.0, data.head_size, head_color);
 
@@ -265,7 +265,7 @@ impl Unicorn {
     }
 }
 
-fn mane(data: &UnicornData, head: Ball, shoulder: Ball) -> Mane {
+fn mane(data: &Data, head: Ball, shoulder: Ball) -> Mane {
     let hair_top = Ball::new_v(head + Vector::new(10.0, -5.0, 0.0), 5.0, Color::white());
     hair_top.move_to_sphere(head.clone());
     let hair_bottom = Ball::new_v(
