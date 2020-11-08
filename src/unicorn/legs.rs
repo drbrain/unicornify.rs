@@ -2,7 +2,7 @@ use crate::geometry::Axis;
 use crate::geometry::Vector;
 use crate::unicorn::Leg;
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Legs {
     pub fr: Leg,
     pub fl: Leg,

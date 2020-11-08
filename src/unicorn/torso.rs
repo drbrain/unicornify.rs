@@ -4,7 +4,7 @@ use crate::geometry::Vector;
 use crate::unicorn::Legs;
 use crate::unicorn::Neck;
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Torso {
     pub neck: Neck,
     pub torso: Bone,

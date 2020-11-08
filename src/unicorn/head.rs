@@ -45,7 +45,7 @@ impl Head {
     }
 
     pub fn attachment(&self) -> Ball {
-        self.face.b2
+        self.face.b2.clone()
     }
 
     pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) {

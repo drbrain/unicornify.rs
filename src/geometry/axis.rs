@@ -3,6 +3,7 @@
 //
 // Someday someone with more linear algebra knowledge than I have retained will come here and fix
 // this to use the correct names.
+#[derive(Clone, Copy, Debug)]
 pub enum Axis {
     X,
     Y,

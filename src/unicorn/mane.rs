@@ -1,6 +1,10 @@
 use crate::geometry::Axis;
+use crate::geometry::Ball;
 use crate::geometry::Bone;
+use crate::geometry::Gamma;
 use crate::geometry::Vector;
+use crate::Color;
+use crate::Data;
 
 #[derive(Clone, Debug)]
 pub struct Mane {
@@ -8,8 +12,46 @@ pub struct Mane {
 }
 
 impl Mane {
-    pub fn new(capacity: usize) -> Self {
-        let mane: Vec<Bone> = Vec::with_capacity(capacity);
+    pub fn new(data: &Data, head: Ball, shoulder: Ball) -> Self {
+        let hair_top = Ball::new_v(
+            head.clone() + Vector::new(10.0, -5.0, 0.0),
+            5.0,
+            Color::white(),
+        );
+        hair_top.move_to_sphere(head.clone());
+        let hair_bottom = Ball::new_v(
+            shoulder.clone() + Vector::new(10.0, -15.0, 0.0),
+            5.0,
+            Color::white(),
+        );
+        hair_bottom.move_to_sphere(shoulder.clone());
+
+        let hair_span = hair_bottom - hair_top.clone();
+        let hair_color = Color::hsl(data.hair_hue, data.hair_sat, 60);
+
+        let mut mane: Vec<Bone> = Vec::with_capacity(data.hair_starts.len());
+
+        for i in 0..data.hair_starts.len() {
+            let start = hair_top.clone() + hair_span * data.hair_starts[i] / 100.0;
+            let hair_start = Ball::new_v(start, 5.0, hair_color.clone());
+
+            let end = Vector::new(
+                start.x + data.hair_lengths[i],
+                start.y,
+                start.z + data.hair_straightnesses[i],
+            );
+            let end_color = Color::hsl(data.hair_hue, data.hair_sat, data.hair_tip_lightnesses[i]);
+            let hair_end = Ball::new_v(end, 2.0, end_color);
+
+            let hair = Bone::non_linear(
+                hair_start,
+                hair_end,
+                Gamma::new(data.hair_gammas[i], 0.2),
+                Gamma::new(1.0 / data.hair_gammas[i], 0.2),
+            );
+
+            mane.push(hair);
+        }
 
         Mane { mane }
     }

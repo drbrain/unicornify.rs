@@ -83,25 +83,17 @@ impl Avatar {
             data.face_tilt = -data.face_tilt;
         }
 
-        let unicorn = Unicorn::new(data);
+        let unicorn = Unicorn::new(&data);
 
         let fsize = size as f64;
-        let factor = (data.scale_factor - 0.5).sqrt() / 2.5;
+        let factor = (scale_factor - 0.5).sqrt() / 2.5;
 
         let head = unicorn.head();
         let shoulder = unicorn.shoulder();
-        let look_at_point = shoulder + ((head - shoulder) * factor);
+        let look_at_point = shoulder.clone() + ((head.clone() - shoulder) * factor);
         let camera_position = look_at_point + Vector::new(0.0, 0.0, -3.0 * focal_length);
-        camera_position.rotate_around(
-            *head.center.borrow(),
-            -unicorn_data.x_angle,
-            Axis::X,
-        );
-        camera_position.rotate_around(
-            *head.center.borrow(),
-            -unicorn_data.y_angle,
-            Axis::Y,
-        );
+        camera_position.rotate_around(*head.center.borrow(), -data.x_angle, Axis::X);
+        camera_position.rotate_around(*head.center.borrow(), -data.y_angle, Axis::Y);
 
         Ok(Avatar { rand, data, size })
     }

@@ -3,7 +3,7 @@ use crate::geometry::Ball;
 use crate::geometry::Bone;
 use crate::geometry::Vector;
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Leg {
     pub hip: Ball,
     pub knee: Ball,
