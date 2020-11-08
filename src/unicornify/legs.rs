@@ -1,6 +1,6 @@
+use crate::geometry::Axis;
+use crate::geometry::Vector;
 use crate::unicornify::Leg;
-use crate::Axis;
-use crate::Vector;
 
 #[derive(Debug)]
 pub struct Legs {

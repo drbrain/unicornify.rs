@@ -1,6 +1,6 @@
-use crate::Axis;
+use crate::geometry::Axis;
+use crate::geometry::Vector;
 use crate::Color;
-use crate::Vector;
 
 use std::cell::RefCell;
 use std::ops::Add;

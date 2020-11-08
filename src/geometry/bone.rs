@@ -1,7 +1,7 @@
-use crate::unicornify::Ball;
-use crate::Axis;
-use crate::Gamma;
-use crate::Vector;
+use crate::geometry::Axis;
+use crate::geometry::Ball;
+use crate::geometry::Gamma;
+use crate::geometry::Vector;
 
 const DEFAULT_SHADING: f64 = 0.25;
 

@@ -1,8 +1,8 @@
+use crate::geometry::Axis;
 use crate::pyrand::Random;
 use crate::unicornify::Leg;
 use crate::unicornify::Legs;
 use crate::unicornify::DEGREE;
-use crate::Axis;
 use crate::Sorter;
 use crate::TV;
 

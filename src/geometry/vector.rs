@@ -1,4 +1,4 @@
-use crate::Axis;
+use crate::geometry::Axis;
 
 use std::ops::Add;
 use std::ops::Div;
@@ -83,6 +83,7 @@ impl Mul<f64> for Vector {
         }
     }
 }
+
 impl Sub for Vector {
     type Output = Self;
 

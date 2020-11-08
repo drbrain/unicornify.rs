@@ -1,4 +1,4 @@
-use crate::Point;
+use crate::geometry::Point;
 use crate::Random;
 
 pub struct Background {

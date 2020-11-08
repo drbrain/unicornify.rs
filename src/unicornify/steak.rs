@@ -1,6 +1,5 @@
+use crate::geometry::Ball;
 use crate::Color;
-
-use crate::unicornify::Ball;
 
 #[derive(Debug)]
 pub struct Steak {

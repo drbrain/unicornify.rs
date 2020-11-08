@@ -1,15 +1,14 @@
 use anyhow::Context;
 use anyhow::Result;
 
-use crate::Color;
-use crate::Random;
-use crate::Vector;
-
+use crate::geometry::Vector;
 use crate::unicornify::Background;
 use crate::unicornify::Grass;
 use crate::unicornify::Unicorn;
 use crate::unicornify::UnicornData;
 use crate::unicornify::DEGREE;
+use crate::Color;
+use crate::Random;
 
 pub struct Avatar {
     rand: Random,

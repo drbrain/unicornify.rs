@@ -1,7 +1,5 @@
 mod avatar;
 mod background;
-mod ball;
-mod bone;
 mod grass;
 mod head;
 mod leg;
@@ -15,8 +13,6 @@ mod unicorn;
 mod unicorn_data;
 
 pub use background::Background;
-pub use ball::Ball;
-pub use bone::Bone;
 pub use grass::Grass;
 pub use head::Head;
 pub use leg::Leg;

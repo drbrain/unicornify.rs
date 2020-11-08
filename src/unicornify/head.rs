@@ -1,7 +1,7 @@
-use crate::unicornify::Ball;
-use crate::unicornify::Bone;
-use crate::Axis;
-use crate::Vector;
+use crate::geometry::Axis;
+use crate::geometry::Ball;
+use crate::geometry::Bone;
+use crate::geometry::Vector;
 
 #[derive(Clone, Debug)]
 pub struct Head {

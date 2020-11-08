@@ -1,10 +1,8 @@
-use crate::Axis;
-use crate::Color;
-use crate::Gamma;
-use crate::Vector;
-
-use crate::unicornify::Ball;
-use crate::unicornify::Bone;
+use crate::geometry::Axis;
+use crate::geometry::Ball;
+use crate::geometry::Bone;
+use crate::geometry::Gamma;
+use crate::geometry::Vector;
 use crate::unicornify::Head;
 use crate::unicornify::Leg;
 use crate::unicornify::Legs;
@@ -13,6 +11,7 @@ use crate::unicornify::Neck;
 use crate::unicornify::Pose;
 use crate::unicornify::Torso;
 use crate::unicornify::UnicornData;
+use crate::Color;
 
 #[derive(Debug)]
 pub struct Unicorn {
