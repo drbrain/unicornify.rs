@@ -5,7 +5,7 @@ use crate::geometry::Vector;
 use crate::geometry::DEGREE;
 use crate::scene::Background;
 use crate::scene::Grass;
-use crate::unicornify::Unicorn;
+use crate::unicorn::Unicorn;
 use crate::Color;
 use crate::Data;
 use crate::Random;
