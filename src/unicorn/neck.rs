@@ -1,8 +1,8 @@
 use crate::geometry::Axis;
 use crate::geometry::Bone;
 use crate::geometry::Vector;
-use crate::unicornify::Head;
-use crate::unicornify::Mane;
+use crate::unicorn::Head;
+use crate::unicorn::Mane;
 
 #[derive(Debug)]
 pub struct Neck {

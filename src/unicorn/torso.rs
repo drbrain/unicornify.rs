@@ -1,8 +1,8 @@
 use crate::geometry::Axis;
 use crate::geometry::Bone;
 use crate::geometry::Vector;
-use crate::unicornify::Legs;
-use crate::unicornify::Neck;
+use crate::unicorn::Legs;
+use crate::unicorn::Neck;
 
 #[derive(Debug)]
 pub struct Torso {

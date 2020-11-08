@@ -1,7 +1,7 @@
 use crate::Random;
 
-use crate::unicornify::Pose;
-use crate::unicornify::DEGREE;
+use crate::geometry::DEGREE;
+use crate::unicorn::Pose;
 
 #[derive(Clone, Debug)]
 pub struct UnicornData {

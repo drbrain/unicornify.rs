@@ -3,6 +3,7 @@ pub mod geometry;
 mod pyrand;
 mod sorter;
 mod tv;
+pub mod unicorn;
 pub mod unicornify;
 
 pub use color::Color;

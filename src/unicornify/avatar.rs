@@ -2,11 +2,11 @@ use anyhow::Context;
 use anyhow::Result;
 
 use crate::geometry::Vector;
+use crate::geometry::DEGREE;
 use crate::unicornify::Background;
 use crate::unicornify::Grass;
 use crate::unicornify::Unicorn;
 use crate::unicornify::UnicornData;
-use crate::unicornify::DEGREE;
 use crate::Color;
 use crate::Random;
 
