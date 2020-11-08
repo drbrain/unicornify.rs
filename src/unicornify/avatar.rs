@@ -3,8 +3,8 @@ use anyhow::Result;
 
 use crate::geometry::Vector;
 use crate::geometry::DEGREE;
-use crate::unicornify::Background;
-use crate::unicornify::Grass;
+use crate::scene::Background;
+use crate::scene::Grass;
 use crate::unicornify::Unicorn;
 use crate::unicornify::UnicornData;
 use crate::Color;
