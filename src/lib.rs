@@ -1,3 +1,4 @@
+mod avatar;
 mod color;
 mod data;
 pub mod geometry;
@@ -6,7 +7,6 @@ pub mod scene;
 mod sorter;
 mod tv;
 pub mod unicorn;
-pub mod unicornify;
 
 pub use color::Color;
 pub use data::Data;
