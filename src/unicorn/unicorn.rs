@@ -245,23 +245,15 @@ impl Unicorn {
             torso.rotate_around(*shoulder.center.borrow(), -data.y_angle, Axis::Y);
         }
 
-        let fsize = size as f64;
-        let factor = (unicorn_data.scale_factor - 0.5).sqrt() / 2.5;
-
-        let look_at_point = shoulder + ((head.attachment() - shoulder) * factor);
-        let camera_position = look_at_point + Vector::new(0.0, 0.0, -3.0 * focal_length);
-        camera_position.rotate_around(
-            *head.attachment().center.borrow(),
-            -unicorn_data.x_angle,
-            Axis::X,
-        );
-        camera_position.rotate_around(
-            *head.attachment().center.borrow(),
-            -unicorn_data.y_angle,
-            Axis::Y,
-        );
-
         Unicorn { torso }
+    }
+
+    pub fn head(&self) -> Ball {
+        self.torso.neck.head.attachment()
+    }
+
+    pub fn shoulder(&self) -> Ball {
+        self.torso.torso.b1
     }
 }
 
