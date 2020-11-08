@@ -14,11 +14,11 @@ pub enum Thing {
     SteakT(Steak),
 }
 
-impl Thing {
-    pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) -> Option<Thing> {
-        match self {
-            Thing::BallT(b) => Some(Thing::BallT(b.rotate_around(other, angle, axis))),
-            _ => None,
-        }
-    }
-}
+//impl Thing {
+//    pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) -> Option<Thing> {
+//        match self {
+//            Thing::BallT(b) => Some(Thing::BallT(b.rotate_around(other, angle, axis))),
+//            _ => None,
+//        }
+//    }
+//}

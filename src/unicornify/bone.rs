@@ -1,9 +1,11 @@
 use crate::unicornify::Ball;
+use crate::Axis;
 use crate::Gamma;
+use crate::Vector;
 
 const DEFAULT_SHADING: f64 = 0.25;
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Debug)]
 pub struct Bone {
     pub b1: Ball,
     pub b2: Ball,
@@ -46,5 +48,10 @@ impl Bone {
             x_func,
             y_func,
         }
+    }
+
+    pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) {
+        self.b1.rotate_around(other, angle, axis);
+        self.b2.rotate_around(other, angle, axis);
     }
 }

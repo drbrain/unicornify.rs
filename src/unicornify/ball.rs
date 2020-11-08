@@ -2,19 +2,23 @@ use crate::Axis;
 use crate::Color;
 use crate::Vector;
 
-use std::hash::Hash;
-use std::hash::Hasher;
+use std::cell::RefCell;
+use std::ops::Add;
+use std::ops::Div;
+use std::ops::Mul;
+use std::ops::Sub;
+use std::rc::Rc;
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug)]
 pub struct Ball {
-    pub center: Vector,
+    pub center: Rc<RefCell<Vector>>,
     pub radius: f64,
     pub color: Color,
 }
 
 impl Ball {
     pub fn new(x: f64, y: f64, z: f64, radius: f64, color: Color) -> Self {
-        let center = Vector::new(x, y, z);
+        let center = Rc::new(RefCell::new(Vector::new(x, y, z)));
 
         Ball {
             center,
@@ -24,6 +28,8 @@ impl Ball {
     }
 
     pub fn new_v(center: Vector, radius: f64, color: Color) -> Self {
+        let center = Rc::new(RefCell::new(center));
+
         Ball {
             center,
             radius,
@@ -31,36 +37,66 @@ impl Ball {
         }
     }
 
-    pub fn move_to_sphere(&self, other: Ball) -> Ball {
-        self.set_distance(other.radius, other)
+    pub fn move_to_sphere(&self, other: Ball) {
+        self.set_distance(other.radius, other);
     }
 
-    pub fn set_distance(&self, distance: f64, other: Ball) -> Ball {
-        let span = self.center - other.center;
-        let center = other.center + span * distance / span.length();
+    pub fn set_distance(&self, distance: f64, other: Ball) {
+        let span = *self.center.borrow() - *other.center.borrow();
+        let new_center = *other.center.borrow() + span * distance / span.length();
 
-        Ball::new_v(center, self.radius, self.color.clone())
+        self.center.replace(new_center);
     }
 
-    pub fn set_gap(&self, gap: f64, other: Ball) -> Ball {
-        self.set_distance(self.radius + other.radius + gap, other)
+    pub fn set_gap(&self, gap: f64, other: Ball) {
+        self.set_distance(self.radius + other.radius + gap, other);
     }
 
-    pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) -> Ball {
-        let new_center = self.center.rotate_around(other, angle, axis);
+    pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) {
+        let center = self.center.borrow_mut();
 
-        Ball::new_v(new_center, self.radius, self.color.clone())
+        let new_center = center.rotate_around(other, angle, axis);
+
+        self.center.replace(new_center);
     }
 }
 
-// TODO is PartialEq enough for this to be right with respect to f64?
-impl Eq for Ball {}
+impl Add<Vector> for Ball {
+    type Output = Vector;
 
-impl Hash for Ball {
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        self.center.hash(state);
-        let radius_val = format!("{:.10e}", self.radius);
-        radius_val.hash(state);
-        self.color.hash(state);
+    fn add(self, rhs: Vector) -> Vector {
+        *self.center.borrow() + rhs
+    }
+}
+
+impl Div<f64> for Ball {
+    type Output = Vector;
+
+    fn div(self, rhs: f64) -> Vector {
+        *self.center.borrow() / rhs
+    }
+}
+
+impl Mul<f64> for Ball {
+    type Output = Vector;
+
+    fn mul(self, rhs: f64) -> Vector {
+        *self.center.borrow() * rhs
+    }
+}
+
+impl Sub<Ball> for Ball {
+    type Output = Vector;
+
+    fn sub(self, rhs: Ball) -> Vector {
+        *self.center.borrow() - *rhs.center.borrow()
+    }
+}
+
+impl Sub<Vector> for Ball {
+    type Output = Vector;
+
+    fn sub(self, rhs: Vector) -> Vector {
+        *self.center.borrow() - rhs
     }
 }

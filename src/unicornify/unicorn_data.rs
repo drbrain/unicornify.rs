@@ -3,6 +3,7 @@ use crate::Random;
 use crate::unicornify::Pose;
 use crate::unicornify::DEGREE;
 
+#[derive(Clone, Debug)]
 pub struct UnicornData {
     pub head_size: f64,
     pub snout_size: f64,
@@ -92,7 +93,7 @@ impl UnicornData {
 
             neck_tilt: 0.0,
             face_tilt: 0.0,
-            
+
             x_angle: 0.0,
             y_angle: 0.0,
         }

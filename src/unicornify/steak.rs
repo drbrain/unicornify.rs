@@ -2,7 +2,7 @@ use crate::Color;
 
 use crate::unicornify::Ball;
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 pub struct Steak {
     pub b1: Ball,
     pub b2: Ball,

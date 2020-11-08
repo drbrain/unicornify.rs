@@ -2,10 +2,11 @@ use crate::pyrand::Random;
 use crate::unicornify::Leg;
 use crate::unicornify::Legs;
 use crate::unicornify::DEGREE;
-use crate::Sorter;
 use crate::Axis;
+use crate::Sorter;
 use crate::TV;
 
+#[derive(Debug, Clone)]
 pub enum Pose {
     RotaryGallop { phase: f64 },
     Walk { phase: f64 },
@@ -57,33 +58,70 @@ fn rotary_gallop(legs: Legs, phase: f64) -> Legs {
         TV::new(8.0 / 12.0, 50.0),
     ]);
 
-    let hip_center = fr.hip.center.clone();
-    let knee_center = fr.knee.center.clone();
-    let fr_knee = fr.knee.rotate_around(hip_center, front_top.interpolate(phase) * DEGREE, Axis::Z);
-    let fr_hoof = fr.hoof.rotate_around(hip_center, front_top.interpolate(phase) * DEGREE, Axis::Z);
-    let fr_hoof = fr_hoof.rotate_around(knee_center, front_bottom.interpolate(phase) * DEGREE, Axis::Z);
-    let fr = Leg::new(fr.hip, fr_knee, fr_hoof);
+    let hip_center = *fr.hip.center.borrow();
+    let knee_center = *fr.knee.center.borrow();
 
-    let hip_center = fl.hip.center.clone();
-    let knee_center = fl.knee.center.clone();
-    let fl_knee = fl.knee.rotate_around(hip_center, front_top.interpolate(phase - 0.25) * DEGREE, Axis::Z);
-    let fl_hoof = fl.hoof.rotate_around(hip_center, front_top.interpolate(phase - 0.25) * DEGREE, Axis::Z);
-    let fl_hoof = fl_hoof.rotate_around(knee_center, front_bottom.interpolate(phase - 0.25) * DEGREE, Axis::Z);
-    let fl = Leg::new(fl.hip, fl_knee, fl_hoof);
+    fr.knee
+        .rotate_around(hip_center, front_top.interpolate(phase) * DEGREE, Axis::Z);
+    fr.hoof
+        .rotate_around(hip_center, front_top.interpolate(phase) * DEGREE, Axis::Z);
+    fr.hoof.rotate_around(
+        knee_center,
+        front_bottom.interpolate(phase) * DEGREE,
+        Axis::Z,
+    );
+    let fr = Leg::new(fr.hip, fr.knee, fr.hoof);
 
-    let hip_center = br.hip.center.clone();
-    let knee_center = br.knee.center.clone();
-    let br_knee = br.knee.rotate_around(hip_center, back_top.interpolate(phase) * DEGREE, Axis::Z);
-    let br_hoof = br.hoof.rotate_around(hip_center, back_top.interpolate(phase) * DEGREE, Axis::Z);
-    let br_hoof = br_hoof.rotate_around(knee_center, back_bottom.interpolate(phase) * DEGREE, Axis::Z);
-    let br = Leg::new(br.hip, br_knee, br_hoof);
+    let hip_center = *fl.hip.center.borrow();
+    let knee_center = *fl.knee.center.borrow();
+    fl.knee.rotate_around(
+        hip_center,
+        front_top.interpolate(phase - 0.25) * DEGREE,
+        Axis::Z,
+    );
+    fl.hoof.rotate_around(
+        hip_center,
+        front_top.interpolate(phase - 0.25) * DEGREE,
+        Axis::Z,
+    );
+    fl.hoof.rotate_around(
+        knee_center,
+        front_bottom.interpolate(phase - 0.25) * DEGREE,
+        Axis::Z,
+    );
+    let fl = Leg::new(fl.hip, fl.knee, fl.hoof);
 
-    let hip_center = bl.hip.center.clone();
-    let knee_center = bl.knee.center.clone();
-    let bl_knee = bl.knee.rotate_around(hip_center, back_top.interpolate(phase - 0.167) * DEGREE, Axis::Z);
-    let bl_hoof = bl.hoof.rotate_around(hip_center, back_top.interpolate(phase - 0.167) * DEGREE, Axis::Z);
-    let bl_hoof = bl_hoof.rotate_around(knee_center, back_bottom.interpolate(phase - 0.167) * DEGREE, Axis::Z);
-    let bl = Leg::new(bl.hip, bl_knee, bl_hoof);
+    let hip_center = *br.hip.center.borrow();
+    let knee_center = *br.knee.center.borrow();
+    br.knee
+        .rotate_around(hip_center, back_top.interpolate(phase) * DEGREE, Axis::Z);
+    br.hoof
+        .rotate_around(hip_center, back_top.interpolate(phase) * DEGREE, Axis::Z);
+    br.hoof.rotate_around(
+        knee_center,
+        back_bottom.interpolate(phase) * DEGREE,
+        Axis::Z,
+    );
+    let br = Leg::new(br.hip, br.knee, br.hoof);
+
+    let hip_center = *bl.hip.center.borrow();
+    let knee_center = *bl.knee.center.borrow();
+    bl.knee.rotate_around(
+        hip_center,
+        back_top.interpolate(phase - 0.167) * DEGREE,
+        Axis::Z,
+    );
+    bl.hoof.rotate_around(
+        hip_center,
+        back_top.interpolate(phase - 0.167) * DEGREE,
+        Axis::Z,
+    );
+    bl.hoof.rotate_around(
+        knee_center,
+        back_bottom.interpolate(phase - 0.167) * DEGREE,
+        Axis::Z,
+    );
+    let bl = Leg::new(bl.hip, bl.knee, bl.hoof);
 
     Legs::new(fr, fl, br, bl)
 }
@@ -106,38 +144,71 @@ fn walk(legs: Legs, phase: f64) -> Legs {
         TV::new(4.0 / 9.0, 0.0),
         TV::new(6.0 / 9.0, 0.0),
     ]);
-    let back_bottom = Sorter::new(vec![
-        TV::new(5.0 / 9.0, 40.0),
-        TV::new(9.0 / 9.0, 10.0),
-    ]);
+    let back_bottom = Sorter::new(vec![TV::new(5.0 / 9.0, 40.0), TV::new(9.0 / 9.0, 10.0)]);
 
-    let hip_center = fr.hip.center.clone();
-    let knee_center = fr.knee.center.clone();
-    let fr_knee = fr.knee.rotate_around(hip_center, front_top.interpolate(phase) * DEGREE, Axis::Z);
-    let fr_hoof = fr.hoof.rotate_around(hip_center, front_top.interpolate(phase) * DEGREE, Axis::Z);
-    let fr_hoof = fr_hoof.rotate_around(knee_center, front_bottom.interpolate(phase) * DEGREE, Axis::Z);
-    let fr = Leg::new(fr.hip, fr_knee, fr_hoof);
+    let hip_center = *fr.hip.center.borrow();
+    let knee_center = *fr.knee.center.borrow();
+    fr.knee
+        .rotate_around(hip_center, front_top.interpolate(phase) * DEGREE, Axis::Z);
+    fr.hoof
+        .rotate_around(hip_center, front_top.interpolate(phase) * DEGREE, Axis::Z);
+    fr.hoof.rotate_around(
+        knee_center,
+        front_bottom.interpolate(phase) * DEGREE,
+        Axis::Z,
+    );
+    let fr = Leg::new(fr.hip, fr.knee, fr.hoof);
 
-    let hip_center = fl.hip.center.clone();
-    let knee_center = fl.knee.center.clone();
-    let fl_knee = fl.knee.rotate_around(hip_center, front_top.interpolate(phase - 0.56) * DEGREE, Axis::Z);
-    let fl_hoof = fl.hoof.rotate_around(hip_center, front_top.interpolate(phase - 0.56) * DEGREE, Axis::Z);
-    let fl_hoof = fl_hoof.rotate_around(knee_center, front_bottom.interpolate(phase - 0.56) * DEGREE, Axis::Z);
-    let fl = Leg::new(fl.hip, fl_knee, fl_hoof);
+    let hip_center = *fl.hip.center.borrow();
+    let knee_center = *fl.knee.center.borrow();
+    fl.knee.rotate_around(
+        hip_center,
+        front_top.interpolate(phase - 0.56) * DEGREE,
+        Axis::Z,
+    );
+    fl.hoof.rotate_around(
+        hip_center,
+        front_top.interpolate(phase - 0.56) * DEGREE,
+        Axis::Z,
+    );
+    fl.hoof.rotate_around(
+        knee_center,
+        front_bottom.interpolate(phase - 0.56) * DEGREE,
+        Axis::Z,
+    );
+    let fl = Leg::new(fl.hip, fl.knee, fl.hoof);
 
-    let hip_center = br.hip.center.clone();
-    let knee_center = br.knee.center.clone();
-    let br_knee = br.knee.rotate_around(hip_center, back_top.interpolate(phase) * DEGREE, Axis::Z);
-    let br_hoof = br.hoof.rotate_around(hip_center, back_top.interpolate(phase) * DEGREE, Axis::Z);
-    let br_hoof = br_hoof.rotate_around(knee_center, back_bottom.interpolate(phase) * DEGREE, Axis::Z);
-    let br = Leg::new(br.hip, br_knee, br_hoof);
+    let hip_center = *br.hip.center.borrow();
+    let knee_center = *br.knee.center.borrow();
+    br.knee
+        .rotate_around(hip_center, back_top.interpolate(phase) * DEGREE, Axis::Z);
+    br.hoof
+        .rotate_around(hip_center, back_top.interpolate(phase) * DEGREE, Axis::Z);
+    br.hoof.rotate_around(
+        knee_center,
+        back_bottom.interpolate(phase) * DEGREE,
+        Axis::Z,
+    );
+    let br = Leg::new(br.hip, br.knee, br.hoof);
 
-    let hip_center = bl.hip.center.clone();
-    let knee_center = bl.knee.center.clone();
-    let bl_knee = bl.knee.rotate_around(hip_center, back_top.interpolate(phase - 0.44) * DEGREE, Axis::Z);
-    let bl_hoof = bl.hoof.rotate_around(hip_center, back_top.interpolate(phase - 0.44) * DEGREE, Axis::Z);
-    let bl_hoof = bl_hoof.rotate_around(knee_center, back_bottom.interpolate(phase - 0.44) * DEGREE, Axis::Z);
-    let bl = Leg::new(bl.hip, bl_knee, bl_hoof);
+    let hip_center = *bl.hip.center.borrow();
+    let knee_center = *bl.knee.center.borrow();
+    bl.knee.rotate_around(
+        hip_center,
+        back_top.interpolate(phase - 0.44) * DEGREE,
+        Axis::Z,
+    );
+    bl.hoof.rotate_around(
+        hip_center,
+        back_top.interpolate(phase - 0.44) * DEGREE,
+        Axis::Z,
+    );
+    bl.hoof.rotate_around(
+        knee_center,
+        back_bottom.interpolate(phase - 0.44) * DEGREE,
+        Axis::Z,
+    );
+    let bl = Leg::new(bl.hip, bl.knee, bl.hoof);
 
     Legs::new(fr, fl, br, bl)
 }

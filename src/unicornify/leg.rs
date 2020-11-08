@@ -1,5 +1,7 @@
 pub use crate::unicornify::Ball;
 pub use crate::unicornify::Bone;
+use crate::Axis;
+use crate::Vector;
 
 #[derive(Debug)]
 pub struct Leg {
@@ -22,5 +24,11 @@ impl Leg {
             calf,
             shin,
         }
+    }
+
+    pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) {
+        self.hip.rotate_around(other, angle, axis);
+        self.knee.rotate_around(other, angle, axis);
+        self.hoof.rotate_around(other, angle, axis);
     }
 }

@@ -1,13 +1,11 @@
 use crate::Axis;
 
-use std::hash::Hash;
-use std::hash::Hasher;
 use std::ops::Add;
 use std::ops::Div;
 use std::ops::Mul;
 use std::ops::Sub;
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug)]
 pub struct Vector {
     pub x: f64,
     pub y: f64,
@@ -94,20 +92,5 @@ impl Sub for Vector {
             y: self.y - rhs.y,
             z: self.z - rhs.z,
         }
-    }
-}
-
-impl Eq for Vector {}
-
-impl Hash for Vector {
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        let x_val = format!("{:.10e}", self.x);
-        x_val.hash(state);
-
-        let y_val = format!("{:.10e}", self.y);
-        y_val.hash(state);
-
-        let z_val = format!("{:.10e}", self.z);
-        z_val.hash(state);
     }
 }

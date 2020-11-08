@@ -14,12 +14,13 @@ use crate::unicornify::DEGREE;
 pub struct Avatar {
     rand: Random,
     unicorn_data: UnicornData,
+    size: usize,
 }
 
 impl Avatar {
     pub fn new(
         hash: String,
-        _size: usize,
+        size: usize,
         _with_background: bool,
         zoom_out: bool,
         _shading: bool,
@@ -82,6 +83,10 @@ impl Avatar {
             unicorn_data.face_tilt = -unicorn_data.face_tilt;
         }
 
-        Ok(Avatar { rand, unicorn_data })
+        Ok(Avatar {
+            rand,
+            unicorn_data,
+            size,
+        })
     }
 }
