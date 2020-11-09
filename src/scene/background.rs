@@ -1,5 +1,13 @@
+use crate::drawing::ColoringParameters;
+use crate::drawing::*;
 use crate::geometry::Point;
+use crate::Color;
 use crate::Random;
+
+use image::Rgba;
+use image::RgbaImage;
+
+use std::convert::TryInto;
 
 pub struct Background {
     pub sky_hue: i32,
@@ -36,6 +44,131 @@ impl Background {
         }
     }
 
+    pub fn draw(&self, image: &mut RgbaImage, shaded: bool) {
+        let fsize = image.height() as f64 - 1.0;
+        let horizon = (image.height() as f64 * self.horizon) as u32;
+
+        self.draw_sky(image, horizon, fsize);
+        self.draw_land(image, horizon, fsize);
+        self.draw_rainbow(image, horizon, fsize);
+        for i in 0..self.cloud_positions.len() {
+            self.draw_cloud(image, i, shaded, fsize);
+        }
+    }
+
+    fn draw_cloud(&self, image: &mut RgbaImage, i: usize, shaded: bool, fsize: f64) {
+        let position = &self.cloud_positions[i];
+        let size = &self.cloud_sizes[i];
+        let color = Color::hsl(self.sky_hue, self.sky_sat, self.cloud_lightnesses[i]);
+
+        let shading = if shaded { 0.25 } else { 0.0 };
+
+        let cp = ColoringParameters::new(shading);
+
+        let x = position.x;
+        let y = position.y;
+        let size1 = size.x;
+        let size2 = size.y;
+
+        circle_f(image, x - 2.0 * size1, y - size1, size1, color, cp.clone());
+        circle_f(image, x + 2.0 * size1, y - size1, size1, color, cp.clone());
+        top_half_circle_f(image, x, y - size1, size2, color, cp.clone());
+
+        let xi = (x + 0.5) as u32;
+        let yi = (y + 0.5) as u32;
+
+        let size1i = (size1 + 0.5) as u32;
+        let right = xi + 2 * size1i;
+
+        for py in yi - size1i - 1..=yi {
+            for px in xi - 2 * size1i..=right {
+                if shaded {
+                    let dy = (py - (yi - size1i - 1)) as f64;
+                    let color = circle_shading_rgba(0.0, dy, size1, color, cp.clone());
+
+                    image.put_pixel(px, py, color.into());
+                } else {
+                    image.put_pixel(px, py, color.into());
+                }
+            }
+        }
+    }
+
+    fn draw_land(&self, image: &mut RgbaImage, horizon: u32, fsize: f64) {
+        let land_a = Color::hsl(self.land_hue, self.land_sat, self.land_light);
+        let land_b = Color::hsl(self.land_hue, self.land_sat, self.land_light / 2);
+
+        for x in 0..image.height() {
+            let color = land_a.mix(land_b, x as f64 / fsize);
+
+            for y in horizon..image.width() {
+                image.put_pixel(x, y, color.into());
+            }
+        }
+    }
+
+    fn draw_rainbow(&self, image: &mut RgbaImage, horizon: u32, fsize: f64) {
+        let band_width = self.rainbow_band_width * fsize;
+        let rainbow_center = fsize * (self.rainbow_foot + self.rainbow_dir * self.rainbow_height);
+        let outer_radius = self.rainbow_height * fsize + 0.5;
+
+        // TODO these can probably be u32 as self.rainbow_* all seem to be positive?
+        let r = (outer_radius + 0.5) as i32;
+        let cx = (rainbow_center + 0.5) as i32;
+        let cy = horizon as i32;
+
+        let size = image.height();
+        let left = between(cx - r, 0, size - 1);
+        let right = between(cx + r, 0, size - 1);
+        let top = between(cx - r, 0, size - 1);
+        let bottom = between(cy, 0, size - 1);
+        let inner_radius_squared = (r as f64 - 7.0 * band_width) as u32;
+
+        let band_colors = band_colors();
+
+        for x in left..=right {
+            let dx: u32 = (x as i32 - cx).try_into().unwrap();
+
+            for y in top..=bottom {
+                let dy: u32 = (y as i32 - cy).try_into().unwrap();
+                let d_squared: u32 = dx * dx + dy * dy;
+
+                if d_squared < inner_radius_squared {
+                    continue;
+                }
+
+                let d = (d_squared as f64).sqrt();
+
+                let band = (r as f64 - d) / band_width;
+
+                if band >= 7.0 || band < 0.0 {
+                    continue;
+                }
+
+                let band = band as u32;
+
+                image.put_pixel(x, y, band_colors[band as usize]);
+            }
+        }
+    }
+
+    fn draw_sky(&self, image: &mut RgbaImage, horizon: u32, fsize: f64) {
+        let sky_a = Color::hsl(self.sky_hue, self.sky_sat, 60);
+        let sky_b = Color::hsl(self.sky_hue, self.sky_sat, 10);
+
+        for (y, row) in image.enumerate_rows_mut() {
+            if y > horizon.try_into().unwrap() {
+                break;
+            };
+
+            let color = sky_a.mix(sky_b, y as f64 / fsize);
+
+            for (_x, _y, pixel) in row {
+                *pixel = color.into();
+            }
+        }
+    }
+
     pub fn rand1(&mut self, rand: &mut Random) {
         self.sky_hue = rand.rand_i32(0, 359);
         self.sky_sat = rand.rand_i32(30, 70);
@@ -69,5 +202,31 @@ impl Background {
         for _ in 0..cloud_count {
             self.cloud_lightnesses.push(rand.rand_i32(75, 90));
         }
+    }
+}
+
+fn band_colors() -> Vec<Rgba<u8>> {
+    let mut band_colors: Vec<Rgba<u8>> = Vec::with_capacity(7);
+
+    for i in 0..band_colors.capacity() {
+        let rgb = Color::hsl(i as i32 * 45, 100, 50);
+
+        band_colors.push(rgb.into());
+    }
+
+    band_colors
+}
+
+fn between(v: i32, min: u32, max: u32) -> u32 {
+    let (min, max) = if min > max { (max, min) } else { (min, max) };
+
+    let v: u32 = v.try_into().unwrap_or(0);
+
+    if v < min {
+        min
+    } else if v > max {
+        max
+    } else {
+        v
     }
 }

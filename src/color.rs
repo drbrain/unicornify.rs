@@ -1,22 +1,28 @@
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+use image::Rgba;
+use std::convert::Into;
+
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct Color {
     pub r: u8,
     pub g: u8,
     pub b: u8,
+    pub a: u8,
 }
 
 impl Color {
-    pub fn new(r: u8, b: u8, g: u8) -> Self {
-        Color { r, g, b }
+    pub fn rgb(r: u8, g: u8, b: u8) -> Self {
+        let a = 255;
+
+        Color { r, g, b, a }
+    }
+
+    pub fn rgba(r: u8, g: u8, b: u8, a: u8) -> Self {
+        Color { r, g, b, a }
     }
 
     pub fn hsl(hue: i32, saturation: i32, lightness: i32) -> Self {
         if saturation == 0 {
-            return Color {
-                r: 255,
-                g: 255,
-                b: 255,
-            };
+            return Color::rgb(255, 255, 255);
         }
 
         let h = (hue as f64) / 360.0;
@@ -37,16 +43,53 @@ impl Color {
             r: to_u8(255.0 * rf),
             g: to_u8(255.0 * gf),
             b: to_u8(255.0 * bf),
+            a: 255,
         }
     }
 
     pub fn black() -> Self {
-        Color::new(0, 0, 0)
+        Color::rgb(0, 0, 0)
+    }
+
+    pub fn darken(&self, d: u8) -> Self {
+        let r = self.r - std::cmp::min(d, self.r);
+        let g = self.g - std::cmp::min(d, self.g);
+        let b = self.b - std::cmp::min(d, self.b);
+        let a = self.a;
+
+        Color::rgba(r, g, b, a)
+    }
+
+    pub fn lighten(&self, d: u8) -> Self {
+        let r = self.r + std::cmp::min(d, 255 - self.r);
+        let g = self.g + std::cmp::min(d, 255 - self.g);
+        let b = self.b + std::cmp::min(d, 255 - self.b);
+        let a = self.a;
+
+        Color::rgba(r, g, b, a)
+    }
+
+    pub fn mix(&self, other: Color, f: f64) -> Color {
+        let r = mix_u8(self.r, other.r, f);
+        let g = mix_u8(self.g, other.g, f);
+        let b = mix_u8(self.b, other.b, f);
+
+        Color::rgb(r, g, b)
     }
 
     pub fn white() -> Self {
-        Color::new(255, 255, 255)
+        Color::rgb(255, 255, 255)
     }
+}
+
+impl Into<Rgba<u8>> for Color {
+    fn into(self) -> Rgba<u8> {
+        Rgba([self.r, self.g, self.b, self.a])
+    }
+}
+
+fn mix_u8(a: u8, b: u8, f: f64) -> u8 {
+    a + to_u8(f * (b as f64 - a as f64) + 0.5)
 }
 
 fn to_u8(float: f64) -> u8 {

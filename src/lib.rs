@@ -1,6 +1,7 @@
 mod avatar;
 mod color;
 mod data;
+pub mod drawing;
 pub mod geometry;
 mod pyrand;
 pub mod render;

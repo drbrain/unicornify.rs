@@ -11,7 +11,7 @@ pub struct Steak {
 
 impl Steak {
     pub fn new(b1: Ball, b2: Ball, b3: Ball) -> Self {
-        let fourth_color = Color::new(128, 128, 128);
+        let fourth_color = Color::rgb(128, 128, 128);
 
         Steak {
             b1,

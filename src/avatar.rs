@@ -1,7 +1,10 @@
+extern crate image;
+
 use anyhow::Context;
 use anyhow::Result;
 
 use crate::geometry::Axis;
+use crate::geometry::Point;
 use crate::geometry::Vector;
 use crate::geometry::DEGREE;
 use crate::render::WorldView;
@@ -12,19 +15,21 @@ use crate::Color;
 use crate::Data;
 use crate::Random;
 
+use image::RgbaImage;
+
 pub struct Avatar {
     rand: Random,
     data: Data,
-    size: usize,
+    size: u32,
 }
 
 impl Avatar {
     pub fn new(
         hash: String,
-        size: usize,
-        _with_background: bool,
+        size: u32,
+        with_background: bool,
         zoom_out: bool,
-        _shading: bool,
+        shading: bool,
         _glass: bool,
     ) -> Result<Self> {
         let mut rand = Random::new();
@@ -97,6 +102,18 @@ impl Avatar {
         camera_position.rotate_around(*head.center.borrow(), -data.y_angle, Axis::Y);
 
         let world_view = WorldView::new(camera_position, look_at_point, focal_length);
+
+        let shift = Point::new(
+            0.5 * fsize,
+            factor * fsize / 3.0 + (1.0 - factor) * fsize / 2.0,
+        );
+        let scale = ((scale_factor - 0.5) / 2.5 * 2.0 + 0.5) * fsize / 140.0;
+
+        let mut image = RgbaImage::new(size, size);
+
+        if with_background {
+            background.draw(&mut image, shading);
+        }
 
         Ok(Avatar { rand, data, size })
     }
