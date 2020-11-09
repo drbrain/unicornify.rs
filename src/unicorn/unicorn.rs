@@ -335,14 +335,14 @@ impl Unicorn {
             brow_right_o,
         );
 
-        let head_rotation_v = head.attachment().center;
-
-        head.rotate_around(*head.attachment().center.borrow(), data.face_tilt, Axis::X);
+        let pivot = head.attachment().center.borrow().clone();
+        head.rotate_around(pivot, data.face_tilt, Axis::X);
 
         let neck = Bone::new(head.attachment(), shoulder.clone());
-        let neck = Neck::new(head, neck, mane);
+        let neck = Neck::new(head.clone(), neck, mane);
 
-        neck.rotate_around(*head_rotation_v.borrow(), data.face_tilt, Axis::X);
+        let pivot = head.attachment().center.borrow().clone();
+        neck.rotate_around(pivot, data.face_tilt, Axis::X);
 
         let torso = Bone::new(shoulder.clone(), butt);
         let torso = Torso::new(neck, torso, tail, legs.clone());
@@ -371,9 +371,10 @@ impl Unicorn {
         }
 
         if data.x_angle < 0.0 {
-            torso.rotate_around(*shoulder.center.borrow(), data.y_angle, Axis::Y);
-            torso.rotate_around(*shoulder.center.borrow(), data.x_angle, Axis::X);
-            torso.rotate_around(*shoulder.center.borrow(), -data.y_angle, Axis::Y);
+            let pivot = shoulder.center.borrow().clone();
+            torso.rotate_around(pivot.clone(), data.y_angle, Axis::Y);
+            torso.rotate_around(pivot.clone(), data.x_angle, Axis::X);
+            torso.rotate_around(pivot, -data.y_angle, Axis::Y);
         }
 
         Unicorn { torso }
