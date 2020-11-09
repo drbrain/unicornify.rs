@@ -40,9 +40,9 @@ impl Color {
         let bf = v(m1, m2, h - 1.0 / 3.0);
 
         Color {
-            r: to_u8(255.0 * rf),
-            g: to_u8(255.0 * gf),
-            b: to_u8(255.0 * bf),
+            r: (255.0 * rf) as u8,
+            g: (255.0 * gf) as u8,
+            b: (255.0 * bf) as u8,
             a: 255,
         }
     }
@@ -93,7 +93,7 @@ fn mix_u8(a: u8, b: u8, f: f64) -> u8 {
 }
 
 fn to_u8(float: f64) -> u8 {
-    (255.0 * float).round() as u8
+    (255.0 * float.trunc()).round() as u8
 }
 
 fn v(m1: f64, m2: f64, hue: f64) -> f64 {
