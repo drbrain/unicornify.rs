@@ -165,7 +165,7 @@ impl Background {
         let sky_b = Color::hsl(self.sky_hue, self.sky_sat, 10);
 
         for (y, row) in image.enumerate_rows_mut() {
-            if y > horizon.try_into().unwrap() {
+            if y >= horizon.try_into().unwrap() {
                 break;
             };
 
