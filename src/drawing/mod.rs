@@ -151,7 +151,7 @@ fn circle_impl(
         fill(-y, y, -x);
 
         if top_half {
-            return;
+            continue;
         };
 
         fill(-x, x, y);
