@@ -11,9 +11,13 @@ impl Sorter {
         let last = tvs.last().unwrap();
 
         let mut l = Vec::with_capacity(tvs.len() + 2);
+
         l.push(TV::new(last.t - 1.0, last.v));
         l.push(TV::new(first.t + 1.0, first.v));
-        l.copy_from_slice(&tvs[..]);
+
+        for tv in tvs {
+            l.push(tv);
+        }
 
         Sorter { l }
     }
