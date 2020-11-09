@@ -56,11 +56,8 @@ impl Ball {
     }
 
     pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) {
-        let center = self.center.borrow_mut();
-
-        let new_center = center.rotate_around(other, angle, axis);
-
-        self.center.replace(new_center);
+        self.center
+            .replace_with(|&mut old| old.rotate_around(other, angle, axis));
     }
 }
 
