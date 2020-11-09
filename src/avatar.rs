@@ -18,7 +18,6 @@ use crate::Random;
 use image::RgbaImage;
 
 pub struct Avatar {
-    rand: Random,
     data: Data,
     scale_factor: f64,
     focal_length: f64,
@@ -88,7 +87,6 @@ impl Avatar {
         let unicorn = Unicorn::new(&data);
 
         Ok(Avatar {
-            rand,
             data,
             scale_factor,
             focal_length,
