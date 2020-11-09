@@ -11,26 +11,29 @@ use std::rc::Rc;
 
 #[derive(Clone, Debug)]
 pub struct Ball {
+    pub name: String,
     pub center: Rc<RefCell<Vector>>,
     pub radius: f64,
     pub color: Color,
 }
 
 impl Ball {
-    pub fn new(x: f64, y: f64, z: f64, radius: f64, color: Color) -> Self {
+    pub fn new(name: String, x: f64, y: f64, z: f64, radius: f64, color: Color) -> Self {
         let center = Rc::new(RefCell::new(Vector::new(x, y, z)));
 
         Ball {
+            name,
             center,
             radius,
             color,
         }
     }
 
-    pub fn new_v(center: Vector, radius: f64, color: Color) -> Self {
+    pub fn new_v(name: String, center: Vector, radius: f64, color: Color) -> Self {
         let center = Rc::new(RefCell::new(center));
 
         Ball {
+            name,
             center,
             radius,
             color,

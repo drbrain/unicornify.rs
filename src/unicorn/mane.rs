@@ -14,12 +14,14 @@ pub struct Mane {
 impl Mane {
     pub fn new(data: &Data, head: Ball, shoulder: Ball) -> Self {
         let hair_top = Ball::new_v(
+            "hair top".into(),
             head.clone() + Vector::new(10.0, -5.0, 0.0),
             5.0,
             Color::white(),
         );
         hair_top.move_to_sphere(head.clone());
         let hair_bottom = Ball::new_v(
+            "hair bottom".into(),
             shoulder.clone() + Vector::new(10.0, -15.0, 0.0),
             5.0,
             Color::white(),
@@ -33,7 +35,8 @@ impl Mane {
 
         for i in 0..data.hair_starts.len() {
             let start = hair_top.clone() + hair_span * data.hair_starts[i] / 100.0;
-            let hair_start = Ball::new_v(start, 5.0, hair_color.clone());
+            let hair_start =
+                Ball::new_v(format!("hair {} start", i), start, 5.0, hair_color.clone());
 
             let end = Vector::new(
                 start.x + data.hair_lengths[i],
@@ -41,7 +44,7 @@ impl Mane {
                 start.z + data.hair_straightnesses[i],
             );
             let end_color = Color::hsl(data.hair_hue, data.hair_sat, data.hair_tip_lightnesses[i]);
-            let hair_end = Ball::new_v(end, 2.0, end_color);
+            let hair_end = Ball::new_v(format!("hair {} end", i), end, 2.0, end_color);
 
             let hair = Bone::non_linear(
                 hair_start,

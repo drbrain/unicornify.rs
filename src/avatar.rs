@@ -20,18 +20,14 @@ use image::RgbaImage;
 pub struct Avatar {
     rand: Random,
     data: Data,
-    size: u32,
+    scale_factor: f64,
+    focal_length: f64,
+    background: Background,
+    unicorn: Unicorn,
 }
 
 impl Avatar {
-    pub fn new(
-        hash: String,
-        size: u32,
-        with_background: bool,
-        zoom_out: bool,
-        shading: bool,
-        _glass: bool,
-    ) -> Result<Self> {
+    pub fn new(hash: String, zoom_out: bool) -> Result<Self> {
         let mut rand = Random::new();
 
         rand.seed_hex_string(hash)
@@ -91,30 +87,48 @@ impl Avatar {
 
         let unicorn = Unicorn::new(&data);
 
+        Ok(Avatar {
+            rand,
+            data,
+            scale_factor,
+            focal_length,
+            background,
+            unicorn,
+        })
+    }
+
+    pub fn draw(
+        &self,
+        size: u32,
+        with_background: bool,
+        zoom_out: bool,
+        shading: bool,
+        _grass: bool,
+    ) -> RgbaImage {
         let fsize = size as f64;
-        let factor = (scale_factor - 0.5).sqrt() / 2.5;
+        let factor = (self.scale_factor - 0.5).sqrt() / 2.5;
 
-        let head = unicorn.head();
-        let shoulder = unicorn.shoulder();
+        let head = self.unicorn.head();
+        let shoulder = self.unicorn.shoulder();
         let look_at_point = shoulder.clone() + ((head.clone() - shoulder) * factor);
-        let camera_position = look_at_point + Vector::new(0.0, 0.0, -3.0 * focal_length);
-        camera_position.rotate_around(*head.center.borrow(), -data.x_angle, Axis::X);
-        camera_position.rotate_around(*head.center.borrow(), -data.y_angle, Axis::Y);
+        let camera_position = look_at_point + Vector::new(0.0, 0.0, -3.0 * self.focal_length);
+        camera_position.rotate_around(*head.center.borrow(), -self.data.x_angle, Axis::X);
+        camera_position.rotate_around(*head.center.borrow(), -self.data.y_angle, Axis::Y);
 
-        let world_view = WorldView::new(camera_position, look_at_point, focal_length);
+        let world_view = WorldView::new(camera_position, look_at_point, self.focal_length);
 
         let shift = Point::new(
             0.5 * fsize,
             factor * fsize / 3.0 + (1.0 - factor) * fsize / 2.0,
         );
-        let scale = ((scale_factor - 0.5) / 2.5 * 2.0 + 0.5) * fsize / 140.0;
+        let scale = ((self.scale_factor - 0.5) / 2.5 * 2.0 + 0.5) * fsize / 140.0;
 
-        let mut image = RgbaImage::new(size, size);
+        let mut image_buffer = RgbaImage::new(size, size);
 
         if with_background {
-            background.draw(&mut image, shading);
+            self.background.draw(&mut image_buffer, shading);
         }
 
-        Ok(Avatar { rand, data, size })
+        image_buffer
     }
 }

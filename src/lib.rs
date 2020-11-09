@@ -10,6 +10,7 @@ mod sorter;
 mod tv;
 pub mod unicorn;
 
+pub use avatar::Avatar;
 pub use color::Color;
 pub use data::Data;
 pub use pyrand::Random;

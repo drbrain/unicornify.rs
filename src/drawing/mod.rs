@@ -122,9 +122,13 @@ fn circle_impl(
         }
 
         for x in left..=right {
-            let color =
-                circle_shading_rgba((x - cx) as f64, (y - cy) as f64, r as f64, color,
-                coloring.clone());
+            let color = circle_shading_rgba(
+                (x - cx) as f64,
+                (y - cy) as f64,
+                r as f64,
+                color,
+                coloring.clone(),
+            );
             image.put_pixel(x.try_into().unwrap(), y.try_into().unwrap(), color.into());
         }
     };

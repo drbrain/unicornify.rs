@@ -170,30 +170,31 @@ impl Data {
     }
 
     pub fn make_hair1(&mut self, rand: &mut Random, start: usize, count: usize) {
-        for i in start..start + count {
-            self.hair_starts[i] = rand.rand_i32(-20, 100) as f64;
+        for _ in start..start + count {
+            self.hair_starts.push(rand.rand_i32(-20, 100) as f64);
         }
 
-        for i in start..start + count {
-            self.hair_gammas[i] = 0.3 + rand.rand() * 3.0;
+        for _ in start..start + count {
+            self.hair_gammas.push(0.3 + rand.rand() * 3.0);
         }
 
-        for i in start..start + count {
-            self.hair_lengths[i] = rand.rand_i32(80, 150) as f64;
+        for _ in start..start + count {
+            self.hair_lengths.push(rand.rand_i32(80, 150) as f64);
         }
 
-        for i in start..start + count {
-            self.hair_angles[i] = (rand.rand_i32(0, 60) as f64) * DEGREE;
+        for _ in start..start + count {
+            self.hair_angles
+                .push((rand.rand_i32(0, 60) as f64) * DEGREE);
         }
     }
 
     pub fn make_hair2(&mut self, rand: &mut Random, start: usize, count: usize) {
-        for i in start..start + count {
-            self.hair_tip_lightnesses[i] = rand.rand_i32(40, 85);
+        for _ in start..start + count {
+            self.hair_tip_lightnesses.push(rand.rand_i32(40, 85));
         }
 
-        for i in start..start + count {
-            self.hair_straightnesses[i] = rand.rand_i32(-40, 40) as f64;
+        for _ in start..start + count {
+            self.hair_straightnesses.push(rand.rand_i32(-40, 40) as f64);
         }
     }
 }

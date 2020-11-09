@@ -21,25 +21,47 @@ pub struct Unicorn {
 impl Unicorn {
     pub fn new(data: &Data) -> Self {
         let head_color = Color::hsl(data.body_hue, data.body_sat, 60);
-        let head = Ball::new(0.0, 0.0, 0.0, data.head_size, head_color);
+        let head = Ball::new("head".into(), 0.0, 0.0, 0.0, data.head_size, head_color);
 
         let snout_color = Color::hsl(data.body_hue, data.body_sat, 80);
-        let snout = Ball::new(-25.0, 60.0, 0.0, data.snout_size, snout_color);
+        let snout = Ball::new(
+            "snout".into(),
+            -25.0,
+            60.0,
+            0.0,
+            data.snout_size,
+            snout_color,
+        );
         snout.set_distance(data.snout_length, head.clone());
 
         let shoulder_color = Color::hsl(data.body_hue, data.body_sat, 40);
-        let shoulder = Ball::new(80.0, 120.0, 0.0, data.shoulder_size, shoulder_color);
+        let shoulder = Ball::new(
+            "shoulder".into(),
+            80.0,
+            120.0,
+            0.0,
+            data.shoulder_size,
+            shoulder_color,
+        );
 
         let butt_color = Color::hsl(data.body_hue, data.body_sat, 40);
-        let butt = Ball::new(235.0, 155.0, 0.0, data.butt_size, butt_color);
+        let butt = Ball::new("butt".into(), 235.0, 155.0, 0.0, data.butt_size, butt_color);
 
         let horn_root_color = Color::hsl(data.horn_hue, data.horn_sat, 70);
-        let horn_onset = Ball::new(-22.0, -10.0, 0.0, data.horn_onset_size, horn_root_color);
+        let horn_onset = Ball::new(
+            "horn onset".into(),
+            -22.0,
+            -10.0,
+            0.0,
+            data.horn_onset_size,
+            horn_root_color,
+        );
         horn_onset.move_to_sphere(head.clone());
 
         let horn_tip_color = Color::hsl(data.horn_hue, data.horn_sat, 90);
         let tip_pos = horn_onset.clone() + Vector::new(-10.0, 0.0, 0.0);
         let horn_tip = Ball::new(
+            "horn tip".into(),
             tip_pos.x,
             tip_pos.y,
             tip_pos.z,
@@ -49,13 +71,28 @@ impl Unicorn {
         horn_tip.set_distance(data.horn_length, horn_onset.clone());
         horn_tip.rotate_around(*horn_onset.center.borrow(), data.horn_angle, Axis::Z);
 
-        let eye_left = Ball::new(-10.0, 3.0, -5.0, data.eye_size, Color::white());
+        let eye_left = Ball::new(
+            "left eye".into(),
+            -10.0,
+            3.0,
+            -5.0,
+            data.eye_size,
+            Color::white(),
+        );
         eye_left.set_gap(5.0, head.clone());
 
-        let eye_right = Ball::new(-10.0, 3.0, 5.0, data.eye_size, Color::white());
+        let eye_right = Ball::new(
+            "right eye".into(),
+            -10.0,
+            3.0,
+            5.0,
+            data.eye_size,
+            Color::white(),
+        );
         eye_right.set_gap(5.0, head.clone());
 
         let pupil_left = Ball::new_v(
+            "left pupil".into(),
             eye_left.clone() + Vector::new(-1.0, 0.0, 0.0),
             data.pupil_size,
             Color::black(),
@@ -63,6 +100,7 @@ impl Unicorn {
         pupil_left.move_to_sphere(eye_left.clone());
 
         let pupil_right = Ball::new_v(
+            "right pupil".into(),
             eye_right.clone() + Vector::new(-1.0, 0.0, 0.0),
             data.pupil_size,
             Color::black(),
@@ -76,6 +114,7 @@ impl Unicorn {
         let brow_outer_color = Color::hsl(data.hair_hue, data.hair_sat, 60);
 
         let brow_left_inner = Ball::new_v(
+            "left inner brow".into(),
             eye_left.clone() + Vector::new(0.0, -10.0, data.brow_length),
             data.brow_size,
             brow_inner_color.clone(),
@@ -83,6 +122,7 @@ impl Unicorn {
         brow_left_inner.set_gap(5.0 + mood_delta, eye_left.clone());
 
         let brow_left_middle = Ball::new_v(
+            "left middle brow".into(),
             eye_left.clone() + Vector::new(0.0, -10.0, 0.0),
             data.brow_size,
             brow_middle_color.clone(),
@@ -90,6 +130,7 @@ impl Unicorn {
         brow_left_middle.set_gap(5.0 + mood_delta, eye_left.clone());
 
         let brow_left_outer = Ball::new_v(
+            "left outer brow".into(),
             eye_left.clone() + Vector::new(0.0, -10.0, -data.brow_length),
             data.brow_size,
             brow_outer_color.clone(),
@@ -97,6 +138,7 @@ impl Unicorn {
         brow_left_outer.set_gap(5.0 - mood_delta, eye_left.clone());
 
         let brow_right_inner = Ball::new_v(
+            "right inner brow".into(),
             eye_right.clone() + Vector::new(0.0, -10.0, -data.brow_length),
             data.brow_size,
             brow_inner_color.clone(),
@@ -104,6 +146,7 @@ impl Unicorn {
         brow_right_inner.set_gap(5.0 + mood_delta, eye_right.clone());
 
         let brow_right_middle = Ball::new_v(
+            "right middle brow".into(),
             eye_right.clone() + Vector::new(0.0, -10.0, 0.0),
             data.brow_size,
             brow_middle_color,
@@ -111,6 +154,7 @@ impl Unicorn {
         brow_right_middle.set_gap(5.0 + mood_delta, eye_right.clone());
 
         let brow_right_outer = Ball::new_v(
+            "right outer brow".into(),
             eye_right.clone() + Vector::new(0.0, -10.0, data.brow_length),
             data.brow_size,
             brow_outer_color,
@@ -121,34 +165,119 @@ impl Unicorn {
         let knee_color = Color::hsl(data.body_hue, data.body_sat, 70);
         let hoof_color = Color::hsl(data.body_hue, data.body_sat, 45);
 
-        let mut legs: Vec<Leg> = Vec::with_capacity(4);
-        let offsets: [f64; 2] = [-25.0, 25.0];
+        let hip = Ball::new(
+            "front right hip".into(),
+            55.0,
+            160.0,
+            -25.0,
+            25.0,
+            hip_color.clone(),
+        );
+        let knee = Ball::new(
+            "front right knee".into(),
+            35.0,
+            254.0,
+            -25.0,
+            9.0,
+            knee_color.clone(),
+        );
+        let hoof = Ball::new(
+            "front right hoof".into(),
+            -55.0,
+            310.0,
+            -25.0,
+            11.0,
+            hoof_color.clone(),
+        );
+        hip.move_to_sphere(shoulder.clone());
+        let front_right_leg = Leg::new(hip, knee, hoof);
 
-        for z in offsets.iter() {
-            let hip = Ball::new(55.0, 160.0, *z, 25.0, hip_color.clone());
-            let knee = Ball::new(35.0, 254.0, *z, 9.0, knee_color.clone());
-            let hoof = Ball::new(-55.0, 310.0, *z, 11.0, hoof_color.clone());
-            hip.move_to_sphere(shoulder.clone());
+        let hip = Ball::new(
+            "front left hip".into(),
+            55.0,
+            160.0,
+            25.0,
+            25.0,
+            hip_color.clone(),
+        );
+        let knee = Ball::new(
+            "front left knee".into(),
+            35.0,
+            254.0,
+            25.0,
+            9.0,
+            knee_color.clone(),
+        );
+        let hoof = Ball::new(
+            "front left hoof".into(),
+            -55.0,
+            310.0,
+            25.0,
+            11.0,
+            hoof_color.clone(),
+        );
+        hip.move_to_sphere(shoulder.clone());
+        let front_left_leg = Leg::new(hip, knee, hoof);
 
-            let leg = Leg::new(hip, knee, hoof);
-            legs.push(leg);
-        }
+        let hip = Ball::new(
+            "rear right hip".into(),
+            255.0,
+            190.0,
+            -25.0,
+            25.0,
+            hip_color.clone(),
+        );
+        let knee = Ball::new(
+            "rear right knee".into(),
+            230.0,
+            264.0,
+            -25.0,
+            9.0,
+            knee_color.clone(),
+        );
+        let hoof = Ball::new(
+            "rear right hoof".into(),
+            220.0,
+            310.0,
+            -25.0,
+            11.0,
+            hoof_color.clone(),
+        );
+        hip.move_to_sphere(butt.clone());
+        let rear_right_leg = Leg::new(hip, knee, hoof);
 
-        for z in offsets.iter() {
-            let hip = Ball::new(255.0, 190.0, *z, 25.0, hip_color.clone());
-            let knee = Ball::new(230.0, 264.0, *z, 9.0, knee_color.clone());
-            let hoof = Ball::new(220.0, 310.0, *z, 11.0, hoof_color.clone());
-            hip.move_to_sphere(butt.clone());
-
-            let leg = Leg::new(hip, knee, hoof);
-            legs.push(leg);
-        }
+        let hip = Ball::new(
+            "rear left hip".into(),
+            255.0,
+            190.0,
+            -25.0,
+            25.0,
+            hip_color.clone(),
+        );
+        let knee = Ball::new(
+            "rear left knee".into(),
+            230.0,
+            264.0,
+            -25.0,
+            9.0,
+            knee_color.clone(),
+        );
+        let hoof = Ball::new(
+            "rear left hoof".into(),
+            220.0,
+            310.0,
+            -25.0,
+            11.0,
+            hoof_color.clone(),
+        );
+        hip.move_to_sphere(butt.clone());
+        let rear_left_leg = Leg::new(hip, knee, hoof);
 
         let legs = Legs::new(
-            legs.remove(0),
-            legs.remove(0),
-            legs.remove(0),
-            legs.remove(0),
+            front_right_leg,
+            front_left_leg,
+            rear_right_leg,
+            rear_left_leg,
         );
         let legs = data.pose.pose(legs);
 
@@ -156,6 +285,7 @@ impl Unicorn {
 
         let tail_start_color = Color::hsl(data.hair_hue, data.hair_sat, 80);
         let tail_start = Ball::new_v(
+            "tail start".into(),
             butt.clone() + Vector::new(10.0, -10.0, 0.0),
             data.tail_start_size,
             tail_start_color,
@@ -164,6 +294,7 @@ impl Unicorn {
 
         let tail_end_color = Color::hsl(data.hair_hue, data.hair_sat, 60);
         let tail_end = Ball::new_v(
+            "tail end".into(),
             tail_start.clone() + Vector::new(10.0, 0.0, 0.0),
             data.tail_end_size,
             tail_end_color,
