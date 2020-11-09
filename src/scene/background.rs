@@ -45,7 +45,7 @@ impl Background {
     }
 
     pub fn draw(&self, image: &mut RgbaImage, shaded: bool) {
-        let fsize = image.height() as f64 - 1.0;
+        let fsize = (image.height() - 1) as f64;
         let horizon = (image.height() as f64 * self.horizon) as u32;
 
         self.draw_sky(image, horizon, fsize);
@@ -65,30 +65,38 @@ impl Background {
 
         let cp = ColoringParameters::new(shading);
 
-        let x = position.x;
-        let y = position.y;
-        let size1 = size.x;
-        let size2 = size.y;
+        let x = position.x * fsize;
+        let y = position.y * fsize;
+        let size1 = size.x * fsize;
+        let size2 = size.x * size.y * fsize;
 
         circle_f(image, x - 2.0 * size1, y - size1, size1, color, cp.clone());
         circle_f(image, x + 2.0 * size1, y - size1, size1, color, cp.clone());
         top_half_circle_f(image, x, y - size1, size2, color, cp.clone());
 
-        let xi = (x + 0.5) as u32;
-        let yi = (y + 0.5) as u32;
+        let xi = (x + 0.5) as i32;
+        let yi = (y + 0.5) as i32;
 
-        let size1i = (size1 + 0.5) as u32;
+        let size1i = (size1 + 0.5) as i32;
         let right = xi + 2 * size1i;
 
         for py in yi - size1i - 1..=yi {
+            if py < 0 {
+                continue;
+            }
+
             for px in xi - 2 * size1i..=right {
+                if px < 0 {
+                    continue;
+                }
+
                 if shaded {
                     let dy = (py - (yi - size1i - 1)) as f64;
                     let color = circle_shading_rgba(0.0, dy, size1, color, cp.clone());
 
-                    image.put_pixel(px, py, color.into());
+                    image.put_pixel(px.try_into().unwrap(), py.try_into().unwrap(), color.into());
                 } else {
-                    image.put_pixel(px, py, color.into());
+                    image.put_pixel(px.try_into().unwrap(), py.try_into().unwrap(), color.into());
                 }
             }
         }
@@ -127,11 +135,11 @@ impl Background {
         let band_colors = band_colors();
 
         for x in left..=right {
-            let dx: u32 = (x as i32 - cx).try_into().unwrap();
+            let dx: i32 = x as i32 - cx;
 
             for y in top..=bottom {
-                let dy: u32 = (y as i32 - cy).try_into().unwrap();
-                let d_squared: u32 = dx * dx + dy * dy;
+                let dy: i32 = y as i32 - cy;
+                let d_squared: u32 = (dx * dx + dy * dy).try_into().unwrap();
 
                 if d_squared < inner_radius_squared {
                     continue;
@@ -174,7 +182,7 @@ impl Background {
         self.sky_sat = rand.rand_i32(30, 70);
         self.land_hue = rand.rand_i32(0, 359);
         self.land_sat = rand.rand_i32(20, 60);
-        self.horizon = 0.5 + rand.rand() * 2.0;
+        self.horizon = 0.5 + rand.rand() * 0.2;
         self.rainbow_foot = 0.2 + rand.rand() * 0.6;
         self.rainbow_dir = (rand.choice(2) * 2 - 1) as f64;
         self.rainbow_height = 0.5 + rand.rand() * 1.5;
