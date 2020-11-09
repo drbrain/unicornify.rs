@@ -129,6 +129,7 @@ fn circle_impl(
                 color,
                 coloring.clone(),
             );
+
             image.put_pixel(x.try_into().unwrap(), y.try_into().unwrap(), color.into());
         }
     };
