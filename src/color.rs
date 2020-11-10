@@ -1,5 +1,7 @@
 use image::Rgba;
+
 use std::convert::Into;
+use std::num::Wrapping;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct Color {
@@ -89,11 +91,7 @@ impl Into<Rgba<u8>> for Color {
 }
 
 fn mix_u8(a: u8, b: u8, f: f64) -> u8 {
-    a + to_u8(f * (b as f64 - a as f64) + 0.5)
-}
-
-fn to_u8(float: f64) -> u8 {
-    (255.0 * float.trunc()).round() as u8
+    (a as i32 + ((b as f64 - a as f64) * f).round() as i32) as u8
 }
 
 fn v(m1: f64, m2: f64, hue: f64) -> f64 {
