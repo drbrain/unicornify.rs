@@ -75,7 +75,7 @@ impl Bone {
         let next = RefCell::new(calc(1.0 / parts as f64));
 
         for i in 1..parts {
-            let current = next.borrow();
+            let current = next.borrow().clone();
 
             if i < parts {
                 next.replace(calc((i + 1) as f64 / parts as f64));

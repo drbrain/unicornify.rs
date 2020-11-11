@@ -1,4 +1,5 @@
 use crate::geometry::Axis;
+use crate::geometry::Bone;
 use crate::geometry::Vector;
 use crate::render::GroupTracer;
 use crate::render::WorldView;
@@ -43,7 +44,9 @@ impl Ball {
     }
 
     pub fn add_traceable(&self, tracer: &mut GroupTracer, world_view: WorldView) {
-        todo!();
+        let bone = Bone::new(self.clone(), self.clone());
+
+        bone.add_traceable(tracer, world_view);
     }
 
     pub fn move_to_sphere(&self, other: Ball) {
