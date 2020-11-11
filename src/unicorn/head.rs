@@ -2,6 +2,8 @@ use crate::geometry::Axis;
 use crate::geometry::Ball;
 use crate::geometry::Bone;
 use crate::geometry::Vector;
+use crate::render::GroupTracer;
+use crate::render::WorldView;
 
 #[derive(Clone, Debug)]
 pub struct Head {
@@ -42,6 +44,19 @@ impl Head {
             brow_right_i,
             brow_right_o,
         }
+    }
+
+    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: WorldView) {
+        self.face.add_traceable(&mut tracer, world_view.clone());
+        self.horn.add_traceable(&mut tracer, world_view.clone());
+        self.eye_left.add_traceable(&mut tracer, world_view.clone());
+        self.eye_right.add_traceable(&mut tracer, world_view.clone());
+        self.pupil_left.add_traceable(&mut tracer, world_view.clone());
+        self.pupil_right.add_traceable(&mut tracer, world_view.clone());
+        self.brow_left_i.add_traceable(&mut tracer, world_view.clone());
+        self.brow_left_o.add_traceable(&mut tracer, world_view.clone());
+        self.brow_right_i.add_traceable(&mut tracer, world_view.clone());
+        self.brow_right_o.add_traceable(&mut tracer, world_view);
     }
 
     pub fn attachment(&self) -> Ball {

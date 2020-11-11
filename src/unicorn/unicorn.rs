@@ -3,6 +3,8 @@ use crate::geometry::Ball;
 use crate::geometry::Bone;
 use crate::geometry::Gamma;
 use crate::geometry::Vector;
+use crate::render::GroupTracer;
+use crate::render::WorldView;
 use crate::unicorn::Head;
 use crate::unicorn::Leg;
 use crate::unicorn::Legs;
@@ -386,5 +388,13 @@ impl Unicorn {
 
     pub fn shoulder(&self) -> Ball {
         self.torso.torso.b1.clone()
+    }
+
+    pub fn tracer(&self, world_view: WorldView) -> GroupTracer {
+        let mut tracer = GroupTracer::new();
+
+        self.torso.add_traceable(&mut tracer, world_view);
+
+        tracer
     }
 }

@@ -1,24 +1,25 @@
 use crate::geometry::Vector;
 
+#[derive(Clone, Debug)]
 pub struct WorldView {
-    camera_positon: Vector,
-    look_at_point: Vector,
-    focal_length: f64,
-    ux: Vector,
-    uy: Vector,
-    zero: Vector,
+    pub camera_position: Vector,
+    pub look_at_point: Vector,
+    pub focal_length: f64,
+    pub ux: Vector,
+    pub uy: Vector,
+    pub zero: Vector,
 }
 
 impl WorldView {
-    pub fn new(camera_positon: Vector, look_at_point: Vector, focal_length: f64) -> Self {
-        let view = look_at_point - camera_positon;
+    pub fn new(camera_position: Vector, look_at_point: Vector, focal_length: f64) -> Self {
+        let view = look_at_point - camera_position;
         let n = view * 1.0 / view.length();
 
         let (ux, uy) = n.cross_axes();
-        let zero = camera_positon + ((look_at_point - camera_positon).unit() * focal_length);
+        let zero = camera_position + ((look_at_point - camera_position).unit() * focal_length);
 
         WorldView {
-            camera_positon,
+            camera_position,
             look_at_point,
             focal_length,
             ux,

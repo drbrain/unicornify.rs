@@ -1,7 +1,6 @@
 use image::Rgba;
 
 use std::convert::Into;
-use std::num::Wrapping;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct Color {

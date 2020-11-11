@@ -17,6 +17,14 @@ impl Vector {
         Vector { x, y, z }
     }
 
+    pub fn zero() -> Self {
+        Vector {
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+        }
+    }
+
     pub fn cross_axes(&self) -> (Vector, Vector) {
         let x = self.x;
         let y = self.y;
@@ -57,12 +65,34 @@ impl Vector {
         (self.x * self.x + self.y * self.y + self.z * self.z).sqrt()
     }
 
+    pub fn nth(&self, n: usize) -> Option<f64> {
+        match n {
+            0 => Some(self.x),
+            1 => Some(self.y),
+            2 => Some(self.z),
+            _ => None,
+        }
+    }
+
     pub fn reverse(&self, axis: &Axis) -> Vector {
         match axis {
             Axis::X => Vector::new(self.z, self.x, self.y),
             Axis::Y => Vector::new(self.x, self.z, self.y),
             Axis::Z => self.clone(),
         }
+    }
+
+    pub fn scalar_product(&self, other: Vector) -> f64 {
+        self.x * other.x + self.y * other.y + self.z * other.z
+    }
+
+    pub fn set(&mut self, index: usize, value: f64) {
+        match index {
+            0 => self.x = value,
+            1 => self.y = value,
+            2 => self.z = value,
+            _ => panic!("Index {} out of bounds for {:?}", index, self),
+        };
     }
 
     pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) -> Vector {

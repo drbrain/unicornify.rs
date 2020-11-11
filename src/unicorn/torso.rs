@@ -1,6 +1,8 @@
 use crate::geometry::Axis;
 use crate::geometry::Bone;
 use crate::geometry::Vector;
+use crate::render::GroupTracer;
+use crate::render::WorldView;
 use crate::unicorn::Legs;
 use crate::unicorn::Neck;
 
@@ -20,6 +22,13 @@ impl Torso {
             tail,
             legs,
         }
+    }
+
+    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: WorldView) {
+        self.neck.add_traceable(&mut tracer, world_view.clone());
+        self.tail.add_traceable(&mut tracer, world_view.clone());
+        self.torso.add_traceable(&mut tracer, world_view.clone());
+        self.legs.add_traceable(&mut tracer, world_view);
     }
 
     pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) {

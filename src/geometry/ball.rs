@@ -1,5 +1,7 @@
 use crate::geometry::Axis;
 use crate::geometry::Vector;
+use crate::render::GroupTracer;
+use crate::render::WorldView;
 use crate::Color;
 
 use std::cell::RefCell;
@@ -38,6 +40,10 @@ impl Ball {
             radius,
             color,
         }
+    }
+
+    pub fn add_traceable(&self, tracer: &mut GroupTracer, world_view: WorldView) {
+        todo!();
     }
 
     pub fn move_to_sphere(&self, other: Ball) {

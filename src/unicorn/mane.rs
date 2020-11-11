@@ -3,6 +3,8 @@ use crate::geometry::Ball;
 use crate::geometry::Bone;
 use crate::geometry::Gamma;
 use crate::geometry::Vector;
+use crate::render::GroupTracer;
+use crate::render::WorldView;
 use crate::Color;
 use crate::Data;
 
@@ -57,6 +59,12 @@ impl Mane {
         }
 
         Mane { mane }
+    }
+
+    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: WorldView) {
+        for hair in self.mane.iter() {
+            hair.add_traceable(&mut tracer, world_view.clone());
+        }
     }
 
     pub fn push(&mut self, hair: Bone) {

@@ -127,6 +127,8 @@ impl Avatar {
             self.background.draw(&mut image_buffer, shading);
         }
 
+        let tracer = self.unicorn.tracer(world_view);
+
         image_buffer
     }
 }

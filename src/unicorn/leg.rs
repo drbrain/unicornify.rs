@@ -2,6 +2,8 @@ use crate::geometry::Axis;
 use crate::geometry::Ball;
 use crate::geometry::Bone;
 use crate::geometry::Vector;
+use crate::render::GroupTracer;
+use crate::render::WorldView;
 
 #[derive(Clone, Debug)]
 pub struct Leg {
@@ -24,6 +26,11 @@ impl Leg {
             calf,
             shin,
         }
+    }
+
+    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: WorldView) {
+        self.calf.add_traceable(&mut tracer, world_view.clone());
+        self.shin.add_traceable(&mut tracer, world_view);
     }
 
     pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) {
