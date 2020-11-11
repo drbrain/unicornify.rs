@@ -9,6 +9,7 @@ use crate::geometry::Vector;
 use crate::geometry::DEGREE;
 use crate::render::WorldView;
 use crate::render::ScalingTracer;
+use crate::render::TranslatingTracer;
 use crate::render::Tracer;
 use crate::scene::Background;
 use crate::scene::Grass;
@@ -135,7 +136,8 @@ impl Avatar {
             todo!("Implement shadow casting");
         }
 
-        let scaled = ScalingTracer::new(world_view, Tracer::GroupT(tracer), scale);
+        let scaling = ScalingTracer::new(world_view.clone(), Tracer::GroupT(tracer), scale);
+        let translating = TranslatingTracer::new(world_view, Tracer::ScalingT(scaling), shift);
 
         image_buffer
     }

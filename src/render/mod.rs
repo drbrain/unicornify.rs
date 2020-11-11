@@ -4,6 +4,7 @@ mod bounds;
 mod group_tracer;
 mod scaling_tracer;
 mod sphere_projection;
+mod translating_tracer;
 mod tracer;
 mod world_view;
 
@@ -14,4 +15,5 @@ pub use group_tracer::GroupTracer;
 pub use scaling_tracer::ScalingTracer;
 pub use sphere_projection::SphereProjection;
 pub use tracer::Tracer;
+pub use translating_tracer::TranslatingTracer;
 pub use world_view::WorldView;
