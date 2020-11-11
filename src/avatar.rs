@@ -8,6 +8,8 @@ use crate::geometry::Point;
 use crate::geometry::Vector;
 use crate::geometry::DEGREE;
 use crate::render::WorldView;
+use crate::render::ScalingTracer;
+use crate::render::Tracer;
 use crate::scene::Background;
 use crate::scene::Grass;
 use crate::unicorn::Unicorn;
@@ -127,8 +129,15 @@ impl Avatar {
             self.background.draw(&mut image_buffer, shading);
         }
 
-        let tracer = self.unicorn.tracer(world_view);
+        let tracer = self.unicorn.tracer(world_view.clone());
+
+        if shading {
+            todo!("Implement shadow casting");
+        }
+
+        let scaled = ScalingTracer::new(world_view, Tracer::GroupT(tracer), scale);
 
         image_buffer
     }
 }
+
