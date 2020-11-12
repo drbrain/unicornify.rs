@@ -35,7 +35,20 @@ impl ScalingTracer {
     }
 
     pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {
-        todo!("Implement ScalingTracer.prune()");
+        let scaled = rendering_parameters.scale(self.scale);
+
+        match self.source.prune(scaled) {
+            None => None,
+            Some(pruned) => {
+                if *self.source == pruned {
+                    Some(Tracer::ScalingT(self.clone()))
+                } else {
+                    let tracer = ScalingTracer::new(self.world_view.clone(), pruned, self.scale);
+
+                    Some(Tracer::ScalingT(tracer))
+                }
+            }
+        }
     }
 
     pub fn trace(&self, x: f64, y: f64, ray: Vector) -> TraceResult {

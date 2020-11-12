@@ -52,7 +52,7 @@ impl TranslatingTracer {
 
                     Some(Tracer::TranslatingT(tracer))
                 }
-            }
+            },
         }
     }
 

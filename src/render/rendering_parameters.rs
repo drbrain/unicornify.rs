@@ -25,6 +25,22 @@ impl RenderingParameters {
         }
     }
 
+    pub fn scale(&self, scale: f64) -> Self {
+        let pixel_size = self.pixel_size / scale;
+        let x_min = self.x_min / scale;
+        let x_max = self.x_max / scale;
+        let y_min = self.y_min / scale;
+        let y_max = self.y_max / scale;
+
+        RenderingParameters {
+            pixel_size,
+            x_min,
+            x_max,
+            y_min,
+            y_max,
+        }
+    }
+
     pub fn translated(&self, dx: f64, dy: f64) -> Self {
         let pixel_size = self.pixel_size;
         let x_min = self.x_min - dx;
