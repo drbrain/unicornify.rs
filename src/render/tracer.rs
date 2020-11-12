@@ -10,7 +10,7 @@ use crate::render::WorldView;
 
 use image::RgbaImage;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Tracer {
     BoneT(BoneTracer),
     GroupT(GroupTracer),

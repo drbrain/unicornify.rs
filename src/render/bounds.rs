@@ -4,7 +4,7 @@ use image::RgbaImage;
 
 use std::convert::From;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Bounds {
     pub x_min: f64,
     pub x_max: f64,

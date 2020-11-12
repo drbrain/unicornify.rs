@@ -2,7 +2,7 @@ use crate::geometry::intersect_plane_line;
 use crate::geometry::Vector;
 use crate::render::WorldView;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct SphereProjection {
     pub center_cs: Vector,
     projected_center_cs: Vector,

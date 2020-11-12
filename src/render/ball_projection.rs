@@ -3,7 +3,7 @@ use crate::geometry::Vector;
 use crate::render::SphereProjection;
 use crate::render::WorldView;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct BallProjection {
     pub sphere: SphereProjection,
     pub base: Ball,

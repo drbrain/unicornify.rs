@@ -5,7 +5,7 @@ use crate::render::RenderingParameters;
 use crate::render::TraceResult;
 use crate::render::Tracer;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct BoneTracer {
     w1: f64,
     w2: f64,

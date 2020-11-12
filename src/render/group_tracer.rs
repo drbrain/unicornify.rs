@@ -4,7 +4,7 @@ use crate::render::RenderingParameters;
 use crate::render::TraceResult;
 use crate::render::Tracer;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct GroupTracer {
     tracers: Vec<Tracer>,
     pub bounds: Bounds,

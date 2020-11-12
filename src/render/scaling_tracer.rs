@@ -5,7 +5,7 @@ use crate::render::TraceResult;
 use crate::render::Tracer;
 use crate::render::WorldView;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ScalingTracer {
     source: Box<Tracer>,
     scale: f64,

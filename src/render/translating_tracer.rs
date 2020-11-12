@@ -6,7 +6,7 @@ use crate::render::TraceResult;
 use crate::render::Tracer;
 use crate::render::WorldView;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct TranslatingTracer {
     source: Box<Tracer>,
     pub shift: Point,
@@ -36,7 +36,24 @@ impl TranslatingTracer {
     }
 
     pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {
-        todo!("Implement TranslatingTracer.prune()");
+        let shifted = rendering_parameters.translated(self.shift.x, self.shift.y);
+
+        match self.source.prune(shifted) {
+            None => None,
+            Some(pruned) => {
+                if *self.source == pruned {
+                    Some(Tracer::TranslatingT(self.clone()))
+                } else {
+                    let world_view = self.world_view.clone();
+                    let source = pruned;
+                    let shift = self.shift.clone();
+
+                    let tracer = TranslatingTracer::new(world_view, source, shift);
+
+                    Some(Tracer::TranslatingT(tracer))
+                }
+            }
+        }
     }
 
     pub fn trace(&self, x: f64, y: f64, ray: Vector) -> TraceResult {

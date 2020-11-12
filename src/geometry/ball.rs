@@ -12,7 +12,7 @@ use std::ops::Mul;
 use std::ops::Sub;
 use std::rc::Rc;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Ball {
     pub name: String,
     pub center: Rc<RefCell<Vector>>,

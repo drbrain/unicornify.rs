@@ -24,4 +24,20 @@ impl RenderingParameters {
             y_max,
         }
     }
+
+    pub fn translated(&self, dx: f64, dy: f64) -> Self {
+        let pixel_size = self.pixel_size;
+        let x_min = self.x_min - dx;
+        let x_max = self.x_max - dx;
+        let y_min = self.y_min - dy;
+        let y_max = self.y_max - dy;
+
+        RenderingParameters {
+            pixel_size,
+            x_min,
+            x_max,
+            y_min,
+            y_max,
+        }
+    }
 }

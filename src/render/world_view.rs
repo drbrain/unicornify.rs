@@ -1,6 +1,6 @@
 use crate::geometry::Vector;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct WorldView {
     pub camera_position: Vector,
     pub look_at_point: Vector,
