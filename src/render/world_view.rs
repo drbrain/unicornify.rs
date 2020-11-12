@@ -27,4 +27,8 @@ impl WorldView {
             zero,
         }
     }
+
+    pub fn ray(&self, x: f64, y: f64) -> Vector {
+        Vector::new(x, y, self.focal_length).unit()
+    }
 }

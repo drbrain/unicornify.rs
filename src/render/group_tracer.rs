@@ -1,5 +1,8 @@
 use crate::render::Bounds;
 use crate::render::Tracer;
+use crate::render::TraceResult;
+use crate::render::RenderingParameters;
+use crate::geometry::Vector;
 
 #[derive(Clone, Debug)]
 pub struct GroupTracer {
@@ -26,5 +29,13 @@ impl GroupTracer {
 
     pub fn push(&mut self, tracer: Tracer) {
         self.tracers.push(tracer);
+    }
+
+    pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {
+        todo!("Implement GroupTracer.prune()");
+    }
+
+    pub fn trace(&self, x: f64, y: f64, ray: Vector) -> TraceResult {
+        todo!("Implement BoneTracer.trace()");
     }
 }

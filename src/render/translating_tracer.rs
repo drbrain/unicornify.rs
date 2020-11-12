@@ -1,6 +1,9 @@
 use crate::render::Tracer;
 use crate::render::WorldView;
 use crate::render::Bounds;
+use crate::render::TraceResult;
+use crate::render::RenderingParameters;
+use crate::geometry::Vector;
 use crate::geometry::Point;
 
 #[derive(Clone, Debug)]
@@ -25,5 +28,13 @@ impl TranslatingTracer {
         let source = Box::new(source);
 
         TranslatingTracer { source, shift, bounds, world_view }
+    }
+
+    pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {
+        todo!("Implement TranslatingTracer.prune()");
+    }
+
+    pub fn trace(&self, x: f64, y: f64, ray: Vector) -> TraceResult {
+        todo!("Implement TranslatingTracer.trace()");
     }
 }

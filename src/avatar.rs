@@ -104,7 +104,8 @@ impl Avatar {
         with_background: bool,
         zoom_out: bool,
         shading: bool,
-        _grass: bool,
+        grass: bool,
+        parallelize: bool,
     ) -> RgbaImage {
         let fsize = size as f64;
         let factor = (self.scale_factor - 0.5).sqrt() / 2.5;
@@ -137,7 +138,17 @@ impl Avatar {
         }
 
         let scaling = ScalingTracer::new(world_view.clone(), Tracer::GroupT(tracer), scale);
-        let translating = TranslatingTracer::new(world_view, Tracer::ScalingT(scaling), shift);
+        let translating = TranslatingTracer::new(world_view.clone(), Tracer::ScalingT(scaling), shift);
+
+        if grass {
+            todo!("Implement grass");
+        }
+
+        if parallelize {
+            todo!("Implement parallel tracing");
+        } else {
+            Tracer::TranslatingT(translating).draw(world_view, &mut image_buffer);
+        }
 
         image_buffer
     }

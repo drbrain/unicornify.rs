@@ -1,5 +1,9 @@
 use crate::render::BallProjection;
 use crate::render::Bounds;
+use crate::render::Tracer;
+use crate::render::TraceResult;
+use crate::render::RenderingParameters;
+use crate::geometry::Vector;
 
 #[derive(Clone, Debug)]
 pub struct BoneTracer {
@@ -80,5 +84,13 @@ impl BoneTracer {
             b2,
             bounds,
         }
+    }
+
+    pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {
+        todo!("Implement BoneTracer.prune()");
+    }
+
+    pub fn trace(&self, x: f64, y: f64, ray: Vector) -> TraceResult {
+        todo!("Implement BoneTracer.trace()");
     }
 }

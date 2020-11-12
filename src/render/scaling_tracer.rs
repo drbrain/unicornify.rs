@@ -1,6 +1,9 @@
 use crate::render::Tracer;
 use crate::render::WorldView;
 use crate::render::Bounds;
+use crate::render::RenderingParameters;
+use crate::render::TraceResult;
+use crate::geometry::Vector;
 
 #[derive(Clone, Debug)]
 pub struct ScalingTracer {
@@ -24,5 +27,13 @@ impl ScalingTracer {
         let source = Box::new(source);
 
         ScalingTracer { source, scale, bounds, world_view }
+    }
+
+    pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {
+        todo!("Implement ScalingTracer.prune()");
+    }
+
+    pub fn trace(&self, x: f64, y: f64, ray: Vector) -> TraceResult {
+        todo!("Implement ScalingTracer.trace()");
     }
 }
