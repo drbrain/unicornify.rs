@@ -71,7 +71,7 @@ pub fn intersect_plane_line(
         y.set(i, b.nth(i).unwrap());
 
         if i == 0 {
-            continue
+            continue;
         }
 
         for k in 0..i - 1 {

@@ -1,6 +1,6 @@
-use crate::render::WorldView;
-use crate::geometry::Vector;
 use crate::geometry::intersect_plane_line;
+use crate::geometry::Vector;
+use crate::render::WorldView;
 
 #[derive(Clone, Debug)]
 pub struct SphereProjection {
@@ -16,8 +16,13 @@ impl SphereProjection {
         let cam2c = center - world_view.camera_position;
         let dist = cam2c.length();
 
-        let intf = match intersect_plane_line(world_view.zero, world_view.ux, world_view.uy,
-            world_view.camera_position, cam2c) {
+        let intf = match intersect_plane_line(
+            world_view.zero,
+            world_view.ux,
+            world_view.uy,
+            world_view.camera_position,
+            cam2c,
+        ) {
             Some(v) => v,
             None => todo!("Unable to project sphere"),
         };
@@ -40,7 +45,7 @@ impl SphereProjection {
                 projected_center_cs,
                 projected_center_os,
                 projected_radius: 0.0,
-                world_view
+                world_view,
             };
         }
 
@@ -63,11 +68,11 @@ impl SphereProjection {
         let projected_radius = r;
 
         SphereProjection {
-                center_cs,
-                projected_center_cs,
-                projected_center_os,
-                projected_radius,
-                world_view,
+            center_cs,
+            projected_center_cs,
+            projected_center_os,
+            projected_radius,
+            world_view,
         }
     }
 

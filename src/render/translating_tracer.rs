@@ -1,10 +1,10 @@
+use crate::geometry::Point;
+use crate::geometry::Vector;
+use crate::render::Bounds;
+use crate::render::RenderingParameters;
+use crate::render::TraceResult;
 use crate::render::Tracer;
 use crate::render::WorldView;
-use crate::render::Bounds;
-use crate::render::TraceResult;
-use crate::render::RenderingParameters;
-use crate::geometry::Vector;
-use crate::geometry::Point;
 
 #[derive(Clone, Debug)]
 pub struct TranslatingTracer {
@@ -27,7 +27,12 @@ impl TranslatingTracer {
 
         let source = Box::new(source);
 
-        TranslatingTracer { source, shift, bounds, world_view }
+        TranslatingTracer {
+            source,
+            shift,
+            bounds,
+            world_view,
+        }
     }
 
     pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {

@@ -1,8 +1,8 @@
-use crate::render::Bounds;
-use crate::render::Tracer;
-use crate::render::TraceResult;
-use crate::render::RenderingParameters;
 use crate::geometry::Vector;
+use crate::render::Bounds;
+use crate::render::RenderingParameters;
+use crate::render::TraceResult;
+use crate::render::Tracer;
 
 #[derive(Clone, Debug)]
 pub struct GroupTracer {

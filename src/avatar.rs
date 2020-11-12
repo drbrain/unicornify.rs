@@ -7,10 +7,10 @@ use crate::geometry::Axis;
 use crate::geometry::Point;
 use crate::geometry::Vector;
 use crate::geometry::DEGREE;
-use crate::render::WorldView;
 use crate::render::ScalingTracer;
-use crate::render::TranslatingTracer;
 use crate::render::Tracer;
+use crate::render::TranslatingTracer;
+use crate::render::WorldView;
 use crate::scene::Background;
 use crate::scene::Grass;
 use crate::unicorn::Unicorn;
@@ -138,7 +138,8 @@ impl Avatar {
         }
 
         let scaling = ScalingTracer::new(world_view.clone(), Tracer::GroupT(tracer), scale);
-        let translating = TranslatingTracer::new(world_view.clone(), Tracer::ScalingT(scaling), shift);
+        let translating =
+            TranslatingTracer::new(world_view.clone(), Tracer::ScalingT(scaling), shift);
 
         if grass {
             todo!("Implement grass");
@@ -153,4 +154,3 @@ impl Avatar {
         image_buffer
     }
 }
-

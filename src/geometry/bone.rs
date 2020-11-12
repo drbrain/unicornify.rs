@@ -64,10 +64,16 @@ impl Bone {
                 None => factor,
             };
 
-            let c = self.b1.clone() + v * factor + vx * ((fx - factor) * length) + vy * ((fy - factor) * length);
+            let c = self.b1.clone()
+                + v * factor
+                + vx * ((fx - factor) * length)
+                + vy * ((fy - factor) * length);
             let r = mix_floats(self.b1.radius, self.b2.radius, factor);
 
-            BallProjection::new(world_view.clone(), Ball::new_v(String::from(""), c, r, color))
+            BallProjection::new(
+                world_view.clone(),
+                Ball::new_v(String::from(""), c, r, color),
+            )
         };
 
         let parts = 255;
@@ -88,7 +94,10 @@ impl Bone {
                 }
             }
 
-            tracer.push(Tracer::BoneT(BoneTracer::new(prev.borrow().clone(), current.clone())));
+            tracer.push(Tracer::BoneT(BoneTracer::new(
+                prev.borrow().clone(),
+                current.clone(),
+            )));
 
             prev.replace(current.clone());
         }

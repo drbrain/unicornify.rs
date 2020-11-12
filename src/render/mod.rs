@@ -2,11 +2,11 @@ mod ball_projection;
 mod bone_tracer;
 mod bounds;
 mod group_tracer;
+mod rendering_parameters;
 mod scaling_tracer;
 mod sphere_projection;
-mod rendering_parameters;
-mod translating_tracer;
 mod tracer;
+mod translating_tracer;
 mod world_view;
 
 pub use ball_projection::BallProjection;
@@ -20,8 +20,7 @@ pub use tracer::Tracer;
 pub use translating_tracer::TranslatingTracer;
 pub use world_view::WorldView;
 
-use crate::Color;
 use crate::geometry::Vector;
+use crate::Color;
 
 pub type TraceResult = Option<(f64, Vector, Color)>;
-

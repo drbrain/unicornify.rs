@@ -1,12 +1,12 @@
-use crate::render::BoneTracer;
-use crate::render::GroupTracer;
-use crate::render::ScalingTracer;
-use crate::render::TranslatingTracer;
-use crate::render::Bounds;
-use crate::render::WorldView;
-use crate::render::TraceResult;
 use crate::geometry::Vector;
+use crate::render::BoneTracer;
+use crate::render::Bounds;
+use crate::render::GroupTracer;
 use crate::render::RenderingParameters;
+use crate::render::ScalingTracer;
+use crate::render::TraceResult;
+use crate::render::TranslatingTracer;
+use crate::render::WorldView;
 
 use image::RgbaImage;
 
@@ -34,7 +34,12 @@ impl Tracer {
         self.draw_partial(world_view, image_buffer, bounds);
     }
 
-    pub fn draw_partial(&self, world_view: WorldView, image_buffer: &mut RgbaImage, bounds: Bounds) {
+    pub fn draw_partial(
+        &self,
+        world_view: WorldView,
+        image_buffer: &mut RgbaImage,
+        bounds: Bounds,
+    ) {
         let rect = bounds.intersection(self.bounds());
 
         let rp = RenderingParameters::new(1.0, rect.clone());
@@ -53,12 +58,14 @@ impl Tracer {
                         let ray = world_view.ray(fx, fy);
 
                         match pruned.trace(fx, fy, ray) {
-                            Some((_, _, color)) => { image_buffer.put_pixel(x, y, color.into()); },
+                            Some((_, _, color)) => {
+                                image_buffer.put_pixel(x, y, color.into());
+                            }
                             None => (),
                         }
                     }
                 }
-            },
+            }
             None => (),
         }
     }

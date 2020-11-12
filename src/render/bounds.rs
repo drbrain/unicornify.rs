@@ -55,7 +55,9 @@ impl Bounds {
     }
 
     pub fn for_balls(bps: Vec<BallProjection>) -> Self {
-        bps.iter().map(|bp| Bounds::for_ball(bp)).fold(Bounds::empty(), |a, b| a.union(b))
+        bps.iter()
+            .map(|bp| Bounds::for_ball(bp))
+            .fold(Bounds::empty(), |a, b| a.union(b))
     }
 
     pub fn intersection(&self, other: Bounds) -> Self {
