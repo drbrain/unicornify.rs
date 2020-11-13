@@ -1,7 +1,6 @@
 use crate::geometry::Axis;
 use crate::geometry::DEGREE;
 use crate::pyrand::Random;
-use crate::unicorn::Leg;
 use crate::unicorn::Legs;
 use crate::Sorter;
 use crate::TV;
@@ -24,7 +23,7 @@ impl Pose {
         }
     }
 
-    pub fn pose(&self, legs: Legs) -> Legs {
+    pub fn pose(&self, legs: &mut Legs) {
         match self {
             Pose::RotaryGallop { phase } => rotary_gallop(legs, *phase),
             Pose::Walk { phase } => walk(legs, *phase),
@@ -32,11 +31,11 @@ impl Pose {
     }
 }
 
-fn rotary_gallop(legs: Legs, phase: f64) -> Legs {
-    let fl = legs.fl;
-    let fr = legs.fr;
-    let bl = legs.bl;
-    let br = legs.br;
+fn rotary_gallop(legs: &mut Legs, phase: f64) {
+    let fl = &legs.fl;
+    let fr = &legs.fr;
+    let bl = &legs.bl;
+    let br = &legs.br;
 
     let front_top = Sorter::new(vec![TV::new(9.0 / 12.0, 74.0), TV::new(2.5 / 12.0, -33.0)]);
     let front_bottom = Sorter::new(vec![
@@ -69,7 +68,6 @@ fn rotary_gallop(legs: Legs, phase: f64) -> Legs {
         front_bottom.interpolate(phase) * DEGREE,
         Axis::Z,
     );
-    let fr = Leg::new(fr.hip, fr.knee, fr.hoof);
 
     let hip_center = *fl.hip.center.borrow();
     fl.knee.rotate_around(
@@ -87,7 +85,6 @@ fn rotary_gallop(legs: Legs, phase: f64) -> Legs {
         front_bottom.interpolate(phase - 0.25) * DEGREE,
         Axis::Z,
     );
-    let fl = Leg::new(fl.hip, fl.knee, fl.hoof);
 
     let hip_center = *br.hip.center.borrow();
     br.knee
@@ -99,7 +96,6 @@ fn rotary_gallop(legs: Legs, phase: f64) -> Legs {
         back_bottom.interpolate(phase) * DEGREE,
         Axis::Z,
     );
-    let br = Leg::new(br.hip, br.knee, br.hoof);
 
     let hip_center = *bl.hip.center.borrow();
     bl.knee.rotate_around(
@@ -117,16 +113,13 @@ fn rotary_gallop(legs: Legs, phase: f64) -> Legs {
         back_bottom.interpolate(phase - 0.167) * DEGREE,
         Axis::Z,
     );
-    let bl = Leg::new(bl.hip, bl.knee, bl.hoof);
-
-    Legs::new(fr, fl, br, bl)
 }
 
-fn walk(legs: Legs, phase: f64) -> Legs {
-    let fl = legs.fl;
-    let fr = legs.fr;
-    let bl = legs.bl;
-    let br = legs.br;
+fn walk(legs: &mut Legs, phase: f64) {
+    let fl = &legs.fl;
+    let fr = &legs.fr;
+    let bl = &legs.bl;
+    let br = &legs.br;
 
     let front_top = Sorter::new(vec![TV::new(6.5 / 9.0, 40.0), TV::new(2.5 / 9.0, -35.0)]);
     let front_bottom = Sorter::new(vec![
@@ -152,7 +145,6 @@ fn walk(legs: Legs, phase: f64) -> Legs {
         front_bottom.interpolate(phase) * DEGREE,
         Axis::Z,
     );
-    let fr = Leg::new(fr.hip, fr.knee, fr.hoof);
 
     let hip_center = *fl.hip.center.borrow();
     fl.knee.rotate_around(
@@ -170,7 +162,6 @@ fn walk(legs: Legs, phase: f64) -> Legs {
         front_bottom.interpolate(phase - 0.56) * DEGREE,
         Axis::Z,
     );
-    let fl = Leg::new(fl.hip, fl.knee, fl.hoof);
 
     let hip_center = *br.hip.center.borrow();
     br.knee
@@ -182,7 +173,6 @@ fn walk(legs: Legs, phase: f64) -> Legs {
         back_bottom.interpolate(phase) * DEGREE,
         Axis::Z,
     );
-    let br = Leg::new(br.hip, br.knee, br.hoof);
 
     let hip_center = *bl.hip.center.borrow();
     bl.knee.rotate_around(
@@ -200,7 +190,4 @@ fn walk(legs: Legs, phase: f64) -> Legs {
         back_bottom.interpolate(phase - 0.44) * DEGREE,
         Axis::Z,
     );
-    let bl = Leg::new(bl.hip, bl.knee, bl.hoof);
-
-    Legs::new(fr, fl, br, bl)
 }

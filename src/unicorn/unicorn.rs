@@ -6,7 +6,6 @@ use crate::geometry::Vector;
 use crate::render::GroupTracer;
 use crate::render::WorldView;
 use crate::unicorn::Head;
-use crate::unicorn::Leg;
 use crate::unicorn::Legs;
 use crate::unicorn::Mane;
 use crate::unicorn::Neck;
@@ -163,125 +162,7 @@ impl Unicorn {
         );
         brow_right_outer.set_gap(5.0 - mood_delta, eye_right.clone());
 
-        let hip_color = Color::hsl(data.body_hue, data.body_sat, 40);
-        let knee_color = Color::hsl(data.body_hue, data.body_sat, 70);
-        let hoof_color = Color::hsl(data.body_hue, data.body_sat, 45);
-
-        let hip = Ball::new(
-            "left front hip".into(),
-            55.0,
-            160.0,
-            -25.0,
-            25.0,
-            hip_color.clone(),
-        );
-        let knee = Ball::new(
-            "left front knee".into(),
-            35.0,
-            254.0,
-            -25.0,
-            9.0,
-            knee_color.clone(),
-        );
-        let hoof = Ball::new(
-            "left front hoof".into(),
-            55.0,
-            310.0,
-            -25.0,
-            11.0,
-            hoof_color.clone(),
-        );
-        hip.move_to_sphere(shoulder.clone());
-        let front_right_leg = Leg::new(hip, knee, hoof);
-
-        let hip = Ball::new(
-            "right front hip".into(),
-            55.0,
-            160.0,
-            25.0,
-            25.0,
-            hip_color.clone(),
-        );
-        let knee = Ball::new(
-            "right front knee".into(),
-            35.0,
-            254.0,
-            25.0,
-            9.0,
-            knee_color.clone(),
-        );
-        let hoof = Ball::new(
-            "right front hoof".into(),
-            55.0,
-            310.0,
-            25.0,
-            11.0,
-            hoof_color.clone(),
-        );
-        hip.move_to_sphere(shoulder.clone());
-        let front_left_leg = Leg::new(hip, knee, hoof);
-
-        let hip = Ball::new(
-            "left rear hip".into(),
-            225.0,
-            190.0,
-            -25.0,
-            25.0,
-            hip_color.clone(),
-        );
-        let knee = Ball::new(
-            "left right knee".into(),
-            230.0,
-            265.0,
-            -25.0,
-            9.0,
-            knee_color.clone(),
-        );
-        let hoof = Ball::new(
-            "left rear hoof".into(),
-            220.0,
-            310.0,
-            -25.0,
-            11.0,
-            hoof_color.clone(),
-        );
-        hip.move_to_sphere(butt.clone());
-        let rear_right_leg = Leg::new(hip, knee, hoof);
-
-        let hip = Ball::new(
-            "right rear hip".into(),
-            225.0,
-            190.0,
-            25.0,
-            25.0,
-            hip_color.clone(),
-        );
-        let knee = Ball::new(
-            "right rear knee".into(),
-            230.0,
-            265.0,
-            25.0,
-            9.0,
-            knee_color.clone(),
-        );
-        let hoof = Ball::new(
-            "right rear hoof".into(),
-            220.0,
-            310.0,
-            25.0,
-            11.0,
-            hoof_color.clone(),
-        );
-        hip.move_to_sphere(butt.clone());
-        let rear_left_leg = Leg::new(hip, knee, hoof);
-
-        let legs = Legs::new(
-            front_left_leg,
-            front_right_leg,
-            rear_left_leg,
-            rear_right_leg,
-        );
-        let legs = data.pose.pose(legs);
+        let legs = Legs::new(&data, &butt, &shoulder);
 
         let mane = Mane::new(&data, head.clone(), shoulder.clone());
 
