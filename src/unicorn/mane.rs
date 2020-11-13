@@ -47,6 +47,7 @@ impl Mane {
             );
             let end_color = Color::hsl(data.hair_hue, data.hair_sat, data.hair_tip_lightnesses[i]);
             let hair_end = Ball::new_v(format!("hair {} end", i), end, 2.0, end_color);
+            hair_end.rotate_around(*hair_start.center.borrow(), -data.hair_angles[i], Axis::Z);
 
             let hair = Bone::non_linear(
                 hair_start,
