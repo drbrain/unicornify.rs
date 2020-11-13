@@ -15,7 +15,7 @@ use crate::unicorn::Torso;
 use crate::Color;
 use crate::Data;
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Unicorn {
     torso: Torso,
 }
@@ -129,7 +129,7 @@ impl Unicorn {
             data.brow_size,
             brow_middle_color.clone(),
         );
-        brow_left_middle.set_gap(5.0 + mood_delta, eye_left.clone());
+        brow_left_middle.set_gap(5.0 + data.brow_length, eye_left.clone());
 
         let brow_left_outer = Ball::new_v(
             "left outer brow".into(),
@@ -153,7 +153,7 @@ impl Unicorn {
             data.brow_size,
             brow_middle_color,
         );
-        brow_right_middle.set_gap(5.0 + mood_delta, eye_right.clone());
+        brow_right_middle.set_gap(5.0 + data.brow_length, eye_right.clone());
 
         let brow_right_outer = Ball::new_v(
             "right outer brow".into(),
@@ -168,7 +168,7 @@ impl Unicorn {
         let hoof_color = Color::hsl(data.body_hue, data.body_sat, 45);
 
         let hip = Ball::new(
-            "front right hip".into(),
+            "left front hip".into(),
             55.0,
             160.0,
             -25.0,
@@ -176,7 +176,7 @@ impl Unicorn {
             hip_color.clone(),
         );
         let knee = Ball::new(
-            "front right knee".into(),
+            "left front knee".into(),
             35.0,
             254.0,
             -25.0,
@@ -184,8 +184,8 @@ impl Unicorn {
             knee_color.clone(),
         );
         let hoof = Ball::new(
-            "front right hoof".into(),
-            -55.0,
+            "left front hoof".into(),
+            55.0,
             310.0,
             -25.0,
             11.0,
@@ -195,7 +195,7 @@ impl Unicorn {
         let front_right_leg = Leg::new(hip, knee, hoof);
 
         let hip = Ball::new(
-            "front left hip".into(),
+            "right front hip".into(),
             55.0,
             160.0,
             25.0,
@@ -203,7 +203,7 @@ impl Unicorn {
             hip_color.clone(),
         );
         let knee = Ball::new(
-            "front left knee".into(),
+            "right front knee".into(),
             35.0,
             254.0,
             25.0,
@@ -211,8 +211,8 @@ impl Unicorn {
             knee_color.clone(),
         );
         let hoof = Ball::new(
-            "front left hoof".into(),
-            -55.0,
+            "right front hoof".into(),
+            55.0,
             310.0,
             25.0,
             11.0,
@@ -222,23 +222,23 @@ impl Unicorn {
         let front_left_leg = Leg::new(hip, knee, hoof);
 
         let hip = Ball::new(
-            "rear right hip".into(),
-            255.0,
+            "left rear hip".into(),
+            225.0,
             190.0,
             -25.0,
             25.0,
             hip_color.clone(),
         );
         let knee = Ball::new(
-            "rear right knee".into(),
+            "left right knee".into(),
             230.0,
-            264.0,
+            265.0,
             -25.0,
             9.0,
             knee_color.clone(),
         );
         let hoof = Ball::new(
-            "rear right hoof".into(),
+            "left rear hoof".into(),
             220.0,
             310.0,
             -25.0,
@@ -249,26 +249,26 @@ impl Unicorn {
         let rear_right_leg = Leg::new(hip, knee, hoof);
 
         let hip = Ball::new(
-            "rear left hip".into(),
-            255.0,
+            "right rear hip".into(),
+            225.0,
             190.0,
-            -25.0,
+            25.0,
             25.0,
             hip_color.clone(),
         );
         let knee = Ball::new(
-            "rear left knee".into(),
+            "right rear knee".into(),
             230.0,
-            264.0,
-            -25.0,
+            265.0,
+            25.0,
             9.0,
             knee_color.clone(),
         );
         let hoof = Ball::new(
-            "rear left hoof".into(),
+            "right rear hoof".into(),
             220.0,
             310.0,
-            -25.0,
+            25.0,
             11.0,
             hoof_color.clone(),
         );
@@ -276,10 +276,10 @@ impl Unicorn {
         let rear_left_leg = Leg::new(hip, knee, hoof);
 
         let legs = Legs::new(
-            front_right_leg,
             front_left_leg,
-            rear_right_leg,
+            front_right_leg,
             rear_left_leg,
+            rear_right_leg,
         );
         let legs = data.pose.pose(legs);
 
