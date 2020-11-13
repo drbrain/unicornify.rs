@@ -99,7 +99,7 @@ impl Vector {
         let shifted = (*self - other).swap(&axis);
 
         let x = shifted.x * angle.cos() - shifted.y * angle.sin();
-        let y = shifted.x * angle.sin() - shifted.y * angle.cos();
+        let y = shifted.x * angle.sin() + shifted.y * angle.cos();
         let z = shifted.z;
 
         Vector::new(x, y, z).reverse(&axis) + other
