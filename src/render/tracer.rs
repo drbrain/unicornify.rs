@@ -1,6 +1,7 @@
 use crate::geometry::Vector;
 use crate::render::BoneTracer;
 use crate::render::Bounds;
+use crate::render::FacetTracer;
 use crate::render::GroupTracer;
 use crate::render::RenderingParameters;
 use crate::render::ScalingTracer;
@@ -13,6 +14,7 @@ use image::RgbaImage;
 #[derive(Clone, Debug, PartialEq)]
 pub enum Tracer {
     BoneT(BoneTracer),
+    FacetT(FacetTracer),
     GroupT(GroupTracer),
     ScalingT(ScalingTracer),
     TranslatingT(TranslatingTracer),
@@ -22,20 +24,21 @@ impl Tracer {
     pub fn bounds(&self) -> Bounds {
         match self {
             Tracer::BoneT(t) => t.bounds.clone(),
+            Tracer::FacetT(t) => t.bounds.clone(),
             Tracer::GroupT(t) => t.bounds.clone(),
             Tracer::ScalingT(t) => t.bounds.clone(),
             Tracer::TranslatingT(t) => t.bounds.clone(),
         }
     }
 
-    pub fn draw(&self, world_view: WorldView, image_buffer: &mut RgbaImage) {
+    pub fn draw(&mut self, world_view: WorldView, image_buffer: &mut RgbaImage) {
         let bounds = image_buffer.into();
 
         self.draw_partial(world_view, image_buffer, bounds);
     }
 
     pub fn draw_partial(
-        &self,
+        &mut self,
         world_view: WorldView,
         image_buffer: &mut RgbaImage,
         bounds: Bounds,
@@ -73,6 +76,7 @@ impl Tracer {
     pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {
         match self {
             Tracer::BoneT(t) => t.prune(rendering_parameters),
+            Tracer::FacetT(t) => t.prune(rendering_parameters),
             Tracer::GroupT(t) => t.prune(rendering_parameters),
             Tracer::ScalingT(t) => t.prune(rendering_parameters),
             Tracer::TranslatingT(t) => t.prune(rendering_parameters),
@@ -82,6 +86,7 @@ impl Tracer {
     pub fn trace(&self, x: f64, y: f64, ray: Vector) -> TraceResult {
         match self {
             Tracer::BoneT(t) => t.trace(x, y, ray),
+            Tracer::FacetT(t) => t.trace(x, y, ray),
             Tracer::GroupT(t) => t.trace(x, y, ray),
             Tracer::ScalingT(t) => t.trace(x, y, ray),
             Tracer::TranslatingT(t) => t.trace(x, y, ray),

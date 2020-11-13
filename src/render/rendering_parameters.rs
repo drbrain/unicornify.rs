@@ -2,11 +2,11 @@ use crate::render::Bounds;
 
 #[derive(Clone, Debug)]
 pub struct RenderingParameters {
-    pixel_size: f64,
-    x_min: f64,
-    x_max: f64,
-    y_min: f64,
-    y_max: f64,
+    pub pixel_size: f64,
+    pub x_min: f64,
+    pub x_max: f64,
+    pub y_min: f64,
+    pub y_max: f64,
 }
 
 impl RenderingParameters {
@@ -23,6 +23,14 @@ impl RenderingParameters {
             y_min,
             y_max,
         }
+    }
+
+    pub fn contains(&self, bounds: Bounds) -> bool {
+        bounds.x_max >= self.x_min
+            && bounds.x_min <= self.x_max
+            && bounds.y_max >= self.y_min
+            && bounds.y_min <= self.y_max
+            && bounds.z_max > 0.0
     }
 
     pub fn scale(&self, scale: f64) -> Self {

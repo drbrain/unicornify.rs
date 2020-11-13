@@ -2,9 +2,12 @@ use crate::render::BallProjection;
 
 use image::RgbaImage;
 
+use std::cmp::Ord;
+use std::cmp::Ordering;
+use std::cmp::PartialOrd;
 use std::convert::From;
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug)]
 pub struct Bounds {
     pub x_min: f64,
     pub x_max: f64,
@@ -58,6 +61,22 @@ impl Bounds {
         bps.iter()
             .map(|bp| Bounds::for_ball(bp))
             .fold(Bounds::empty(), |a, b| a.union(b))
+    }
+
+    pub fn dx(&self) -> f64 {
+        if self.empty {
+            0.0
+        } else {
+            self.x_max - self.x_min
+        }
+    }
+
+    pub fn dy(&self) -> f64 {
+        if self.empty {
+            0.0
+        } else {
+            self.y_max - self.y_min
+        }
     }
 
     pub fn intersection(&self, other: Bounds) -> Self {
@@ -135,5 +154,25 @@ impl From<&mut RgbaImage> for Bounds {
             z_max,
             empty,
         }
+    }
+}
+
+impl Eq for Bounds {}
+
+impl Ord for Bounds {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.z_min.partial_cmp(&other.z_min).unwrap()
+    }
+}
+
+impl PartialEq for Bounds {
+    fn eq(&self, other: &Self) -> bool {
+        self.z_min == other.z_min
+    }
+}
+
+impl PartialOrd for Bounds {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.z_min.partial_cmp(&other.z_min)
     }
 }
