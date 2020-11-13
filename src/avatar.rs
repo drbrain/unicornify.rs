@@ -108,7 +108,7 @@ impl Avatar {
         parallelize: bool,
     ) -> RgbaImage {
         let fsize = size as f64;
-        let factor = (self.scale_factor - 0.5).sqrt() / 2.5;
+        let factor = ((self.scale_factor - 0.5) / 2.5).sqrt();
 
         let head = self.unicorn.head();
         let shoulder = self.unicorn.shoulder();
@@ -123,6 +123,7 @@ impl Avatar {
             0.5 * fsize,
             factor * fsize / 3.0 + (1.0 - factor) * fsize / 2.0,
         );
+
         let scale = ((self.scale_factor - 0.5) / 2.5 * 2.0 + 0.5) * fsize / 140.0;
 
         let mut image_buffer = RgbaImage::new(size, size);
