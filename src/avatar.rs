@@ -48,7 +48,7 @@ impl Avatar {
 
         let sign = rand.choice(2) * 2 - 1;
         let abs = rand.rand_i32(10, 75);
-        data.y_angle = 90.0 + sign as f64 * abs as f64 * DEGREE;
+        data.y_angle = (90 + sign * abs) as f64 * DEGREE;
         data.x_angle = rand.rand_i32(-20, 20) as f64 * DEGREE;
 
         data.rand2(&mut rand);
@@ -83,8 +83,8 @@ impl Avatar {
         );
 
         if (data.y_angle - 90.0 * DEGREE) * data.neck_tilt > 0.0 {
-            data.neck_tilt = -data.neck_tilt;
-            data.face_tilt = -data.face_tilt;
+            data.neck_tilt *= -1.0;
+            data.face_tilt *= -1.0;
         }
 
         let unicorn = Unicorn::new(&data);
