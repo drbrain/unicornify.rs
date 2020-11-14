@@ -34,7 +34,7 @@ pub fn intersect_plane_line(
         let mut max_abs = 0.0;
         let mut max_i: Option<usize> = None;
 
-        for j in 0..3 {
+        for j in i..3 {
             let abs = a[j][i].abs();
 
             if abs > max_abs {
@@ -57,25 +57,25 @@ pub fn intersect_plane_line(
             return None;
         }
 
-        for k in i + 1..2 {
+        for k in i + 1..3 {
             a[k][i] = a[k][i] / a[i][i];
-            for j in i + 1..2 {
-                a[k][j] = a[k][j] - a[k][i] * a[i][j];
+            for l in i + 1..3 {
+                a[k][l] = a[k][l] - a[k][i] * a[i][l];
             }
         }
     }
 
     let mut y = Vector::zero();
 
-    for i in 0..2 {
+    for i in 0..3 {
         y.set(i, b.nth(i).unwrap());
 
         if i == 0 {
             continue;
         }
 
-        for k in 0..i - 1 {
-            let v = y.nth(k).unwrap() - a[i][k] * y.nth(k).unwrap();
+        for k in 0..i {
+            let v = y.nth(i).unwrap() - a[i][k] * y.nth(k).unwrap();
 
             y.set(i, v);
         }
@@ -86,7 +86,7 @@ pub fn intersect_plane_line(
     for i in (0..3).rev() {
         x.set(i, y.nth(i).unwrap());
 
-        for k in i + 1..2 {
+        for k in i + 1..3 {
             let v = x.nth(i).unwrap() - a[i][k] * x.nth(k).unwrap();
 
             x.set(i, v);
