@@ -28,7 +28,7 @@ use crate::Color;
 pub type TraceResult = Option<(f64, Vector, Color)>;
 
 pub fn prune_bounds(tracer: Tracer, rendering_parameters: RenderingParameters) -> Option<Tracer> {
-    if rendering_parameters.contains(tracer.bounds()) {
+    if rendering_parameters.contains(&tracer.bounds()) {
         Some(tracer)
     } else {
         None

@@ -19,10 +19,11 @@ pub struct FacetTracer {
 }
 
 impl FacetTracer {
-    pub fn new(bounds: Bounds, root_count: usize) -> Self {
+    pub fn new(bounds: &Bounds, root_count: usize) -> Self {
         let root_count_f = root_count as f64;
         let facets = vec![None; root_count * root_count];
         let empty = true;
+        let bounds = bounds.clone();
 
         FacetTracer {
             root_count,

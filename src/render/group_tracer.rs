@@ -24,7 +24,7 @@ impl GroupTracer {
         rendering_parameters: RenderingParameters,
         facet_tracer: &mut FacetTracer,
     ) {
-        if !rendering_parameters.contains(self.bounds.clone()) {
+        if !rendering_parameters.contains(&self.bounds) {
             return;
         }
 
@@ -43,19 +43,15 @@ impl GroupTracer {
     }
 
     pub fn push(&mut self, tracer: Tracer) {
-        self.tracers.push(tracer);
+        self.bounds = self.bounds.union(&tracer.bounds());
 
-        self.bounds = self
-            .tracers
-            .iter()
-            .map(|t| t.bounds())
-            .fold(Bounds::empty(), |a, b| a.union(b));
+        self.tracers.push(tracer);
 
         self.tracers.sort_by(|a, b| a.bounds().cmp(&b.bounds()));
     }
 
     pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {
-        if rendering_parameters.contains(self.bounds.clone()) {
+        if rendering_parameters.contains(&self.bounds) {
             return None;
         }
 
@@ -77,7 +73,7 @@ impl GroupTracer {
             }
         };
 
-        let mut result = FacetTracer::new(bounds, 16);
+        let mut result = FacetTracer::new(&bounds, 16);
         self.flatten_into_facets(rendering_parameters, &mut result);
 
         if result.is_empty() {

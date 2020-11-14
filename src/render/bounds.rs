@@ -60,7 +60,7 @@ impl Bounds {
     pub fn for_balls(bps: Vec<BallProjection>) -> Self {
         bps.iter()
             .map(|bp| Bounds::for_ball(bp))
-            .fold(Bounds::empty(), |a, b| a.union(b))
+            .fold(Bounds::empty(), |a, b| a.union(&b))
     }
 
     pub fn dx(&self) -> f64 {
@@ -107,11 +107,11 @@ impl Bounds {
         }
     }
 
-    pub fn union(&self, other: Bounds) -> Self {
+    pub fn union(&self, other: &Bounds) -> Self {
         match (self.empty, other.empty) {
             (true, true) => return Bounds::empty(),
             (false, true) => return Bounds::empty(),
-            (true, false) => return other,
+            (true, false) => return other.clone(),
             (false, false) => (),
         }
 

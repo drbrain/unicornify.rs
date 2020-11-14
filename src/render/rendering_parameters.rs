@@ -25,7 +25,7 @@ impl RenderingParameters {
         }
     }
 
-    pub fn contains(&self, bounds: Bounds) -> bool {
+    pub fn contains(&self, bounds: &Bounds) -> bool {
         bounds.x_max >= self.x_min
             && bounds.x_min <= self.x_max
             && bounds.y_max >= self.y_min
