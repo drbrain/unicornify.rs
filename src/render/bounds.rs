@@ -6,8 +6,9 @@ use std::cmp::Ord;
 use std::cmp::Ordering;
 use std::cmp::PartialOrd;
 use std::convert::From;
+use std::fmt;
 
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct Bounds {
     pub x_min: f64,
     pub x_max: f64,
@@ -132,6 +133,24 @@ impl Bounds {
             z_max,
             empty,
         }
+    }
+}
+
+impl fmt::Debug for Bounds {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str("bounds [")?;
+        f.write_fmt(format_args!("{:11.4}", &self.x_min))?;
+        f.write_str("—")?;
+        f.write_fmt(format_args!("{:11.4}", &self.x_max))?;
+        f.write_str(" ")?;
+        f.write_fmt(format_args!("{:11.4}", &self.y_min))?;
+        f.write_str("—")?;
+        f.write_fmt(format_args!("{:11.4}", &self.y_max))?;
+        f.write_str(" ")?;
+        f.write_fmt(format_args!("{:11.4}", &self.z_min))?;
+        f.write_str("—")?;
+        f.write_fmt(format_args!("{:11.4}", &self.z_max))?;
+        f.write_str("]")
     }
 }
 
