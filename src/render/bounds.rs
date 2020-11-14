@@ -110,7 +110,7 @@ impl Bounds {
     pub fn union(&self, other: &Bounds) -> Self {
         match (self.empty, other.empty) {
             (true, true) => return Bounds::empty(),
-            (false, true) => return Bounds::empty(),
+            (false, true) => return self.clone(),
             (true, false) => return other.clone(),
             (false, false) => (),
         }
