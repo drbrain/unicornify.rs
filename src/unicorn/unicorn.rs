@@ -20,7 +20,7 @@ pub struct Unicorn {
 }
 
 impl Unicorn {
-    pub fn new(data: &Data) -> Self {
+    pub fn new(data: &mut Data) -> Self {
         let head_color = Color::hsl(data.body_hue, data.body_sat, 60);
         let head = Ball::new("head".into(), 0.0, 0.0, 0.0, data.head_size, head_color);
 
@@ -224,8 +224,8 @@ impl Unicorn {
         let neck = Bone::new(head.attachment(), shoulder.clone());
         let neck = Neck::new(head.clone(), neck, mane);
 
-        let pivot = &head.center();
-        neck.rotate_around(pivot, data.neck_tilt, Axis::X);
+        let pivot = &shoulder.center.borrow().clone();
+        neck.rotate_around(pivot, data.neck_tilt, Axis::Y);
 
         let torso = Bone::new(shoulder.clone(), butt);
         let torso = Torso::new(neck, torso, tail, legs.clone());
@@ -258,6 +258,8 @@ impl Unicorn {
             torso.rotate_around(pivot, data.y_angle, Axis::Y);
             torso.rotate_around(pivot, data.x_angle, Axis::X);
             torso.rotate_around(pivot, -data.y_angle, Axis::Y);
+
+            data.x_angle = 0.0;
         }
 
         Unicorn { torso }

@@ -87,7 +87,7 @@ impl Avatar {
             data.face_tilt *= -1.0;
         }
 
-        let unicorn = Unicorn::new(&data);
+        let unicorn = Unicorn::new(&mut data);
 
         Ok(Avatar {
             data,
@@ -112,12 +112,14 @@ impl Avatar {
 
         let head = self.unicorn.head();
         let shoulder = self.unicorn.shoulder();
-        let look_at_point = shoulder.clone() + ((head.clone() - shoulder) * factor);
-        let camera_position = look_at_point + Vector::new(0.0, 0.0, -3.0 * self.focal_length);
-        camera_position.rotate_around(&head.center.borrow(), -self.data.x_angle, Axis::X);
-        camera_position.rotate_around(&head.center.borrow(), -self.data.y_angle, Axis::Y);
+        let look_at = shoulder.clone() + ((head.clone() - shoulder) * factor);
 
-        let world_view = WorldView::new(camera_position, look_at_point, self.focal_length);
+        let pivot = &head.center.borrow();
+        let camera = look_at + Vector::new(0.0, 0.0, -3.0 * self.focal_length);
+        let camera = camera.rotate_around(pivot, -self.data.x_angle, Axis::X);
+        let camera = camera.rotate_around(pivot, -self.data.y_angle, Axis::Y);
+
+        let world_view = WorldView::new(camera, look_at, self.focal_length);
 
         let shift = Point::new(
             0.5 * fsize,
