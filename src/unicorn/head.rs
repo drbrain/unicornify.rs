@@ -77,8 +77,8 @@ impl Head {
         self.pupil_left.rotate_around(other, angle, axis);
         self.pupil_right.rotate_around(other, angle, axis);
         self.brow_left_i.rotate_around(other, angle, axis);
-        self.brow_left_o.rotate_around(other, angle, axis);
+        self.brow_left_o.b2.rotate_around(other, angle, axis);
         self.brow_right_i.rotate_around(other, angle, axis);
-        self.brow_right_o.rotate_around(other, angle, axis);
+        self.brow_right_o.b2.rotate_around(other, angle, axis);
     }
 }
