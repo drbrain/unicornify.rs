@@ -15,7 +15,7 @@ pub struct TranslatingTracer {
 }
 
 impl TranslatingTracer {
-    pub fn new(world_view: WorldView, source: Tracer, shift: Point) -> Self {
+    pub fn new(world_view: &WorldView, source: Tracer, shift: Point) -> Self {
         let mut bounds = source.bounds();
 
         if !bounds.empty {
@@ -26,6 +26,7 @@ impl TranslatingTracer {
         }
 
         let source = Box::new(source);
+        let world_view = world_view.clone();
 
         TranslatingTracer {
             source,
@@ -44,11 +45,10 @@ impl TranslatingTracer {
                 if *self.source == pruned {
                     Some(Tracer::TranslatingT(self.clone()))
                 } else {
-                    let world_view = self.world_view.clone();
                     let source = pruned;
                     let shift = self.shift.clone();
 
-                    let tracer = TranslatingTracer::new(world_view, source, shift);
+                    let tracer = TranslatingTracer::new(&self.world_view, source, shift);
 
                     Some(Tracer::TranslatingT(tracer))
                 }

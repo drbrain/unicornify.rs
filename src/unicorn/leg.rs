@@ -28,8 +28,8 @@ impl Leg {
         }
     }
 
-    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: WorldView) {
-        self.calf.add_traceable(&mut tracer, world_view.clone());
+    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: &WorldView) {
+        self.calf.add_traceable(&mut tracer, world_view);
         self.shin.add_traceable(&mut tracer, world_view);
     }
 

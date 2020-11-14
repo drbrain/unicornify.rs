@@ -10,7 +10,7 @@ pub struct BallProjection {
 }
 
 impl BallProjection {
-    pub fn new(world_view: WorldView, base: Ball) -> Self {
+    pub fn new(world_view: &WorldView, base: Ball) -> Self {
         let sphere = SphereProjection::new(world_view, *base.center.borrow(), base.radius);
 
         BallProjection { sphere, base }

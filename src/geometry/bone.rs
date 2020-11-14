@@ -33,9 +33,9 @@ impl Bone {
         }
     }
 
-    pub fn add_traceable(&self, tracer: &mut GroupTracer, world_view: WorldView) {
-        let proj1 = BallProjection::new(world_view.clone(), self.b1.clone());
-        let proj2 = BallProjection::new(world_view.clone(), self.b2.clone());
+    pub fn add_traceable(&self, tracer: &mut GroupTracer, world_view: &WorldView) {
+        let proj1 = BallProjection::new(world_view, self.b1.clone());
+        let proj2 = BallProjection::new(world_view, self.b2.clone());
 
         if self.x_func.is_none() && self.y_func.is_none() {
             let bone_tracer = BoneTracer::new(proj1, proj2);
@@ -71,7 +71,7 @@ impl Bone {
             let r = mix_floats(self.b1.radius, self.b2.radius, factor);
 
             BallProjection::new(
-                world_view.clone(),
+                world_view,
                 Ball::new_v(String::from(""), c, r, color),
             )
         };

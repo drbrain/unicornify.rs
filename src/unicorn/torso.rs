@@ -24,10 +24,10 @@ impl Torso {
         }
     }
 
-    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: WorldView) {
-        self.neck.add_traceable(&mut tracer, world_view.clone());
-        self.tail.add_traceable(&mut tracer, world_view.clone());
-        self.torso.add_traceable(&mut tracer, world_view.clone());
+    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: &WorldView) {
+        self.neck.add_traceable(&mut tracer, world_view);
+        self.tail.add_traceable(&mut tracer, world_view);
+        self.torso.add_traceable(&mut tracer, world_view);
         self.legs.add_traceable(&mut tracer, world_view);
     }
 

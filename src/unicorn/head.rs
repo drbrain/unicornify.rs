@@ -46,22 +46,22 @@ impl Head {
         }
     }
 
-    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: WorldView) {
-        self.face.add_traceable(&mut tracer, world_view.clone());
-        self.horn.add_traceable(&mut tracer, world_view.clone());
-        self.eye_left.add_traceable(&mut tracer, world_view.clone());
+    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: &WorldView) {
+        self.face.add_traceable(&mut tracer, world_view);
+        self.horn.add_traceable(&mut tracer, world_view);
+        self.eye_left.add_traceable(&mut tracer, world_view);
         self.eye_right
-            .add_traceable(&mut tracer, world_view.clone());
+            .add_traceable(&mut tracer, world_view);
         self.pupil_left
-            .add_traceable(&mut tracer, world_view.clone());
+            .add_traceable(&mut tracer, world_view);
         self.pupil_right
-            .add_traceable(&mut tracer, world_view.clone());
+            .add_traceable(&mut tracer, world_view);
         self.brow_left_i
-            .add_traceable(&mut tracer, world_view.clone());
+            .add_traceable(&mut tracer, world_view);
         self.brow_left_o
-            .add_traceable(&mut tracer, world_view.clone());
+            .add_traceable(&mut tracer, world_view);
         self.brow_right_i
-            .add_traceable(&mut tracer, world_view.clone());
+            .add_traceable(&mut tracer, world_view);
         self.brow_right_o.add_traceable(&mut tracer, world_view);
     }
 

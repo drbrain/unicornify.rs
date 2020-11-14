@@ -14,7 +14,7 @@ pub struct ScalingTracer {
 }
 
 impl ScalingTracer {
-    pub fn new(world_view: WorldView, source: Tracer, scale: f64) -> Self {
+    pub fn new(world_view: &WorldView, source: Tracer, scale: f64) -> Self {
         let mut bounds = source.bounds();
 
         if !bounds.empty {
@@ -25,6 +25,8 @@ impl ScalingTracer {
         }
 
         let source = Box::new(source);
+
+        let world_view = world_view.clone();
 
         ScalingTracer {
             source,
@@ -43,7 +45,7 @@ impl ScalingTracer {
                 if *self.source == pruned {
                     Some(Tracer::ScalingT(self.clone()))
                 } else {
-                    let tracer = ScalingTracer::new(self.world_view.clone(), pruned, self.scale);
+                    let tracer = ScalingTracer::new(&self.world_view, pruned, self.scale);
 
                     Some(Tracer::ScalingT(tracer))
                 }

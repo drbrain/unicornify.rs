@@ -12,7 +12,7 @@ pub struct SphereProjection {
 }
 
 impl SphereProjection {
-    pub fn new(world_view: WorldView, center: Vector, radius: f64) -> Self {
+    pub fn new(world_view: &WorldView, center: Vector, radius: f64) -> Self {
         let cam2c = center - world_view.camera_position;
         let dist = cam2c.length();
 
@@ -40,6 +40,8 @@ impl SphereProjection {
         }
 
         if radius == 0.0 {
+            let world_view = world_view.clone();
+
             return SphereProjection {
                 center_cs,
                 projected_center_cs,
@@ -59,13 +61,14 @@ impl SphereProjection {
             for c2 in [-1.0f64, 1.0f64].iter() {
                 let p = closest_to_cam + u1 * *c1 * radius + u2 * *c2 * radius;
 
-                let pr = SphereProjection::new(world_view.clone(), p, 0.0);
+                let pr = SphereProjection::new(world_view, p, 0.0);
                 r = r.max(pr.x() - projected_center_cs.x);
                 r = r.max(pr.y() - projected_center_cs.y);
             }
         }
 
         let projected_radius = r;
+        let world_view = world_view.clone();
 
         SphereProjection {
             center_cs,

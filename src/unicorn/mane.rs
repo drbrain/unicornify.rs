@@ -62,9 +62,9 @@ impl Mane {
         Mane { mane }
     }
 
-    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: WorldView) {
+    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: &WorldView) {
         for hair in self.mane.iter() {
-            hair.add_traceable(&mut tracer, world_view.clone());
+            hair.add_traceable(&mut tracer, world_view);
         }
     }
 

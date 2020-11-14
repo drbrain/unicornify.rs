@@ -43,7 +43,7 @@ impl Ball {
         }
     }
 
-    pub fn add_traceable(&self, tracer: &mut GroupTracer, world_view: WorldView) {
+    pub fn add_traceable(&self, tracer: &mut GroupTracer, world_view: &WorldView) {
         let bone = Bone::new(self.clone(), self.clone());
 
         bone.add_traceable(tracer, world_view);

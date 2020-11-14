@@ -134,15 +134,15 @@ impl Avatar {
             self.background.draw(&mut image_buffer, shading);
         }
 
-        let tracer = self.unicorn.tracer(world_view.clone());
+        let tracer = self.unicorn.tracer(&world_view);
 
         if shading {
             todo!("Implement shadow casting");
         }
 
-        let scaling = ScalingTracer::new(world_view.clone(), Tracer::GroupT(tracer), scale);
+        let scaling = ScalingTracer::new(&world_view, Tracer::GroupT(tracer), scale);
         let translating =
-            TranslatingTracer::new(world_view.clone(), Tracer::ScalingT(scaling), shift);
+            TranslatingTracer::new(&world_view, Tracer::ScalingT(scaling), shift);
 
         if grass {
             todo!("Implement grass");

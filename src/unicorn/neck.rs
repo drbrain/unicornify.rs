@@ -18,9 +18,9 @@ impl Neck {
         Neck { head, neck, mane }
     }
 
-    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: WorldView) {
-        self.head.add_traceable(&mut tracer, world_view.clone());
-        self.neck.add_traceable(&mut tracer, world_view.clone());
+    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: &WorldView) {
+        self.head.add_traceable(&mut tracer, world_view);
+        self.neck.add_traceable(&mut tracer, world_view);
         self.mane.add_traceable(&mut tracer, world_view);
     }
 

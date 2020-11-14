@@ -135,10 +135,10 @@ impl Legs {
         legs
     }
 
-    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: WorldView) {
-        self.fr.add_traceable(&mut tracer, world_view.clone());
-        self.fl.add_traceable(&mut tracer, world_view.clone());
-        self.br.add_traceable(&mut tracer, world_view.clone());
+    pub fn add_traceable(&self, mut tracer: &mut GroupTracer, world_view: &WorldView) {
+        self.fr.add_traceable(&mut tracer, world_view);
+        self.fl.add_traceable(&mut tracer, world_view);
+        self.br.add_traceable(&mut tracer, world_view);
         self.bl.add_traceable(&mut tracer, world_view);
     }
 

@@ -273,7 +273,7 @@ impl Unicorn {
         self.torso.torso.b1.clone()
     }
 
-    pub fn tracer(&self, world_view: WorldView) -> GroupTracer {
+    pub fn tracer(&self, world_view: &WorldView) -> GroupTracer {
         let mut tracer = GroupTracer::new();
 
         self.torso.add_traceable(&mut tracer, world_view);
