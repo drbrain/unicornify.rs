@@ -60,11 +60,7 @@ impl GroupTracer {
             return None;
         }
 
-        let bounds = if rendering_parameters.x_min.is_infinite()
-            || rendering_parameters.x_max.is_infinite()
-            || rendering_parameters.y_min.is_infinite()
-            || rendering_parameters.y_max.is_infinite()
-        {
+        let bounds = if rendering_parameters.any_infinite() {
             self.bounds.clone()
         } else {
             Bounds {

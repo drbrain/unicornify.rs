@@ -25,6 +25,13 @@ impl RenderingParameters {
         }
     }
 
+    pub fn any_infinite(&self) -> bool {
+        self.x_min.is_infinite()
+            || self.x_max.is_infinite()
+            || self.y_min.is_infinite()
+            || self.y_max.is_infinite()
+    }
+
     pub fn contains(&self, bounds: &Bounds) -> bool {
         bounds.x_max >= self.x_min
             && bounds.x_min <= self.x_max
