@@ -45,7 +45,7 @@ impl Legs {
             11.0,
             hoof_color.clone(),
         );
-        hip.move_to_sphere(shoulder.clone());
+        hip.move_to_sphere(shoulder);
         let fr = Leg::new(hip, knee, hoof);
 
         let hip = Ball::new(
@@ -72,7 +72,7 @@ impl Legs {
             11.0,
             hoof_color.clone(),
         );
-        hip.move_to_sphere(shoulder.clone());
+        hip.move_to_sphere(shoulder);
         let fl = Leg::new(hip, knee, hoof);
 
         let hip = Ball::new(
@@ -99,7 +99,7 @@ impl Legs {
             11.0,
             hoof_color.clone(),
         );
-        hip.move_to_sphere(butt.clone());
+        hip.move_to_sphere(butt);
         let br = Leg::new(hip, knee, hoof);
 
         let hip = Ball::new(
@@ -126,7 +126,7 @@ impl Legs {
             11.0,
             hoof_color.clone(),
         );
-        hip.move_to_sphere(butt.clone());
+        hip.move_to_sphere(butt);
         let bl = Leg::new(hip, knee, hoof);
 
         let mut legs = Legs { fr, fl, br, bl };

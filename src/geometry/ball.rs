@@ -49,18 +49,18 @@ impl Ball {
         bone.add_traceable(tracer, world_view);
     }
 
-    pub fn move_to_sphere(&self, other: Ball) {
+    pub fn move_to_sphere(&self, other: &Ball) {
         self.set_distance(other.radius, other);
     }
 
-    pub fn set_distance(&self, distance: f64, other: Ball) {
+    pub fn set_distance(&self, distance: f64, other: &Ball) {
         let span = *self.center.borrow() - *other.center.borrow();
         let new_center = *other.center.borrow() + span * distance / span.length();
 
         self.center.replace(new_center);
     }
 
-    pub fn set_gap(&self, gap: f64, other: Ball) {
+    pub fn set_gap(&self, gap: f64, other: &Ball) {
         self.set_distance(self.radius + other.radius + gap, other);
     }
 
@@ -71,6 +71,14 @@ impl Ball {
 }
 
 impl Add<Vector> for Ball {
+    type Output = Vector;
+
+    fn add(self, rhs: Vector) -> Vector {
+        *self.center.borrow() + rhs
+    }
+}
+
+impl Add<Vector> for &Ball {
     type Output = Vector;
 
     fn add(self, rhs: Vector) -> Vector {

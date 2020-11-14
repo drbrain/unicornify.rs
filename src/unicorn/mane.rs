@@ -14,21 +14,21 @@ pub struct Mane {
 }
 
 impl Mane {
-    pub fn new(data: &Data, head: Ball, shoulder: Ball) -> Self {
+    pub fn new(data: &Data, head: &Ball, shoulder: &Ball) -> Self {
         let hair_top = Ball::new_v(
             "hair top".into(),
             head.clone() + Vector::new(10.0, -5.0, 0.0),
             5.0,
             Color::white(),
         );
-        hair_top.move_to_sphere(head.clone());
+        hair_top.move_to_sphere(&head);
         let hair_bottom = Ball::new_v(
             "hair bottom".into(),
-            shoulder.clone() + Vector::new(10.0, -15.0, 0.0),
+            shoulder + Vector::new(10.0, -15.0, 0.0),
             5.0,
             Color::white(),
         );
-        hair_bottom.move_to_sphere(shoulder.clone());
+        hair_bottom.move_to_sphere(shoulder);
 
         let hair_span = hair_bottom - hair_top.clone();
         let hair_color = Color::hsl(data.hair_hue, data.hair_sat, 60);
