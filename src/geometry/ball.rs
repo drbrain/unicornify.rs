@@ -64,7 +64,7 @@ impl Ball {
         self.set_distance(self.radius + other.radius + gap, other);
     }
 
-    pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) {
+    pub fn rotate_around(&self, other: &Vector, angle: f64, axis: Axis) {
         self.center
             .replace_with(|&mut old| old.rotate_around(other, angle, axis));
     }

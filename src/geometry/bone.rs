@@ -127,7 +127,7 @@ impl Bone {
         }
     }
 
-    pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) {
+    pub fn rotate_around(&self, other: &Vector, angle: f64, axis: Axis) {
         self.b1.rotate_around(other, angle, axis);
         self.b2.rotate_around(other, angle, axis);
     }

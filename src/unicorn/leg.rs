@@ -33,7 +33,7 @@ impl Leg {
         self.shin.add_traceable(&mut tracer, world_view);
     }
 
-    pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) {
+    pub fn rotate_around(&self, other: &Vector, angle: f64, axis: Axis) {
         self.hip.rotate_around(other, angle, axis);
         self.knee.rotate_around(other, angle, axis);
         self.hoof.rotate_around(other, angle, axis);

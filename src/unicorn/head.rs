@@ -69,7 +69,11 @@ impl Head {
         self.face.b2.clone()
     }
 
-    pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) {
+    pub fn center(&self) -> Vector {
+        self.face.b2.center.borrow().clone()
+    }
+
+    pub fn rotate_around(&self, other: &Vector, angle: f64, axis: Axis) {
         self.face.rotate_around(other, angle, axis);
         self.horn.rotate_around(other, angle, axis);
         self.eye_left.rotate_around(other, angle, axis);

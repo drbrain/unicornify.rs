@@ -31,7 +31,7 @@ impl Torso {
         self.legs.add_traceable(&mut tracer, world_view);
     }
 
-    pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) {
+    pub fn rotate_around(&self, other: &Vector, angle: f64, axis: Axis) {
         self.neck.rotate_around(other, angle, axis);
         self.torso.rotate_around(other, angle, axis);
         self.tail.rotate_around(other, angle, axis);

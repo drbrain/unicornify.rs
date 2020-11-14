@@ -24,7 +24,7 @@ impl Neck {
         self.mane.add_traceable(&mut tracer, world_view);
     }
 
-    pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) {
+    pub fn rotate_around(&self, other: &Vector, angle: f64, axis: Axis) {
         self.head.rotate_around(other, angle, axis);
         self.neck.b2.rotate_around(other, angle, axis);
         self.mane.rotate_around(other, angle, axis);

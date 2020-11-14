@@ -70,7 +70,7 @@ impl Unicorn {
             horn_tip_color,
         );
         horn_tip.set_distance(data.horn_length, &horn_onset);
-        horn_tip.rotate_around(*horn_onset.center.borrow(), data.horn_angle, Axis::Z);
+        horn_tip.rotate_around(&horn_onset.center.borrow(), data.horn_angle, Axis::Z);
 
         let eye_left = Ball::new(
             "left eye".into(),
@@ -183,7 +183,7 @@ impl Unicorn {
             tail_end_color,
         );
         tail_end.set_distance(data.tail_length, &tail_start);
-        tail_end.rotate_around(*tail_start.center.borrow(), data.tail_angle, Axis::Z);
+        tail_end.rotate_around(&tail_start.center.borrow(), data.tail_angle, Axis::Z);
 
         let tail = Bone::non_linear_y(tail_start, tail_end, Gamma::new(data.tail_gamma, 0.3));
 
@@ -218,13 +218,13 @@ impl Unicorn {
             brow_right_o,
         );
 
-        let pivot = head.attachment().center.borrow().clone();
+        let pivot = &head.center();
         head.rotate_around(pivot, data.face_tilt, Axis::X);
 
         let neck = Bone::new(head.attachment(), shoulder.clone());
         let neck = Neck::new(head.clone(), neck, mane);
 
-        let pivot = head.attachment().center.borrow().clone();
+        let pivot = &head.center();
         neck.rotate_around(pivot, data.neck_tilt, Axis::X);
 
         let torso = Bone::new(shoulder.clone(), butt);
@@ -248,15 +248,15 @@ impl Unicorn {
                     / (low_back.borrow().x - low_front.borrow().x))
                     .atan();
 
-                torso.rotate_around(*shoulder.center.borrow(), -angle, Axis::Z);
+                torso.rotate_around(&shoulder.center.borrow().clone(), -angle, Axis::Z);
             }
             Pose::RotaryGallop { phase: _ } => {}
         }
 
         if data.x_angle < 0.0 {
-            let pivot = shoulder.center.borrow().clone();
-            torso.rotate_around(pivot.clone(), data.y_angle, Axis::Y);
-            torso.rotate_around(pivot.clone(), data.x_angle, Axis::X);
+            let pivot = &shoulder.center.borrow().clone();
+            torso.rotate_around(pivot, data.y_angle, Axis::Y);
+            torso.rotate_around(pivot, data.x_angle, Axis::X);
             torso.rotate_around(pivot, -data.y_angle, Axis::Y);
         }
 

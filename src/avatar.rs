@@ -114,8 +114,8 @@ impl Avatar {
         let shoulder = self.unicorn.shoulder();
         let look_at_point = shoulder.clone() + ((head.clone() - shoulder) * factor);
         let camera_position = look_at_point + Vector::new(0.0, 0.0, -3.0 * self.focal_length);
-        camera_position.rotate_around(*head.center.borrow(), -self.data.x_angle, Axis::X);
-        camera_position.rotate_around(*head.center.borrow(), -self.data.y_angle, Axis::Y);
+        camera_position.rotate_around(&head.center.borrow(), -self.data.x_angle, Axis::X);
+        camera_position.rotate_around(&head.center.borrow(), -self.data.y_angle, Axis::Y);
 
         let world_view = WorldView::new(camera_position, look_at_point, self.focal_length);
 

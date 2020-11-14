@@ -57,19 +57,18 @@ fn rotary_gallop(legs: &mut Legs, phase: f64) {
         TV::new(8.0 / 12.0, 50.0),
     ]);
 
-    let hip_center = *fr.hip.center.borrow();
-
+    let hip_center = &fr.hip.center.borrow();
     fr.knee
         .rotate_around(hip_center, front_top.interpolate(phase) * DEGREE, Axis::Z);
     fr.hoof
         .rotate_around(hip_center, front_top.interpolate(phase) * DEGREE, Axis::Z);
     fr.hoof.rotate_around(
-        *fr.knee.center.borrow(),
+        &fr.knee.center.borrow(),
         front_bottom.interpolate(phase) * DEGREE,
         Axis::Z,
     );
 
-    let hip_center = *fl.hip.center.borrow();
+    let hip_center = &fl.hip.center.borrow();
     fl.knee.rotate_around(
         hip_center,
         front_top.interpolate(phase - 0.25) * DEGREE,
@@ -81,23 +80,23 @@ fn rotary_gallop(legs: &mut Legs, phase: f64) {
         Axis::Z,
     );
     fl.hoof.rotate_around(
-        *fl.knee.center.borrow(),
+        &fl.knee.center.borrow(),
         front_bottom.interpolate(phase - 0.25) * DEGREE,
         Axis::Z,
     );
 
-    let hip_center = *br.hip.center.borrow();
+    let hip_center = &br.hip.center.borrow();
     br.knee
         .rotate_around(hip_center, back_top.interpolate(phase) * DEGREE, Axis::Z);
     br.hoof
         .rotate_around(hip_center, back_top.interpolate(phase) * DEGREE, Axis::Z);
     br.hoof.rotate_around(
-        *br.knee.center.borrow(),
+        &br.knee.center.borrow(),
         back_bottom.interpolate(phase) * DEGREE,
         Axis::Z,
     );
 
-    let hip_center = *bl.hip.center.borrow();
+    let hip_center = &bl.hip.center.borrow();
     bl.knee.rotate_around(
         hip_center,
         back_top.interpolate(phase - 0.167) * DEGREE,
@@ -109,7 +108,7 @@ fn rotary_gallop(legs: &mut Legs, phase: f64) {
         Axis::Z,
     );
     bl.hoof.rotate_around(
-        *bl.knee.center.borrow(),
+        &bl.knee.center.borrow(),
         back_bottom.interpolate(phase - 0.167) * DEGREE,
         Axis::Z,
     );
@@ -135,18 +134,18 @@ fn walk(legs: &mut Legs, phase: f64) {
     ]);
     let back_bottom = Sorter::new(vec![TV::new(5.0 / 9.0, 40.0), TV::new(9.0 / 9.0, 10.0)]);
 
-    let hip_center = *fr.hip.center.borrow();
+    let hip_center = &fr.hip.center.borrow();
     fr.knee
         .rotate_around(hip_center, front_top.interpolate(phase) * DEGREE, Axis::Z);
     fr.hoof
         .rotate_around(hip_center, front_top.interpolate(phase) * DEGREE, Axis::Z);
     fr.hoof.rotate_around(
-        *fr.knee.center.borrow(),
+        &fr.knee.center.borrow(),
         front_bottom.interpolate(phase) * DEGREE,
         Axis::Z,
     );
 
-    let hip_center = *fl.hip.center.borrow();
+    let hip_center = &fl.hip.center.borrow();
     fl.knee.rotate_around(
         hip_center,
         front_top.interpolate(phase - 0.56) * DEGREE,
@@ -158,23 +157,23 @@ fn walk(legs: &mut Legs, phase: f64) {
         Axis::Z,
     );
     fl.hoof.rotate_around(
-        *fl.knee.center.borrow(),
+        &fl.knee.center.borrow(),
         front_bottom.interpolate(phase - 0.56) * DEGREE,
         Axis::Z,
     );
 
-    let hip_center = *br.hip.center.borrow();
+    let hip_center = &br.hip.center.borrow();
     br.knee
         .rotate_around(hip_center, back_top.interpolate(phase) * DEGREE, Axis::Z);
     br.hoof
         .rotate_around(hip_center, back_top.interpolate(phase) * DEGREE, Axis::Z);
     br.hoof.rotate_around(
-        *br.knee.center.borrow(),
+        &br.knee.center.borrow(),
         back_bottom.interpolate(phase) * DEGREE,
         Axis::Z,
     );
 
-    let hip_center = *bl.hip.center.borrow();
+    let hip_center = &bl.hip.center.borrow();
     bl.knee.rotate_around(
         hip_center,
         back_top.interpolate(phase - 0.44) * DEGREE,
@@ -186,7 +185,7 @@ fn walk(legs: &mut Legs, phase: f64) {
         Axis::Z,
     );
     bl.hoof.rotate_around(
-        *bl.knee.center.borrow(),
+        &bl.knee.center.borrow(),
         back_bottom.interpolate(phase - 0.44) * DEGREE,
         Axis::Z,
     );

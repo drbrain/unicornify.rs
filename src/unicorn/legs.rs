@@ -142,7 +142,7 @@ impl Legs {
         self.bl.add_traceable(&mut tracer, world_view);
     }
 
-    pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) {
+    pub fn rotate_around(&self, other: &Vector, angle: f64, axis: Axis) {
         self.fr.rotate_around(other, angle, axis);
         self.fl.rotate_around(other, angle, axis);
         self.br.rotate_around(other, angle, axis);

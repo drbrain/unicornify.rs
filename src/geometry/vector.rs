@@ -95,12 +95,11 @@ impl Vector {
         };
     }
 
-    pub fn rotate_around(&self, other: Vector, angle: f64, axis: Axis) -> Vector {
-        let shifted = (*self - other).swap(&axis);
-
-        let x = shifted.x * angle.cos() - shifted.y * angle.sin();
-        let y = shifted.x * angle.sin() + shifted.y * angle.cos();
-        let z = shifted.z;
+    pub fn rotate_around(&self, other: &Vector, angle: f64, axis: Axis) -> Vector {
+        let swapped = (self - other).swap(&axis);
+        let x = swapped.x * angle.cos() - swapped.y * angle.sin();
+        let y = swapped.x * angle.sin() + swapped.y * angle.cos();
+        let z = swapped.z;
 
         Vector::new(x, y, z).reverse(&axis) + other
     }
@@ -124,11 +123,23 @@ impl Vector {
     }
 }
 
-impl Add for Vector {
+impl Add<Vector> for Vector {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self {
         Self {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+            z: self.z + rhs.z,
+        }
+    }
+}
+
+impl Add<&Vector> for Vector {
+    type Output = Vector;
+
+    fn add(self, rhs: &Vector) -> Vector {
+        Vector {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
             z: self.z + rhs.z,
@@ -160,11 +171,35 @@ impl Mul<f64> for Vector {
     }
 }
 
-impl Sub for Vector {
+impl Sub<Vector> for Vector {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self {
         Self {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
+        }
+    }
+}
+
+impl Sub<&Vector> for Vector {
+    type Output = Vector;
+
+    fn sub(self, rhs: &Vector) -> Vector {
+        Vector {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
+        }
+    }
+}
+
+impl Sub<&Vector> for &Vector {
+    type Output = Vector;
+
+    fn sub(self, rhs: &Vector) -> Vector {
+        Vector {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
             z: self.z - rhs.z,
