@@ -79,7 +79,7 @@ impl Bounds {
         }
     }
 
-    pub fn intersection(&self, other: Bounds) -> Self {
+    pub fn intersection(&self, other: &Bounds) -> Self {
         if self.empty && other.empty {
             return Bounds::empty();
         }
