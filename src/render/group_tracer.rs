@@ -21,7 +21,7 @@ impl GroupTracer {
 
     pub fn flatten_into_facets(
         &self,
-        rendering_parameters: RenderingParameters,
+        rendering_parameters: &RenderingParameters,
         facet_tracer: &mut FacetTracer,
     ) {
         if !rendering_parameters.contains(&self.bounds) {
@@ -31,11 +31,11 @@ impl GroupTracer {
         for tracer in self.tracers.iter() {
             match tracer {
                 Tracer::GroupT(t) => {
-                    t.flatten_into_facets(rendering_parameters.clone(), facet_tracer);
+                    t.flatten_into_facets(rendering_parameters, facet_tracer);
                 }
                 _ => flatten_non_group_into_facets(
                     tracer.clone(),
-                    rendering_parameters.clone(),
+                    rendering_parameters,
                     facet_tracer,
                 ),
             }
@@ -55,7 +55,7 @@ impl GroupTracer {
         self.tracers.insert(index, tracer);
     }
 
-    pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {
+    pub fn prune(&self, rendering_parameters: &RenderingParameters) -> Option<Tracer> {
         if rendering_parameters.contains(&self.bounds) {
             return None;
         }
@@ -95,10 +95,10 @@ impl GroupTracer {
 
 fn flatten_non_group_into_facets(
     tracer: Tracer,
-    rendering_parameters: RenderingParameters,
+    rendering_parameters: &RenderingParameters,
     facet_tracer: &mut FacetTracer,
 ) {
-    match tracer.prune(rendering_parameters.clone()) {
+    match tracer.prune(rendering_parameters) {
         None => {
             return;
         }

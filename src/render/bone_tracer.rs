@@ -86,7 +86,7 @@ impl BoneTracer {
         }
     }
 
-    pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {
+    pub fn prune(&self, rendering_parameters: &RenderingParameters) -> Option<Tracer> {
         todo!("Implement BoneTracer.prune()");
     }
 

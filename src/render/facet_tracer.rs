@@ -80,7 +80,7 @@ impl FacetTracer {
         y * self.root_count + x
     }
 
-    pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {
+    pub fn prune(&self, rendering_parameters: &RenderingParameters) -> Option<Tracer> {
         prune_bounds(Tracer::FacetT(self.clone()), rendering_parameters)
     }
 

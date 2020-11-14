@@ -34,10 +34,10 @@ impl ScalingTracer {
         }
     }
 
-    pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {
+    pub fn prune(&self, rendering_parameters: &RenderingParameters) -> Option<Tracer> {
         let scaled = rendering_parameters.scale(self.scale);
 
-        match self.source.prune(scaled) {
+        match self.source.prune(&scaled) {
             None => None,
             Some(pruned) => {
                 if *self.source == pruned {

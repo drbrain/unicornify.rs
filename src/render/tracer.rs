@@ -45,9 +45,9 @@ impl Tracer {
     ) {
         let rect = bounds.intersection(&self.bounds());
 
-        let rp = RenderingParameters::new(1.0, rect.clone());
+        let rendering_parameters = RenderingParameters::new(1.0, rect.clone());
 
-        match self.prune(rp) {
+        match self.prune(&rendering_parameters) {
             Some(pruned) => {
                 let x_min = rect.clone().x_min as u32;
                 let x_max = rect.clone().x_max as u32;
@@ -73,7 +73,7 @@ impl Tracer {
         }
     }
 
-    pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {
+    pub fn prune(&self, rendering_parameters: &RenderingParameters) -> Option<Tracer> {
         match self {
             Tracer::BoneT(t) => t.prune(rendering_parameters),
             Tracer::FacetT(t) => t.prune(rendering_parameters),

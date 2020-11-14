@@ -35,10 +35,10 @@ impl TranslatingTracer {
         }
     }
 
-    pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {
+    pub fn prune(&self, rendering_parameters: &RenderingParameters) -> Option<Tracer> {
         let shifted = rendering_parameters.translated(self.shift.x, self.shift.y);
 
-        match self.source.prune(shifted) {
+        match self.source.prune(&shifted) {
             None => None,
             Some(pruned) => {
                 if *self.source == pruned {
