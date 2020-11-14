@@ -42,12 +42,17 @@ impl GroupTracer {
         }
     }
 
-    pub fn push(&mut self, tracer: Tracer) {
-        self.bounds = self.bounds.union(&tracer.bounds());
+    pub fn add(&mut self, tracer: Tracer) {
+        let bounds = tracer.bounds();
 
-        self.tracers.push(tracer);
+        self.bounds = self.bounds.union(&bounds);
 
-        self.tracers.sort_by(|a, b| a.bounds().cmp(&b.bounds()));
+        let index = match self.tracers.binary_search_by(|b| b.bounds().cmp(&bounds)) {
+            Ok(i) => i,
+            Err(i) => i,
+        };
+
+        self.tracers.insert(index, tracer);
     }
 
     pub fn prune(&self, rendering_parameters: RenderingParameters) -> Option<Tracer> {

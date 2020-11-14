@@ -59,7 +59,7 @@ impl FacetTracer {
                     Some(t) => t.clone(),
                 };
 
-                facet.borrow_mut().push(tracer.clone());
+                facet.borrow_mut().add(tracer.clone());
             }
         }
     }

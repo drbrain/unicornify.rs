@@ -40,7 +40,7 @@ impl Bone {
         if self.x_func.is_none() && self.y_func.is_none() {
             let bone_tracer = BoneTracer::new(proj1, proj2);
 
-            tracer.push(Tracer::BoneT(bone_tracer));
+            tracer.add(Tracer::BoneT(bone_tracer));
 
             return;
         }
@@ -94,7 +94,7 @@ impl Bone {
                 }
             }
 
-            tracer.push(Tracer::BoneT(BoneTracer::new(
+            tracer.add(Tracer::BoneT(BoneTracer::new(
                 prev.borrow().clone(),
                 current.clone(),
             )));
