@@ -62,8 +62,8 @@ impl SphereProjection {
                 let p = closest_to_cam + u1 * *c1 * radius + u2 * *c2 * radius;
 
                 let pr = SphereProjection::new(world_view, p, 0.0);
-                r = r.max(pr.x() - projected_center_cs.x);
-                r = r.max(pr.y() - projected_center_cs.y);
+                r = r.max((pr.x() - projected_center_cs.x).abs());
+                r = r.max((pr.y() - projected_center_cs.y).abs());
             }
         }
 
