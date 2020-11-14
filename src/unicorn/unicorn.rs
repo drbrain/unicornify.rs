@@ -225,7 +225,7 @@ impl Unicorn {
         let neck = Neck::new(head.clone(), neck, mane);
 
         let pivot = head.attachment().center.borrow().clone();
-        neck.rotate_around(pivot, data.face_tilt, Axis::X);
+        neck.rotate_around(pivot, data.neck_tilt, Axis::X);
 
         let torso = Bone::new(shoulder.clone(), butt);
         let torso = Torso::new(neck, torso, tail, legs.clone());
