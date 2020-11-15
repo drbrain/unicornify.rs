@@ -1,4 +1,5 @@
 use crate::geometry::Vector;
+use crate::render::prune_bounds;
 use crate::render::BallProjection;
 use crate::render::Bounds;
 use crate::render::RenderingParameters;
@@ -87,10 +88,93 @@ impl BoneTracer {
     }
 
     pub fn prune(&self, rendering_parameters: &RenderingParameters) -> Option<Tracer> {
-        todo!("Implement BoneTracer.prune()");
+        prune_bounds(Tracer::BoneT(self.clone()), rendering_parameters)
     }
 
-    pub fn trace(&self, x: f64, y: f64, ray: Vector) -> TraceResult {
-        todo!("Implement BoneTracer.trace()");
+    pub fn trace(&self, _x: f64, _y: f64, ray: Vector) -> TraceResult {
+        let v1 = ray.x;
+        let v2 = ray.y;
+        let v3 = ray.z;
+
+        let c3 = -2.0 * (v1 * self.w1 + v2 * self.w2 + v3 * self.w3);
+        let c5 = -2.0 * (v1 * self.a1 + v2 * self.a2 + v3 * self.a3);
+
+        let mut z: f64 = 0.0;
+        let mut f: f64 = 0.0;
+
+        if self.c2 == 0.0 {
+            f = if self.dr > 0.0 { 1.0 } else { 0.0 };
+        } else {
+            let c7 = c3 * self.c2i;
+            let c10 = c5 * self.c2i;
+            let c12i = 1.0 / (c7 * c7 / 4.0 - self.c9);
+            let c13 = c7 * self.c8 / 2.0 - c10;
+
+            let pz = c13 * c12i;
+            let qz = self.c14 * c12i;
+            let discz = pz * pz / 4.0 - qz;
+
+            if discz < 0.0 {
+                return None;
+            }
+
+            let rdiscz = discz.sqrt();
+            let mut z1 = -pz / 2.0 + rdiscz;
+            let mut z2 = -pz / 2.0 - rdiscz;
+            let mut f1 = -(c3 * z1 + self.c4) / (2.0 * self.c2);
+            let mut f2 = -(c3 * z2 + self.c4) / (2.0 * self.c2);
+
+            let g1 = self.ra + f1 * self.dr >= 0.0;
+            let g2 = self.ra + f2 * self.dr >= 0.0;
+
+            if !g1 {
+                z1 = z2;
+                f1 = f2;
+
+                f2 = if self.dr > 0.0 { 1.0 } else { 0.0 };
+            }
+
+            if !g2 {
+                z2 = z1;
+                f2 = f1;
+
+                f1 = if self.dr > 0.0 { 1.0 } else { 0.0 };
+            }
+
+            // backside
+            z = z2;
+            f = f2;
+        }
+
+        if f <= 0.0 || f >= 1.0 {
+            f = 1.0f64.min(0.0f64.max(f));
+            let mut pz = c3 * f + c5;
+            let mut qz = self.c2 * f * f + self.c4 * f + self.c6;
+            let mut discz = pz * pz / 4.0 - qz;
+
+            if discz < 0.0 {
+                f = 1.0 - f;
+                pz = c3 * f + c5;
+                qz = self.c2 * f * f + self.c4 * f + self.c6;
+                discz = pz * pz / 4.0 - qz;
+
+                if discz < 0.0 {
+                    return None;
+                }
+
+                // backside
+                z = -pz / 2.0 - discz.sqrt();
+            }
+        }
+
+        let m1 = self.a1 + f * self.w1;
+        let m2 = self.a2 + f * self.w2;
+        let m3 = self.a3 + f * self.w3;
+        let m = Vector::new(m1, m2, m3);
+
+        let p = ray * z;
+        let dir = p - m;
+
+        Some((z, dir, self.b1.base.color.mix(self.b2.base.color, f)))
     }
 }

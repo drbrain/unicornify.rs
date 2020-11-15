@@ -70,10 +70,7 @@ impl Bone {
                 + vy * ((fy - factor) * length);
             let r = mix_floats(self.b1.radius, self.b2.radius, factor);
 
-            BallProjection::new(
-                world_view,
-                Ball::new_v(String::from(""), c, r, color),
-            )
+            BallProjection::new(world_view, Ball::new_v(String::from(""), c, r, color))
         };
 
         let parts = 255;

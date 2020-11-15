@@ -56,7 +56,12 @@ impl TranslatingTracer {
         }
     }
 
-    pub fn trace(&self, x: f64, y: f64, ray: Vector) -> TraceResult {
-        todo!("Implement TranslatingTracer.trace()");
+    pub fn trace(&self, x: f64, y: f64, _ray: Vector) -> TraceResult {
+        let x = x - self.shift.x;
+        let y = y - self.shift.y;
+
+        let ray = self.world_view.ray(x, y);
+
+        self.source.trace(x, y, ray)
     }
 }

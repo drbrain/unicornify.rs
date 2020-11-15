@@ -64,6 +64,14 @@ impl Bounds {
             .fold(Bounds::empty(), |a, b| a.union(&b))
     }
 
+    pub fn contains_xy(&self, x: f64, y: f64) -> bool {
+        !self.empty && x >= self.x_min && x <= self.x_max && y >= self.y_min && y <= self.y_max
+    }
+
+    pub fn contains_points_in_front_of_z(&self, z: f64) -> bool {
+        !self.empty && z > self.z_min
+    }
+
     pub fn dx(&self) -> f64 {
         if self.empty {
             0.0

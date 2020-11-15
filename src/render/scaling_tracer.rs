@@ -53,7 +53,15 @@ impl ScalingTracer {
         }
     }
 
-    pub fn trace(&self, x: f64, y: f64, ray: Vector) -> TraceResult {
-        todo!("Implement ScalingTracer.trace()");
+    pub fn trace(&self, x: f64, y: f64, _ray: Vector) -> TraceResult {
+        let x = x / self.scale;
+        let y = y / self.scale;
+        let ray = self.world_view.ray(x, y);
+
+        let (z, dir, color) = self.source.trace(x, y, ray)?;
+
+        let z = z * self.scale;
+
+        Some((z, dir, color))
     }
 }

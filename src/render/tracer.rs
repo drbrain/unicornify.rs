@@ -34,15 +34,17 @@ impl Tracer {
     pub fn draw(&mut self, world_view: WorldView, image_buffer: &mut RgbaImage) {
         let bounds = image_buffer.into();
 
-        self.draw_partial(world_view, image_buffer, bounds);
+        self.draw_partial(world_view, image_buffer, &bounds);
     }
 
     pub fn draw_partial(
         &mut self,
         world_view: WorldView,
         image_buffer: &mut RgbaImage,
-        bounds: Bounds,
+        bounds: &Bounds,
     ) {
+        let bounds = self.bounds();
+        eprintln!("partial_{:?}", self.bounds());
         let rect = bounds.intersection(&self.bounds());
 
         let rendering_parameters = RenderingParameters::new(1.0, rect.clone());

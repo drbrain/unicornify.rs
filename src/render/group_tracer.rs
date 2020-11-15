@@ -4,6 +4,7 @@ use crate::render::FacetTracer;
 use crate::render::RenderingParameters;
 use crate::render::TraceResult;
 use crate::render::Tracer;
+use crate::Color;
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct GroupTracer {
@@ -56,7 +57,8 @@ impl GroupTracer {
     }
 
     pub fn prune(&self, rendering_parameters: &RenderingParameters) -> Option<Tracer> {
-        if rendering_parameters.contains(&self.bounds) {
+        if !rendering_parameters.contains(&self.bounds) {
+            eprintln!("out of bounds");
             return None;
         }
 
@@ -85,7 +87,46 @@ impl GroupTracer {
     }
 
     pub fn trace(&self, x: f64, y: f64, ray: Vector) -> TraceResult {
-        todo!("Implement BoneTracer.trace()");
+        let mut any = false;
+        let mut min_z: f64 = 0.0;
+        let mut color = Color::black();
+        let mut dir = Vector::zero();
+
+        for tracer in self.tracers.iter() {
+            let bounds = tracer.bounds();
+
+            if bounds.z_max <= 0.0 {
+                continue;
+            }
+
+            if !bounds.contains_xy(x, y) {
+                continue;
+            }
+
+            if any && !bounds.contains_points_in_front_of_z(min_z) {
+                break;
+            }
+
+            match tracer.trace(x, y, ray) {
+                Some((z, t_dir, t_color)) => {
+                    if z > 0.0 {
+                        if !any || z < min_z {
+                            color = t_color;
+                            min_z = z;
+                            dir = t_dir;
+                            any = true;
+                        }
+                    }
+                }
+                None => (),
+            };
+        }
+
+        if any {
+            Some((min_z, dir, color))
+        } else {
+            None
+        }
     }
 }
 

@@ -141,8 +141,7 @@ impl Avatar {
         }
 
         let scaling = ScalingTracer::new(&world_view, Tracer::GroupT(tracer), scale);
-        let translating =
-            TranslatingTracer::new(&world_view, Tracer::ScalingT(scaling), shift);
+        let translating = TranslatingTracer::new(&world_view, Tracer::ScalingT(scaling), shift);
 
         if grass {
             todo!("Implement grass");
