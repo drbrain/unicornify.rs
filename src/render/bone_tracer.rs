@@ -44,7 +44,7 @@ impl BoneTracer {
         let bounds = Bounds::for_balls(vec![b1.clone(), b2.clone()]);
 
         let w1 = cx2 - cx1;
-        let w2 = cy2 - cy2;
+        let w2 = cy2 - cy1;
         let w3 = cz2 - cz1;
 
         let a1 = cx1;
