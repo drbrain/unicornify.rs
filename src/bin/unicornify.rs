@@ -10,8 +10,6 @@ fn main() {
         None => String::from("58479f76374a3ba3c69b9804163f39f4"),
     };
 
-    dbg!(hash.clone());
-
     let avatar = Avatar::new(hash, false).unwrap();
     let image_buffer = avatar.draw(128, true, false, false, false, false);
 
