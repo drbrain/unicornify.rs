@@ -24,8 +24,11 @@ impl Neck {
         self.mane.add_traceable(&mut tracer, world_view);
     }
 
+    /// Rotates the neck (head, mane, and neck) around +other+, taking care not to rotate any
+    /// joints twice.
     pub fn rotate_around(&self, other: &Vector, angle: f64, axis: Axis) {
         self.head.rotate_around(other, angle, axis);
+        // b1 is the "head" end of the neck bone which was rotated in the line above
         self.neck.b2.rotate_around(other, angle, axis);
         self.mane.rotate_around(other, angle, axis);
     }
