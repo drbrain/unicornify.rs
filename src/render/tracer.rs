@@ -43,9 +43,8 @@ impl Tracer {
         image_buffer: &mut RgbaImage,
         bounds: &Bounds,
     ) {
-        let bounds = self.bounds();
-        eprintln!("partial_{:?}", self.bounds());
         let rect = bounds.intersection(&self.bounds());
+        eprintln!("rect_{:?}", rect);
 
         let rendering_parameters = RenderingParameters::new(1.0, rect.clone());
 
