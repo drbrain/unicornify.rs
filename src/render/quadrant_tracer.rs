@@ -22,18 +22,17 @@ impl QuadrantTracer {
     pub fn new(world_view: &WorldView, source: Tracer, size: u32, quadrant: u8) -> Self {
         let bounds = source.bounds();
 
-        let quadrant_size = (size / 2) as f64;
-        let size = size as f64;
+        let offset = size as f64;
 
-        let (x_range, y_range) = match quadrant {
-            1 => (0.0..quadrant_size, 0.0..quadrant_size),
-            2 => (quadrant_size..size, 0.0..quadrant_size),
-            3 => (0.0..quadrant_size, quadrant_size..size),
-            4 => (quadrant_size..size, quadrant_size..size),
+        let (x_offset, y_offset) = match quadrant {
+            1 => (0.0, 0.0),
+            2 => (offset, 0.0),
+            3 => (0.0, offset),
+            4 => (offset, offset),
             _ => panic!("Invalid quadrant {}", quadrant),
         };
 
-        let shift = Point::new(-x_range.start, -y_range.start);
+        let shift = Point::new(-x_offset, -y_offset);
         let translater = TranslatingTracer::new(&world_view, source, shift);
         let source = Box::new(Tracer::TranslatingT(translater));
 
@@ -42,8 +41,8 @@ impl QuadrantTracer {
         QuadrantTracer {
             source,
             bounds,
-            x_range: (0.0..quadrant_size),
-            y_range: (0.0..quadrant_size),
+            x_range: (0.0..offset),
+            y_range: (0.0..offset),
             world_view,
         }
     }
@@ -68,12 +67,6 @@ impl QuadrantTracer {
     }
 
     pub fn trace(&self, x: f64, y: f64, ray: Vector) -> TraceResult {
-        if !self.x_range.contains(&x) {
-            None
-        } else if !self.y_range.contains(&y) {
-            None
-        } else {
-            self.source.trace(x, y, ray)
-        }
+        self.source.trace(x, y, ray)
     }
 }

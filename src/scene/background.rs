@@ -44,12 +44,17 @@ impl Background {
         }
     }
 
-    pub fn draw(&self, image: &mut RgbaImage, shaded: bool) {
-        let fsize = (image.height() - 1) as f64;
-        let horizon = (image.height() as f64 * self.horizon) as u32;
+    pub fn draw(&self, image: &mut RgbaImage, shaded: bool, quadrant: Option<u8>) {
+        let height = match quadrant {
+            None => image.height(),
+            Some(_) => image.height() * 2,
+        };
 
-        self.draw_sky(image, horizon, fsize);
-        self.draw_land(image, horizon, fsize);
+        let fsize = (height - 1) as f64;
+        let horizon = (height as f64 * self.horizon) as u32;
+
+        self.draw_sky(image, horizon, fsize, quadrant);
+        self.draw_land(image, horizon, fsize, quadrant);
         self.draw_rainbow(image, horizon, fsize);
         for i in 0..self.cloud_positions.len() {
             self.draw_cloud(image, i, shaded, fsize);
@@ -94,7 +99,7 @@ impl Background {
                 let image_x: u32 = px.try_into().unwrap();
                 let image_y: u32 = py.try_into().unwrap();
 
-                if image_x >= image_size || image_y > image_size {
+                if image_x >= image_size || image_y >= image_size {
                     continue;
                 }
 
@@ -110,14 +115,16 @@ impl Background {
         }
     }
 
-    fn draw_land(&self, image: &mut RgbaImage, horizon: u32, fsize: f64) {
+    fn draw_land(&self, image: &mut RgbaImage, horizon: u32, fsize: f64, quadrant: Option<u8>) {
         let land_a = Color::hsl(self.land_hue, self.land_sat, self.land_light);
         let land_b = Color::hsl(self.land_hue, self.land_sat, self.land_light / 2);
+        let (offset_x, offset_y) = offset(image.width(), quadrant);
+        let edge = horizon - offset_y;
 
         for x in 0..image.height() {
-            let color = land_a.mix(land_b, x as f64 / fsize);
+            let color = land_a.mix(land_b, (x + offset_x) as f64 / fsize);
 
-            for y in horizon..image.width() {
+            for y in edge..image.width() {
                 image.put_pixel(x, y, color.into());
             }
         }
@@ -168,16 +175,18 @@ impl Background {
         }
     }
 
-    fn draw_sky(&self, image: &mut RgbaImage, horizon: u32, fsize: f64) {
+    fn draw_sky(&self, image: &mut RgbaImage, horizon: u32, fsize: f64, quadrant: Option<u8>) {
         let sky_a = Color::hsl(self.sky_hue, self.sky_sat, 60);
         let sky_b = Color::hsl(self.sky_hue, self.sky_sat, 10);
+        let (_, offset_y) = offset(image.width(), quadrant);
+        let edge = offset_y + horizon;
 
         for (y, row) in image.enumerate_rows_mut() {
-            if y >= horizon.try_into().unwrap() {
+            if y >= edge {
                 break;
             };
 
-            let color = sky_a.mix(sky_b, y as f64 / fsize);
+            let color = sky_a.mix(sky_b, (y + offset_y) as f64 / fsize);
 
             for (_x, _y, pixel) in row {
                 *pixel = color.into();
@@ -244,5 +253,16 @@ fn between(v: i32, min: u32, max: u32) -> u32 {
         max
     } else {
         v
+    }
+}
+
+fn offset(size: u32, quadrant: Option<u8>) -> (u32, u32) {
+    match quadrant {
+        None => (0, 0),
+        Some(1) => (0, 0),
+        Some(2) => (size, 0),
+        Some(3) => (0, size),
+        Some(4) => (size, size),
+        Some(q) => panic!("Invalid quadrant {}", q),
     }
 }

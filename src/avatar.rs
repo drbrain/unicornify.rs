@@ -130,10 +130,15 @@ impl Avatar {
 
         let scale = ((self.scale_factor - 0.5) / 2.5 * 2.0 + 0.5) * fsize / 140.0;
 
-        let mut image_buffer = RgbaImage::new(size, size);
+        let image_size = match quadrant {
+            Some(_) => size / 2,
+            None => size,
+        };
+
+        let mut image_buffer = RgbaImage::new(image_size, image_size);
 
         if with_background {
-            self.background.draw(&mut image_buffer, shading);
+            self.background.draw(&mut image_buffer, shading, quadrant);
         }
 
         let tracer = self.unicorn.tracer(&world_view);
@@ -157,7 +162,7 @@ impl Avatar {
 
         let mut tracer = match quadrant {
             None => tracer,
-            Some(q) => Tracer::QuadrantT(QuadrantTracer::new(&world_view, tracer, size, q)),
+            Some(q) => Tracer::QuadrantT(QuadrantTracer::new(&world_view, tracer, image_size, q)),
         };
 
         tracer.draw(world_view, &mut image_buffer);
