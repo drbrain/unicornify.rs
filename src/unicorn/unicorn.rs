@@ -248,7 +248,8 @@ impl Unicorn {
                     / (low_back.borrow().x - low_front.borrow().x))
                     .atan();
 
-                torso.rotate_around(&shoulder.center.borrow().clone(), -angle, Axis::Z);
+                let pivot = shoulder.center.borrow().clone();
+                torso.rotate_around(&pivot, -angle, Axis::Z);
             }
             Pose::RotaryGallop { phase: _ } => {}
         }
