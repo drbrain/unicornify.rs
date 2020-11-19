@@ -143,6 +143,7 @@ fn flatten_non_group_into_facets(
             Tracer::GroupT(t) => t.flatten_into_facets(rendering_parameters, facet_tracer),
             Tracer::BoneT(_) => facet_tracer.add(pruned.clone()),
             Tracer::FacetT(_) => facet_tracer.add(pruned.clone()),
+            Tracer::QuadrantT(_) => facet_tracer.add(pruned.clone()),
             Tracer::ScalingT(_) => facet_tracer.add(pruned.clone()),
             Tracer::TranslatingT(_) => facet_tracer.add(pruned.clone()),
         },

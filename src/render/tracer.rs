@@ -3,6 +3,7 @@ use crate::render::BoneTracer;
 use crate::render::Bounds;
 use crate::render::FacetTracer;
 use crate::render::GroupTracer;
+use crate::render::QuadrantTracer;
 use crate::render::RenderingParameters;
 use crate::render::ScalingTracer;
 use crate::render::TraceResult;
@@ -16,6 +17,7 @@ pub enum Tracer {
     BoneT(BoneTracer),
     FacetT(FacetTracer),
     GroupT(GroupTracer),
+    QuadrantT(QuadrantTracer),
     ScalingT(ScalingTracer),
     TranslatingT(TranslatingTracer),
 }
@@ -26,6 +28,7 @@ impl Tracer {
             Tracer::BoneT(t) => t.bounds.clone(),
             Tracer::FacetT(t) => t.bounds.clone(),
             Tracer::GroupT(t) => t.bounds.clone(),
+            Tracer::QuadrantT(t) => t.bounds.clone(),
             Tracer::ScalingT(t) => t.bounds.clone(),
             Tracer::TranslatingT(t) => t.bounds.clone(),
         }
@@ -79,6 +82,7 @@ impl Tracer {
             Tracer::BoneT(t) => t.prune(rendering_parameters),
             Tracer::FacetT(t) => t.prune(rendering_parameters),
             Tracer::GroupT(t) => t.prune(rendering_parameters),
+            Tracer::QuadrantT(t) => t.prune(rendering_parameters),
             Tracer::ScalingT(t) => t.prune(rendering_parameters),
             Tracer::TranslatingT(t) => t.prune(rendering_parameters),
         }
@@ -89,6 +93,7 @@ impl Tracer {
             Tracer::BoneT(t) => t.trace(x, y, ray),
             Tracer::FacetT(t) => t.trace(x, y, ray),
             Tracer::GroupT(t) => t.trace(x, y, ray),
+            Tracer::QuadrantT(t) => t.trace(x, y, ray),
             Tracer::ScalingT(t) => t.trace(x, y, ray),
             Tracer::TranslatingT(t) => t.trace(x, y, ray),
         }

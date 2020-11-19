@@ -7,6 +7,7 @@ use crate::geometry::Axis;
 use crate::geometry::Point;
 use crate::geometry::Vector;
 use crate::geometry::DEGREE;
+use crate::render::QuadrantTracer;
 use crate::render::ScalingTracer;
 use crate::render::Tracer;
 use crate::render::TranslatingTracer;
@@ -101,6 +102,7 @@ impl Avatar {
     pub fn draw(
         &self,
         size: u32,
+        quadrant: Option<u8>,
         with_background: bool,
         zoom_out: bool,
         shading: bool,
@@ -147,11 +149,18 @@ impl Avatar {
             todo!("Implement grass");
         }
 
-        if parallelize {
+        let tracer = if parallelize {
             todo!("Implement parallel tracing");
         } else {
-            Tracer::TranslatingT(translating).draw(world_view, &mut image_buffer);
-        }
+            Tracer::TranslatingT(translating)
+        };
+
+        let mut tracer = match quadrant {
+            None => tracer,
+            Some(q) => Tracer::QuadrantT(QuadrantTracer::new(&world_view, tracer, size, q)),
+        };
+
+        tracer.draw(world_view, &mut image_buffer);
 
         image_buffer
     }
