@@ -57,6 +57,7 @@ impl Background {
     }
 
     fn draw_cloud(&self, image: &mut RgbaImage, i: usize, shaded: bool, fsize: f64) {
+        let image_size: u32 = image.width();
         let position = &self.cloud_positions[i];
         let size = &self.cloud_sizes[i];
         let color = Color::hsl(self.sky_hue, self.sky_sat, self.cloud_lightnesses[i]);
@@ -90,13 +91,20 @@ impl Background {
                     continue;
                 }
 
+                let image_x: u32 = px.try_into().unwrap();
+                let image_y: u32 = py.try_into().unwrap();
+
+                if image_x >= image_size || image_y > image_size {
+                    continue;
+                }
+
                 if shaded {
                     let dy = (py - (yi - size1i - 1)) as f64;
                     let color = circle_shading_rgba(0.0, dy, size1, color, cp.clone());
 
-                    image.put_pixel(px.try_into().unwrap(), py.try_into().unwrap(), color.into());
+                    image.put_pixel(image_x, image_y, color.into());
                 } else {
-                    image.put_pixel(px.try_into().unwrap(), py.try_into().unwrap(), color.into());
+                    image.put_pixel(image_x, image_y, color.into());
                 }
             }
         }
