@@ -55,7 +55,7 @@ impl Background {
 
         self.draw_sky(image, horizon, fsize, quadrant);
         self.draw_land(image, horizon, fsize, quadrant);
-        self.draw_rainbow(image, horizon, fsize);
+        self.draw_rainbow(image, horizon, fsize, quadrant);
         for i in 0..self.cloud_positions.len() {
             self.draw_cloud(image, i, shaded, fsize);
         }
@@ -130,30 +130,34 @@ impl Background {
         }
     }
 
-    fn draw_rainbow(&self, image: &mut RgbaImage, horizon: u32, fsize: f64) {
+    fn draw_rainbow(&self, image: &mut RgbaImage, horizon: u32, fsize: f64, quadrant: Option<u8>) {
         let band_width = self.rainbow_band_width * fsize;
         let rainbow_center = fsize * (self.rainbow_foot + self.rainbow_dir * self.rainbow_height);
         let outer_radius = self.rainbow_height * fsize + 0.5;
+        let (offset_x, offset_y) = offset(image.width(), quadrant);
 
-        // TODO these can probably be u32 as self.rainbow_* all seem to be positive?
         let r = (outer_radius + 0.5) as i32;
         let cx = (rainbow_center + 0.5) as i32;
         let cy = horizon as i32;
 
-        let size = image.height();
-        let left = between(cx - r, 0, size - 1);
-        let right = between(cx + r, 0, size - 1);
-        let top = between(cx - r, 0, size - 1);
-        let bottom = between(cy, 0, size - 1);
+        let size = match quadrant {
+            None => image.height(),
+            Some(_) => image.height() * 2,
+        };
+
+        let left = shift(between(cx - r as i32, 0, size - 1), offset_x);
+        let right = shift(between(cx + r as i32, 0, size - 1), offset_x);
+        let top = shift(between(cy - r as i32, 0, size - 1), offset_y);
+        let bottom = shift(between(cy as i32, 0, size - 1), offset_y);
         let inner_radius_squared = (r as f64 - 7.0 * band_width) as u32;
 
         let band_colors = band_colors();
 
-        for x in left..=right {
-            let dx: i32 = x as i32 - cx;
+        for x in left..right {
+            let dx: i32 = (offset_x + x) as i32 - cx;
 
-            for y in top..=bottom {
-                let dy: i32 = y as i32 - cy;
+            for y in top..bottom {
+                let dy: i32 = (offset_y + y) as i32 - cy;
                 let d_squared: u32 = (dx * dx + dy * dy).try_into().unwrap();
 
                 if d_squared < inner_radius_squared {
@@ -264,5 +268,12 @@ fn offset(size: u32, quadrant: Option<u8>) -> (u32, u32) {
         Some(3) => (0, size),
         Some(4) => (size, size),
         Some(q) => panic!("Invalid quadrant {}", q),
+    }
+}
+
+fn shift(value: u32, offset: u32) -> u32 {
+    match offset {
+        0 => value,
+        o => between(value as i32 - offset as i32, 0, o)
     }
 }
