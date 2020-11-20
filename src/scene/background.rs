@@ -57,11 +57,11 @@ impl Background {
         self.draw_land(image, horizon, fsize, quadrant);
         self.draw_rainbow(image, horizon, fsize, quadrant);
         for i in 0..self.cloud_positions.len() {
-            self.draw_cloud(image, i, shaded, fsize);
+            self.draw_cloud(image, i, shaded, fsize, quadrant);
         }
     }
 
-    fn draw_cloud(&self, image: &mut RgbaImage, i: usize, shaded: bool, fsize: f64) {
+    fn draw_cloud(&self, image: &mut RgbaImage, i: usize, shaded: bool, fsize: f64, quadrant: Option<u8>) {
         let image_size: u32 = image.width();
         let position = &self.cloud_positions[i];
         let size = &self.cloud_sizes[i];
@@ -71,14 +71,18 @@ impl Background {
 
         let cp = ColoringParameters::new(shading);
 
-        let x = position.x * fsize;
-        let y = position.y * fsize;
+        let (offset_x, offset_y) = offset(image.width(), quadrant);
+        let offset_x = offset_x as f64;
+        let offset_y = offset_y as f64;
+
+        let x = position.x * fsize - offset_x as f64;
+        let y = position.y * fsize - offset_y as f64;
         let size1 = size.x * fsize;
         let size2 = size.x * size.y * fsize;
 
-        circle_f(image, x - 2.0 * size1, y - size1, size1, color, cp.clone());
-        circle_f(image, x + 2.0 * size1, y - size1, size1, color, cp.clone());
-        top_half_circle_f(image, x, y - size1, size2, color, cp.clone());
+        circle_full(image, x - 2.0 * size1, y - size1, size1, color, cp.clone());
+        circle_full(image, x + 2.0 * size1, y - size1, size1, color, cp.clone());
+        circle_top_half(image, x, y - size1, size2, color, cp.clone());
 
         let xi = (x + 0.5) as i32;
         let yi = (y + 0.5) as i32;
@@ -93,7 +97,7 @@ impl Background {
 
             let image_y: u32 = py.try_into().unwrap();
 
-            if image_y > image_size {
+            if image_y >= image_size {
                 continue;
             }
 
@@ -104,7 +108,7 @@ impl Background {
 
                 let image_x: u32 = px.try_into().unwrap();
 
-                if image_x > image_size {
+                if image_x >= image_size {
                     continue;
                 }
 
@@ -145,15 +149,17 @@ impl Background {
         let cx = (rainbow_center + 0.5) as i32;
         let cy = horizon as i32;
 
-        let size = match quadrant {
+        let rainbow_max = match quadrant {
             None => image.height(),
             Some(_) => image.height() * 2,
-        };
+        } - 1;
 
-        let left = shift(between(cx - r as i32, 0, size - 1), offset_x);
-        let right = shift(between(cx + r as i32, 0, size - 1), offset_x);
-        let top = shift(between(cy - r as i32, 0, size - 1), offset_y);
-        let bottom = shift(between(cy as i32, 0, size - 1), offset_y);
+        let image_max = image.height() - 1;
+
+        let left = shift(between(cx - r as i32, 0, rainbow_max), offset_x, image_max);
+        let right = shift(between(cx + r as i32, 0, rainbow_max), offset_x, image_max);
+        let top = shift(between(cy - r as i32, 0, rainbow_max), offset_y, image_max);
+        let bottom = shift(between(cy as i32, 0, rainbow_max), offset_y, image_max);
         let inner_radius_squared = (r as f64 - 7.0 * band_width) as u32;
 
         let band_colors = band_colors();
@@ -276,9 +282,6 @@ fn offset(size: u32, quadrant: Option<u8>) -> (u32, u32) {
     }
 }
 
-fn shift(value: u32, offset: u32) -> u32 {
-    match offset {
-        0 => value,
-        o => between(value as i32 - offset as i32, 0, o)
-    }
+fn shift(value: u32, offset: u32, max: u32) -> u32 {
+    between(value as i32 - offset as i32, 0, max)
 }

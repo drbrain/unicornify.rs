@@ -9,18 +9,7 @@ mod coloring_parameters;
 pub use coloring_parameters::ColoringParameters;
 pub use coloring_parameters::Gradient;
 
-pub fn circle(
-    image: &mut RgbaImage,
-    cx: i32,
-    cy: i32,
-    r: i32,
-    color: Color,
-    coloring: ColoringParameters,
-) {
-    circle_impl(image, cx, cy, r, color, false, coloring);
-}
-
-pub fn circle_f(
+pub fn circle_full(
     image: &mut RgbaImage,
     cx: f64,
     cy: f64,
@@ -28,12 +17,13 @@ pub fn circle_f(
     color: Color,
     coloring: ColoringParameters,
 ) {
-    circle(
+    circle_impl(
         image,
         (cx + 0.5) as i32,
         (cy + 0.5) as i32,
         (r + 0.5) as i32,
         color,
+        false,
         coloring,
     );
 }
@@ -69,7 +59,7 @@ pub fn circle_shading_rgba(
     }
 }
 
-pub fn top_half_circle_f(
+pub fn circle_top_half(
     image: &mut RgbaImage,
     cx: f64,
     cy: f64,
@@ -103,6 +93,9 @@ fn circle_impl(
         return;
     }
 
+    let cx = cx;
+    let cy = cy;
+
     let mut f = 1 - r;
     let mut dd_f_x = 1;
     let mut dd_f_y = -2 * r;
@@ -114,6 +107,11 @@ fn circle_impl(
         right += cx;
 
         y += cy;
+
+        if y < 0 || y >= size {
+            return;
+        }
+
         if left < 0 {
             left = 0;
         }
