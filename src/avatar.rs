@@ -67,7 +67,7 @@ impl Avatar {
         data.rand4(&mut rand);
 
         let light_direction = Vector::new(rand.rand() * 16.0 - 8.0, 10.0, rand.rand() * 3.0);
-        let light_direction = Vector::new(light_direction.z, light_direction.y, -light_direction.x);
+        let _light_direction = Vector::new(light_direction.z, light_direction.y, -light_direction.x);
 
         // end randomization
 
@@ -104,7 +104,7 @@ impl Avatar {
         size: u32,
         quadrant: Option<u8>,
         with_background: bool,
-        zoom_out: bool,
+        _zoom_out: bool,
         shading: bool,
         grass: bool,
         parallelize: bool,

@@ -10,7 +10,7 @@ use crate::render::WorldView;
 
 use std::cell::RefCell;
 
-const DEFAULT_SHADING: f64 = 0.25;
+//const DEFAULT_SHADING: f64 = 0.25;
 
 #[derive(Clone, Debug)]
 pub struct Bone {
