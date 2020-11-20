@@ -91,15 +91,20 @@ impl Background {
                 continue;
             }
 
+            let image_y: u32 = py.try_into().unwrap();
+
+            if image_y > image_size {
+                continue;
+            }
+
             for px in xi - 2 * size1i..=right {
                 if px < 0 {
                     continue;
                 }
 
                 let image_x: u32 = px.try_into().unwrap();
-                let image_y: u32 = py.try_into().unwrap();
 
-                if image_x >= image_size || image_y >= image_size {
+                if image_x > image_size {
                     continue;
                 }
 
