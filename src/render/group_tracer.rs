@@ -58,7 +58,7 @@ impl GroupTracer {
 
     pub fn prune(&self, rendering_parameters: &RenderingParameters) -> Option<Tracer> {
         if !rendering_parameters.contains(&self.bounds) {
-            eprintln!("out of bounds");
+            eprintln!("Group out of bounds");
             return None;
         }
 
