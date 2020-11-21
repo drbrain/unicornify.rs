@@ -165,9 +165,9 @@ impl fmt::Debug for Bounds {
 impl From<&mut RgbaImage> for Bounds {
     fn from(image_buffer: &mut RgbaImage) -> Bounds {
         let x_min = 0.0;
-        let x_max = (image_buffer.width() - 1) as f64;
+        let x_max = (image_buffer.width()) as f64;
         let y_min = 0.0;
-        let y_max = (image_buffer.height() - 1) as f64;
+        let y_max = (image_buffer.height()) as f64;
         let z_min = f64::NEG_INFINITY;
         let z_max = f64::INFINITY;
         let empty = false;
