@@ -15,7 +15,7 @@ pub fn circle_full(
     cy: f64,
     r: f64,
     color: Color,
-    coloring: ColoringParameters,
+    coloring: &ColoringParameters,
 ) {
     circle_impl(
         image,
@@ -33,7 +33,7 @@ pub fn circle_shading_rgba(
     y: f64,
     r: f64,
     color: Color,
-    coloring: ColoringParameters,
+    coloring: &ColoringParameters,
 ) -> Color {
     if coloring.shading == 0.0 || y == 0.0 {
         return color;
@@ -65,7 +65,7 @@ pub fn circle_top_half(
     cy: f64,
     r: f64,
     color: Color,
-    coloring: ColoringParameters,
+    coloring: &ColoringParameters,
 ) {
     circle_impl(
         image,
@@ -85,7 +85,7 @@ fn circle_impl(
     r: i32,
     color: Color,
     top_half: bool,
-    coloring: ColoringParameters,
+    coloring: &ColoringParameters,
 ) {
     let size = image.height() as i32;
 
@@ -125,7 +125,7 @@ fn circle_impl(
                 (y - cy) as f64,
                 r as f64,
                 color,
-                coloring.clone(),
+                coloring,
             );
 
             image.put_pixel(x.try_into().unwrap(), y.try_into().unwrap(), color.into());

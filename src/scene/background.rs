@@ -80,9 +80,9 @@ impl Background {
         let size1 = size.x * fsize;
         let size2 = size.x * size.y * fsize;
 
-        circle_full(image, x - 2.0 * size1, y - size1, size1, color, cp.clone());
-        circle_full(image, x + 2.0 * size1, y - size1, size1, color, cp.clone());
-        circle_top_half(image, x, y - size1, size2, color, cp.clone());
+        circle_full(image, x - 2.0 * size1, y - size1, size1, color, &cp);
+        circle_full(image, x + 2.0 * size1, y - size1, size1, color, &cp);
+        circle_top_half(image, x, y - size1, size2, color, &cp);
 
         let xi = (x + 0.5) as i32;
         let yi = (y + 0.5) as i32;
@@ -114,7 +114,7 @@ impl Background {
 
                 if shaded {
                     let dy = (py - (yi - size1i - 1)) as f64;
-                    let color = circle_shading_rgba(0.0, dy, size1, color, cp.clone());
+                    let color = circle_shading_rgba(0.0, dy, size1, color, &cp);
 
                     image.put_pixel(image_x, image_y, color.into());
                 } else {
