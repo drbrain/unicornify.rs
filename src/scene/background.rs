@@ -154,7 +154,7 @@ impl Background {
             Some(_) => image.height() * 2,
         } - 1;
 
-        let image_max = image.height() - 1;
+        let image_max = image.height();
 
         let left = shift(between(cx - r as i32, 0, rainbow_max), offset_x, image_max);
         let right = shift(between(cx + r as i32, 0, rainbow_max), offset_x, image_max);
