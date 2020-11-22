@@ -58,8 +58,8 @@ impl Tracer {
                 let y_min = rect.clone().y_min as u32;
                 let y_max = rect.clone().y_max as u32;
 
-                for y in x_min..x_max {
-                    for x in y_min..y_max {
+                for y in y_min..y_max {
+                    for x in x_min..x_max {
                         let fx = x as f64;
                         let fy = y as f64;
                         let ray = world_view.ray(fx, fy);
