@@ -22,33 +22,6 @@ impl Legs {
         let hoof_color = Color::hsl(data.body_hue, data.body_sat, 45);
 
         let hip = Ball::new(
-            "left front hip".into(),
-            55.0,
-            160.0,
-            -25.0,
-            25.0,
-            hip_color.clone(),
-        );
-        let knee = Ball::new(
-            "left front knee".into(),
-            35.0,
-            254.0,
-            -25.0,
-            9.0,
-            knee_color.clone(),
-        );
-        let hoof = Ball::new(
-            "left front hoof".into(),
-            55.0,
-            310.0,
-            -25.0,
-            11.0,
-            hoof_color.clone(),
-        );
-        hip.move_to_sphere(shoulder);
-        let fr = Leg::new(hip, knee, hoof);
-
-        let hip = Ball::new(
             "right front hip".into(),
             55.0,
             160.0,
@@ -73,34 +46,34 @@ impl Legs {
             hoof_color.clone(),
         );
         hip.move_to_sphere(shoulder);
-        let fl = Leg::new(hip, knee, hoof);
+        let fr = Leg::new(hip, knee, hoof);
 
         let hip = Ball::new(
-            "left rear hip".into(),
-            225.0,
-            190.0,
+            "left front hip".into(),
+            55.0,
+            160.0,
             -25.0,
             25.0,
             hip_color.clone(),
         );
         let knee = Ball::new(
-            "left right knee".into(),
-            230.0,
-            265.0,
+            "left front knee".into(),
+            35.0,
+            254.0,
             -25.0,
             9.0,
             knee_color.clone(),
         );
         let hoof = Ball::new(
-            "left rear hoof".into(),
-            220.0,
+            "left front hoof".into(),
+            55.0,
             310.0,
             -25.0,
             11.0,
             hoof_color.clone(),
         );
-        hip.move_to_sphere(butt);
-        let br = Leg::new(hip, knee, hoof);
+        hip.move_to_sphere(shoulder);
+        let fl = Leg::new(hip, knee, hoof);
 
         let hip = Ball::new(
             "right rear hip".into(),
@@ -123,6 +96,33 @@ impl Legs {
             220.0,
             310.0,
             25.0,
+            11.0,
+            hoof_color.clone(),
+        );
+        hip.move_to_sphere(butt);
+        let br = Leg::new(hip, knee, hoof);
+
+        let hip = Ball::new(
+            "left rear hip".into(),
+            225.0,
+            190.0,
+            -25.0,
+            25.0,
+            hip_color.clone(),
+        );
+        let knee = Ball::new(
+            "left right knee".into(),
+            230.0,
+            265.0,
+            -25.0,
+            9.0,
+            knee_color.clone(),
+        );
+        let hoof = Ball::new(
+            "left rear hoof".into(),
+            220.0,
+            310.0,
+            -25.0,
             11.0,
             hoof_color.clone(),
         );
