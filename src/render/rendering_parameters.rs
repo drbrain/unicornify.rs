@@ -11,10 +11,10 @@ pub struct RenderingParameters {
 
 impl RenderingParameters {
     pub fn new(pixel_size: f64, bounds: Bounds) -> Self {
-        let x_min = bounds.x_min - 1.0;
-        let x_max = bounds.x_max + 1.0;
-        let y_min = bounds.y_min - 1.0;
-        let y_max = bounds.y_max + 1.0;
+        let x_min = (bounds.x_min - 1.0).floor();
+        let x_max = (bounds.x_max + 1.0).ceil();
+        let y_min = (bounds.y_min - 1.0).floor();
+        let y_max = (bounds.y_max + 1.0).ceil();
 
         RenderingParameters {
             pixel_size,
