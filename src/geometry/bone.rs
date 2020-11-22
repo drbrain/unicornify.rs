@@ -78,7 +78,7 @@ impl Bone {
         let prev = RefCell::new(proj1);
         let next = RefCell::new(calc(1.0 / parts as f64));
 
-        for i in 1..parts {
+        for i in 1..=parts {
             let current = next.borrow().clone();
 
             if i < parts {
@@ -92,10 +92,9 @@ impl Bone {
                 }
             }
 
-            tracer.add(Tracer::BoneT(BoneTracer::new(
-                prev.borrow().clone(),
-                current.clone(),
-            )));
+            let bone_tracer = BoneTracer::new(prev.borrow().clone(), current.clone());
+
+            tracer.add(Tracer::BoneT(bone_tracer));
 
             prev.replace(current.clone());
         }
